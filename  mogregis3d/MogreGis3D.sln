@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainAppTest", "MainAppTest\MainAppTest.csproj", "{7D433BFD-62D3-4668-8306-6C21C331D682}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreGisProjects", "MogreGisProjects\MogreGisProjects.csproj", "{28BE9767-F3D9-42E1-BCC5-DA0C02DA0826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreGis", "MogreGis\MogreGis.csproj", "{A05E0942-E44D-46A7-A28D-AE780A3BDD1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D433BFD-62D3-4668-8306-6C21C331D682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D433BFD-62D3-4668-8306-6C21C331D682}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D433BFD-62D3-4668-8306-6C21C331D682}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D433BFD-62D3-4668-8306-6C21C331D682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28BE9767-F3D9-42E1-BCC5-DA0C02DA0826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28BE9767-F3D9-42E1-BCC5-DA0C02DA0826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28BE9767-F3D9-42E1-BCC5-DA0C02DA0826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28BE9767-F3D9-42E1-BCC5-DA0C02DA0826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A05E0942-E44D-46A7-A28D-AE780A3BDD1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A05E0942-E44D-46A7-A28D-AE780A3BDD1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A05E0942-E44D-46A7-A28D-AE780A3BDD1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A05E0942-E44D-46A7-A28D-AE780A3BDD1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

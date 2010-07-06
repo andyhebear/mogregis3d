@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="MainAppTest">
+</Property><Property Name="Archivo de la solución" Value="C:\Dev\MainAppTest\MainAppTest.sln">
+</Property><Property Name="Date" Value="jueves, 24 de junio de 2010">
+</Property><Property Name="Time" Value="19:07:52">
+</Property><Property Name="Número de registro" Value="5">
+</Property></Properties><Event ErrorLevel="0" Project="Sharp3D.Math" Source="..\Sharp3D.Math\Sharp3D.Math\Main\Sharp3D.Math\Sharp3D.Math.csproj" Description="Proyecto convertido correctamente">
+</Event><Event ErrorLevel="3" Project="Sharp3D.Math" Source="..\Sharp3D.Math\Sharp3D.Math\Main\Sharp3D.Math\Sharp3D.Math.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Sharp3D.Math" Source="..\Sharp3D.Math\Sharp3D.Math\Main\Sharp3D.Math\Sharp3D.Math.csproj" Description="Examen completo: no es necesario actualizar los archivos de proyecto.">
+</Event></UpgradeLog>
