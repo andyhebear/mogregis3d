@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<project name="sample">
+
+    <!-- A layer is a primary build target: -->
+    <layer name="world" source="world_adm0" target="out/roads.ive">
+        <slice min_range="0" max_range="1e6" graph="roads"/>
+    </layer>
+
+    <!-- A source references a vector GIS source layer: -->
+    <source name="world_adm0" provider="ShapeFile">
+        <uri>source/world_adm0.shp</uri>
+    </source>
+
+    <!-- A filter graph defines the assembly pipeline for turning features into 3D geometry: -->
+    <graph name="roads">
+        <filter type="Transform">
+            <property name="localize" value="true"/>
+        </filter>
+        <filter type="BuildGeom">
+            <property name="color" value="vec4(1,.6,.4,1)"/>
+        </filter>
+        <filter type="Collect"/>
+        <filter type="BuildNodes"/>
+    </graph>
+
+</project>
