@@ -35,8 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ProjNET">
+      <HintPath>..\Libs\SharpMap-0.9\Debug\ProjNET.dll</HintPath>
+    </Reference>
     <Reference Include="SharpMap">
-      <HintPath>..\Libs\SharpMap.dll</HintPath>
+      <HintPath>..\Libs\SharpMap-0.9\Debug\SharpMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
