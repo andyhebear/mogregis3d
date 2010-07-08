@@ -50,11 +50,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mogre">
-      <HintPath>..\Libs\Mogre-v1.6.4\bin\release\Mogre.dll</HintPath>
-    </Reference>
-    <Reference Include="MOIS">
-      <HintPath>..\Libs\Mogre-v1.6.4\bin\release\MOIS.dll</HintPath>
+    <Reference Include="Mogre, Version=1.6.4.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
     </Reference>
     <Reference Include="ProjNET">
       <HintPath>..\Libs\SharpMap-0.9\Debug\ProjNET.dll</HintPath>
