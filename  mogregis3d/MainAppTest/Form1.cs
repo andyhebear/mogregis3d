@@ -36,10 +36,25 @@ namespace MainAppTest
 
                 FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
 
+                label1.Text =  "Prueba:\n";
+
                 foreach (FeatureDataRow row in features)
                 { 
                     //imprimir alguna traza
+                    label1.Text = label1.Text + row.ItemArray[0] + " - " + row.ItemArray[1] + " - " + row.ItemArray[2] + "\n";
                 }
+
+                //Show map
+                SharpMap.Map myMap = new SharpMap.Map(new Size(600, 300));
+                SharpMap.Layers.VectorLayer myLayer = new SharpMap.Layers.VectorLayer("mapa");
+                myLayer.DataSource = source.DataSource;
+                myMap.Layers.Add(myLayer);
+
+                myMap.ZoomToExtents();
+
+                pictureBox1.Image = myMap.GetMap();
+
+
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if TODO
+//#if TODO
 namespace osgGISProjects
 {
     /**
@@ -10,7 +10,10 @@ namespace osgGISProjects
     public class BuildTarget
     {
 
-        public BuildTarget() { }
+        public BuildTarget() 
+        {
+            layers = new BuildLayerList();
+        }
 
         public BuildTarget(string _name)
         {
@@ -56,4 +59,4 @@ namespace osgGISProjects
     public class BuildTargetList : List<BuildTarget> { };
 }
 
-#endif
+//#endif

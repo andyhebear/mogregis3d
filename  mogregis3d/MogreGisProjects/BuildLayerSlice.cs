@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-#if TODO
+
+#if TODO_DANI
 using MogreGis;
+#endif
 
 namespace osgGISProjects
 {
@@ -13,8 +15,11 @@ namespace osgGISProjects
             min_range = 0.0f;
             max_range = float.MaxValue;
             max_tex_size = 0;
+
+            sub_slices = new BuildLayerSliceList();
         }
 
+#if TODO_DANI
         public FilterGraph getFilterGraph()
         {
             return graph;
@@ -24,11 +29,17 @@ namespace osgGISProjects
         {
             graph = _graph;
         }
+#endif
 
-        public Source getSource();
+        public Source getSource()
+        {
+            return source;
+        }
 
-        public void setSource(Source source);
-
+        public void setSource(Source _source)
+        {
+            source = _source;
+        }
 
         public float getMinRange()
         {
@@ -67,21 +78,26 @@ namespace osgGISProjects
             return sub_slices;
         }
 
+#if TODO_DANI
         public Properties getProperties()
         {
             return props;
         }
+#endif
 
 
         private Source source;
-        private FilterGraph graph;
         private BuildLayerSliceList sub_slices;
-        private Properties props;
         private float min_range;
         private float max_range;
         private uint max_tex_size;
+
+#if TODO_DANI
+        private FilterGraph graph;
+        private Properties props;
+#endif
     }
 
     public class BuildLayerSliceList : List<BuildLayerSlice> { };
 }
-#endif
+//#endif

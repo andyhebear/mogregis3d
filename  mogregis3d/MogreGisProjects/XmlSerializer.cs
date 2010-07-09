@@ -447,7 +447,7 @@ namespace osgGISProjects
             }
             return e;
         }
-
+#endif
 
         static Source decodeSource(XmlElement e, Project proj, int pass)
         {
@@ -458,11 +458,15 @@ namespace osgGISProjects
                 {
                     // first pass: create the new source record
                     source = new Source();
+#if TODO_DANI
                     source.setBaseURI(proj.getBaseURI());
+#endif
                     source.setName(e.GetAttribute("name"));
                     source.setType(e.GetAttribute("type") == "raster" ? Source.SourceType.TYPE_RASTER : Source.SourceType.TYPE_FEATURE);
                     source.setURI(e.GetElementsByTagName("uri")[0].InnerText);
+#if TODO_DANI
                     source.setFilterGraph(proj.getFilterGraph(e.GetAttribute("graph")));
+#endif
                 }
                 else
                 {
@@ -474,6 +478,8 @@ namespace osgGISProjects
             return source;
         }
 
+
+#if TODO_DANI
         static XmlElement encodeSource(XmlDocument doc, Source source)
         {
             XmlElement e = null;
@@ -523,7 +529,7 @@ namespace osgGISProjects
             }
             return e;
         }
-
+#endif
 
         static BuildLayerSlice decodeSlice(XmlElement e, Project proj)
         {
@@ -537,13 +543,16 @@ namespace osgGISProjects
                 if (!string.IsNullOrEmpty(e.GetAttribute("max_range")))
                     slice.setMaxRange(float.Parse(e.GetAttribute("max_range")));
 
+#if TODO_DANI
                 // required filter graph:
                 string graph = e.GetAttribute("graph");
                 slice.setFilterGraph(proj.getFilterGraph(graph)); //TODO: warning?
+#endif
 
                 // optional source:
                 slice.setSource(proj.getSource(e.GetAttribute("source")));
 
+#if TODO_DANI
                 // properties particular to this slice:
                 XmlNodeList props = e.GetElementsByTagName("property");
                 foreach (XmlNode i in props)
@@ -553,6 +562,7 @@ namespace osgGISProjects
                     string value = k_e.GetAttribute("value");
                     slice.getProperties().Add(new Property(name, value));
                 }
+#endif
 
                 // now decode sub-slices:
                 XmlNodeList slices = e.GetElementsByTagName("slice");
@@ -565,6 +575,8 @@ namespace osgGISProjects
             }
             return slice;
         }
+
+#if TODO_DANI
 
         static XmlElement encodeSlice(XmlDocument doc, BuildLayerSlice slice)
         {
@@ -600,14 +612,18 @@ namespace osgGISProjects
             return e;
         }
 #endif
-#if TODO_DANI //decodeLayer
+
         static BuildLayer decodeLayer(XmlElement e, Project proj)
         {
             BuildLayer layer = null;
             if (e != null)
             {
                 layer = new BuildLayer();
+
+#if TODO_DANI
                 layer.setBaseURI(proj.getBaseURI());
+#endif
+
                 layer.setName(e.GetAttribute("name"));
 
                 string type = e.GetAttribute("type");
@@ -634,6 +650,7 @@ namespace osgGISProjects
                         layer.getSlices().Add(slice);
                 }
 
+#if TODO_DANI
                 XmlNodeList props = e.GetElementsByTagName("property");
                 foreach (XmlNode i in props)
                 {
@@ -651,10 +668,10 @@ namespace osgGISProjects
                     string value = k_e.GetAttribute("value");
                     layer.getEnvProperties().Add(new Property(name, value));
                 }
+#endif
             }
             return layer;
         }
-#endif
 
 #if TODO_DANI //encodeLayer
         static XmlElement encodeLayer(XmlDocument doc, BuildLayer layer)
@@ -841,64 +858,34 @@ namespace osgGISProjects
 
 #endif
 
-                XmlNodeList sources = e.GetElementsByTagName("source");
-                foreach (XmlNode j in sources)
-                {
-                    // TODO Dani, meter esto en un try catch
-                    XmlElement k = (XmlElement)j;
-                    Source source = new Source();
-                    //source.setBaseURI(project.getBaseURI());
-                    source.setName(k.GetAttribute("name"));
-                    source.setType(k.GetAttribute("type") == "raster" ? Source.SourceType.TYPE_RASTER : Source.SourceType.TYPE_FEATURE);
-                    source.setURI(k.GetElementsByTagName("uri")[0].InnerText);
-
-                    if (source != null)
-                    {
-
-                        project.getSources().Add(source);
-#if TODO
-                        // also add each source as a feature layer resource
-                        Resource resource = MogreGis.Registry.instance().createResourceByType("FeatureLayerResource");
-                        resource.setBaseURI(project.getBaseURI());
-                        resource.setURI(source.getURI());
-                        resource.setName(source.getName());
-                        project.getResources().Add(resource);
-
-                        //Sustituir por :
-                        /*
-                         * ShapeFile sf = new ShapeFile(path);
-                         * BoundingBox bx = sf.GetExtents();
-                         * 
-                         */
-#endif
-                    }
-                }
-
-#if TODO_DANI
                 // sources - 2 passes, since a source can reference another source
                 XmlNodeList sources = e.GetElementsByTagName("source");
                 foreach (XmlNode j in sources)
                 {
+
+                    // TODO Dani, meter esto en un try catch
+
                     Source source = decodeSource((XmlElement)j, project, 0);
                     if (source != null)
                     {
                         project.getSources().Add(source);
 
+#if TODO_DANI
                         // also add each source as a feature layer resource
                         Resource resource = MogreGis.Registry.instance().createResourceByType("FeatureLayerResource");
                         resource.setBaseURI(project.getBaseURI());
                         resource.setURI(source.getURI());
                         resource.setName(source.getName());
                         project.getResources().Add(resource);
+#endif
                     }
                 }
                 foreach (XmlNode j in sources)
                 {
                     decodeSource((XmlElement)j, project, 1);
                 }
-#endif
 
-#if TODO_DANI //layers
+//#if TODO_DANI //layers
 
                 // layers
                 XmlNodeList layers = e.GetElementsByTagName("layer");
@@ -917,7 +904,7 @@ namespace osgGISProjects
                     }
                 }
 
-#endif
+//#endif
 
 #if TODO_DANI //targets
 

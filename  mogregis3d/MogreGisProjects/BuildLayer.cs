@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#if TODO
+//#if TODO
 namespace osgGISProjects
 {
     public class BuildLayer
@@ -16,7 +16,10 @@ namespace osgGISProjects
         };
 
 
-        public BuildLayer() { }
+        public BuildLayer() 
+        {
+            slices = new BuildLayerSliceList();
+        }
 
         public BuildLayer(string _name)
         {
@@ -68,10 +71,12 @@ namespace osgGISProjects
             return target_path;
         }
 
+#if TODO_DANI
         public string getAbsoluteTargetPath()
         {
             return PathUtils.getAbsPath(base_uri, target_path);
         }
+#endif
 
         public BuildLayerSliceList getSlices()
         {
@@ -88,6 +93,7 @@ namespace osgGISProjects
             return type;
         }
 
+#if TODO_DANI
         public Properties getProperties()
         {
             return properties;
@@ -104,7 +110,7 @@ namespace osgGISProjects
         {
             return env_properties;
         }
-
+#endif
 
 
         private string name;
@@ -114,10 +120,12 @@ namespace osgGISProjects
         private Terrain terrain;
         private string target_path;
         private LayerType type = LayerType.TYPE_SIMPLE;
+#if TODO_DANI
         private Properties properties;
         private Properties env_properties;
+#endif
     }
 
     public class BuildLayerList : List<BuildLayer> { } ;
 }
-#endif
+//#endif

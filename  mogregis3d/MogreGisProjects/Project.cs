@@ -11,6 +11,11 @@ namespace osgGISProjects
         public Project()
         {
             //NOP
+            sources = new SourceList();
+
+            layers = new BuildLayerList();
+            targets = new BuildTargetList();
+            terrains = new TerrainList();
         }
 
         public void setSourceURI(string value)
@@ -217,21 +222,46 @@ namespace osgGISProjects
         }
 
 #endif
+
+        public BuildLayerList getLayers()
+        {
+            return layers;
+        }
+
+        public BuildTargetList getTargets()
+        {
+            return targets;
+        }
+
+        public TerrainList getTerrains()
+        {
+            return terrains;
+        }
+
+        public Terrain getTerrain(string key)
+        {
+            foreach (Terrain i in terrains)
+            {
+                if (i.getName().Equals(key))
+                    return i;
+            }
+            return null;
+        }
+
         protected string source_uri;
         protected string name;
         protected string work_dir;
 
         protected SourceList sources;
+
+        protected BuildLayerList layers;
+        protected BuildTargetList targets;
+        protected TerrainList terrains;
+
 #if TODO
         protected ResourceList resources;//CAMBIAR
 
-
         protected FilterGraphList graphs;
-#if TODO_DANI
-        protected TerrainList terrains;
-#endif
-        protected BuildLayerList layers;
-        protected BuildTargetList targets;
         protected RuntimeMapList maps;
         protected ScriptList scripts;
 #endif    
