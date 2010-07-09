@@ -18,6 +18,21 @@ namespace MogreGis
      * every filter has access while it is running. Filters should ideally
      * be stateless with respect to the data they are processing. This helps
      * increase maintainability and predictability.
+     * 
+     * Filter
+     *   |
+     *   |---- FeatureFilter: Feature -> Feature
+     *   |       |
+     *   |       |---- TransformFilter
+     *   |
+     *   |---- CollectionFilter
+     *   |
+     *   |---- FragmentFilter: Feature -> Fragment, Fragment -> Fragment
+     *   |        |
+     *   |        |---- BuildGeomFilter
+     *   |
+     *   |---- NodeFilter: Feature -> Node, Fragment -> Node, Node -> Node
+
      */
     public abstract class Filter
     {

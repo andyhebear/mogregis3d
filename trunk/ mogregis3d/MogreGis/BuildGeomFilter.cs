@@ -5,6 +5,7 @@ using System.Text;
 
 using Sharp3D.Math.Core;
 using Mogre;
+
 namespace MogreGis
 {
     /**
@@ -17,6 +18,10 @@ namespace MogreGis
     public class BuildGeomFilter : FragmentFilter
     {
         //TODO OSGGIS_META_FILTER( BuildGeomFilter );
+        public override string getFilterType() { return getStaticFilterType(); }
+        public override Filter clone() { return new BuildGeomFilter(this); }
+        public new static string getStaticFilterType() { return "BuildGeomFilter"; }
+        public new static FilterFactory getFilterFactory() { return new FilterFactoryImpl<BuildGeomFilter>(); }     
 
 
         /**
@@ -164,7 +169,7 @@ namespace MogreGis
         }
 
         // Filter overrides    
-        public virtual void setProperty(Property prop)
+        public override void setProperty(Property prop)
         {
             if (prop.getName() == "color")
                 setColorScript(new Script(prop.getValue()));
@@ -178,7 +183,7 @@ namespace MogreGis
             base.setProperty(prop);
         }
 
-        public virtual Properties getProperties()
+        public override Properties getProperties()
         {
             Properties p = base.getProperties();
             if (getColorScript() != null)
@@ -194,8 +199,9 @@ namespace MogreGis
 
 
         // FragmentFilter overrides
-        protected virtual FragmentList process(FeatureList input, FilterEnv env)
+        public override FragmentList process(FeatureList input, FilterEnv env)
         {
+#if TODO
             // if features are arriving in batch, resolve the color here.
             // otherwise we will resolve it later in process(feature,env).
             is_batch = input.Count > 1;
@@ -210,10 +216,13 @@ namespace MogreGis
             }
 
             return base.process(input, env);
+#endif 
+            throw new NotImplementedException();
         }
 
-        protected virtual FragmentList process(Feature input, FilterEnv env)
+        public override FragmentList process(Feature input, FilterEnv env)
         {
+#if TODO
             FragmentList output;
 
             // LIMITATION: this filter assumes all feature's shapes are the same
@@ -299,10 +308,14 @@ namespace MogreGis
             output.Add(frag);
 
             return output;
+#endif
+            throw new NotImplementedException();
         }
 
+#if TODO
         protected virtual Vector4D getColorForFeature(Feature input, FilterEnv env)
         {
+
             Vector4D result = overall_color;
 
             if (is_batch)
@@ -311,7 +324,7 @@ namespace MogreGis
             }
             else if (getColorScript() != null)
             {
-                ScriptResult r = env.getScriptEngine().run(getColorScript(), feature, env);
+                ScriptResult r = env.getScriptEngine().run(getColorScript(), input, env);
                 if (r.isValid())
                     result = r.asVec4();
                 else
@@ -429,6 +442,7 @@ namespace MogreGis
                 smoother.smooth(out geom);
             }
         }
+#endif
 
         protected Script color_script;
         protected Script feature_name_script;
