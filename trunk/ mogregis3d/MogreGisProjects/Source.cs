@@ -104,7 +104,6 @@ namespace osgGISProjects
             uri = value;
         }
 
-#if TODO
         /**
          * Accesses a set of appliation-specific properties.
          */
@@ -112,7 +111,7 @@ namespace osgGISProjects
         {
             return props;
         }
-#endif
+
         /**
          * Sets the name of the parent source, i.e. another source from which
          * this source will be derived. Setting the parent source marks this object
@@ -196,9 +195,9 @@ namespace osgGISProjects
         private SourceType type;
         private string uri;
         private string base_uri;
-#if TODO
+
         private Properties props;
-#endif
+
         private Source parent_source;
         private FilterGraph filter_graph;
         private IProvider provider;
