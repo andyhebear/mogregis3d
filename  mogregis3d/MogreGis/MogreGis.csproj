@@ -85,6 +85,7 @@
     <Compile Include="AttributedNode.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuildGeomFilter.cs" />
     <Compile Include="CollectionFilter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -201,6 +202,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GluTessellator\GluTessellator.csproj">
+      <Project>{42EB3659-185E-42BE-9C73-002CC98CF343}</Project>
+      <Name>GluTessellator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
