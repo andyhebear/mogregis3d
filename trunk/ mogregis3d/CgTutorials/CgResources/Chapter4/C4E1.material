@@ -1,0 +1,23 @@
+vertex_program CgTutorials/C4E1v_transform cg
+{
+	source C4E1v_transform.cg
+	entry_point C4E1v_transform
+	profiles vs_1_1 arbvp1
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+material CgTutorials/C4E1_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C4E1v_transform
+			{	
+			}
+		}
+	}
+}

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreGis3DTest", "MogreGis3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GluTessellator", "GluTessellator\GluTessellator.csproj", "{42EB3659-185E-42BE-9C73-002CC98CF343}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreExampleApp", "MogreExampleApp\MogreExampleApp.csproj", "{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,16 @@ Global
 		{42EB3659-185E-42BE-9C73-002CC98CF343}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{42EB3659-185E-42BE-9C73-002CC98CF343}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{42EB3659-185E-42BE-9C73-002CC98CF343}.Release|x86.ActiveCfg = Release|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

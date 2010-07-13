@@ -1,0 +1,43 @@
+vertex_program CgTutorials/C5E2v_fragmentLighting cg
+{
+	source C5E2v_fragmentLighting.cg
+	entry_point C5E2v_fragmentLighting
+	profiles vs_1_1 arbvp1
+}
+
+fragment_program CgTutorials/C5E2f_basicLight cg
+{
+	source C5E2f_basicLight.cg
+	entry_point C5E2f_basicLight
+	profiles ps_2_0 arbfp1
+	default_params
+	{
+        param_named globalAmbient float3  0.2 0.2 0.2 
+	    param_named lightColor float3 0.95 0.95 0.95
+        param_named_auto lightPosition light_position_object_space 0
+        param_named_auto eyePosition camera_position_object_space
+    }
+}
+
+material CgTutorials/C5E2_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C5E2v_fragmentLighting
+			{	
+			    param_named_auto worldViewProj worldviewproj_matrix
+			}
+			fragment_program_ref CgTutorials/C5E2f_basicLight
+			{
+                param_named Ke float3 0.6  0.0  0.0
+                param_named Ka float3 0.33 0.22 0.03
+                param_named Kd float3 0.78 0.57 0.11
+                param_named Ks float3 0.99 0.91 0.81
+                param_named shininess float 27.8
+
+			}
+		}
+	}
+}

@@ -1,0 +1,37 @@
+vertex_program CgTutorials/C3E3v_varying cg
+{
+	source C3E2v_varying.cg
+	entry_point C3E2v_varying
+	profiles vs_2_0 arbvp1
+}
+
+fragment_program CgTutorials/C3E3f_texture cg
+{
+	source C3E3f_texture.cg
+	entry_point C3E3f_texture
+	profiles ps_2_0 arbfp1
+}
+
+material CgTutorials/C3E3_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C3E3v_varying
+			{	
+			    param_named_auto worldViewProj worldviewproj_matrix
+			}
+			
+			fragment_program_ref CgTutorials/C3E3f_texture
+			{
+			}
+			
+			texture_unit
+			{
+				texture GreenSkin.jpg   
+                tex_coord_set 0
+ 			}
+		}
+	}
+}
