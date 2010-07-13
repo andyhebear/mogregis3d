@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Sharp3D.Math.Core;
 using Mogre;
@@ -222,7 +220,7 @@ namespace MogreGis
 
         public override FragmentList process(Feature input, FilterEnv env)
         {
-#if TODO
+
             FragmentList output;
 
             // LIMITATION: this filter assumes all feature's shapes are the same
@@ -233,11 +231,12 @@ namespace MogreGis
             Fragment frag = new Fragment();
 
             GeoShapeList shapes = input.getShapes();
-
+#if TODO
             // if we're in batch mode, the color was resolved in the other process() function.
             // otherwise we still need to resolve it.
             Vector4D color = getColorForFeature(input, env);
-
+#endif
+#if TODO
             foreach (GeoShape s in shapes)
             {
                 GeoShape shape = s;
@@ -246,6 +245,7 @@ namespace MogreGis
                 {
                     needs_tessellation = true;
                 }
+                
 
                 osg.Geometry geom = new osg.Geometry();
 
@@ -270,7 +270,8 @@ namespace MogreGis
                     shape.getShapeType() == GeoShape.ShapeType.TYPE_POINT ? osg.PrimitiveSet.POINTS :
                     shape.getShapeType() == GeoShape.ShapeType.TYPE_LINE ? osg.PrimitiveSet.LINE_STRIP :
                     osg.PrimitiveSet.LINE_LOOP;
-
+#endif
+#if TODO
                 for (int pi = 0; pi < shape.getPartCount(); pi++)
                 {
                     int part_ptr = vert_ptr;

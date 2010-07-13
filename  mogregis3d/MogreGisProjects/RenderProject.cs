@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 using System.ComponentModel;
 using System.Data;
-//using System.Drawing;
-//using System.Windows.Forms;
+using System.Drawing;
+using System.Windows.Forms;
 
 using SharpMap.Geometries;
 using SharpMap.Data;
 using SharpMap.Data.Providers;
+
+using Mogre;
 
 using osgGISProjects;
 
@@ -18,15 +19,16 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
 {
     public class RenderProject : osgGISProjects.Project
     {
-        public void render2d(string filename)
+        public void render2d(Project project, PictureBox picBox)
         {
-            Project project = XmlSerializer.loadProject(filename);
+
+            SharpMap.Map myMap = new SharpMap.Map();
 
             foreach (BuildLayer layer in project.getLayers())
             {
                 Source source = layer.getSource();
 
-                BoundingBox envelope = new BoundingBox(0.0, 0.0, 1000.0, 1000.0);
+                BoundingBox envelope = new BoundingBox(0.0, 0.0, 1000.0, 1000.0);//TODO
                 FeatureDataSet ds = new FeatureDataSet();
                 source.DataSource.Open();
                 source.DataSource.ExecuteIntersectionQuery(envelope, ds);
@@ -34,11 +36,11 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
 
                 FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
 
-                string label = "Prueba:\n";
+                string label = "Trace test:\n";
 
                 foreach (FeatureDataRow row in features)
                 {
-                    foreach (Object item in row.ItemArray) //no se que es lo que ha cambiado en la estructura de datos
+                    foreach (Object item in row.ItemArray)
                         label += " - " + item;
                     label += "\n";
                 }
@@ -46,22 +48,36 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                 setLabel(label);
 
                 //Show map
-                SharpMap.Map myMap = new SharpMap.Map();
-                SharpMap.Layers.VectorLayer myLayer = new SharpMap.Layers.VectorLayer("mapa");
+
+                SharpMap.Layers.VectorLayer myLayer = new SharpMap.Layers.VectorLayer(layer.getName());
                 myLayer.DataSource = source.DataSource;
                 myMap.Layers.Add(myLayer);
-
-                myMap.ZoomToExtents();
-
-                this.map = myMap;
             }
 
-            
+            myMap.Size = new Size(picBox.Width, picBox.Height);
+            myMap.ZoomToExtents();
+            picBox.Image = myMap.GetMap();
+            this.map = myMap;
         }
 
-        public void render3d(string filename)
+        public void render3d(Project project, SceneManager sceneMgr)
         {
-            //empty
+            SharpMap.Map myMap = new SharpMap.Map();
+
+            foreach (BuildLayer layer in project.getLayers())
+            {
+                Source source = layer.getSource();
+
+                BoundingBox envelope = new BoundingBox(0.0, 0.0, 1000.0, 1000.0);//TODO
+                FeatureDataSet ds = new FeatureDataSet();
+                source.DataSource.Open();
+                source.DataSource.ExecuteIntersectionQuery(envelope, ds);
+                source.DataSource.Close();
+
+                FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
+
+                //El codigo del PFC
+            }
         }
 
         public void setLabel(string label)

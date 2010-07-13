@@ -94,7 +94,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Content Include="Test1.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
