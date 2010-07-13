@@ -1,0 +1,44 @@
+vertex_program Terrain/Terrain_green hlsl
+{
+	source Terrain.cg
+	entry_point Terrain_green
+    target vs_3_0
+    uses_vertex_texture_fetch true
+}
+
+fragment_program Terrain/Terrain_texture cg
+{
+	source Terrain.cg
+	entry_point Terrain_texture
+	profiles ps_1_1 arbfp1
+}
+
+material Terrain/Terrain_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref Terrain/Terrain_green
+			{    
+                param_named_auto worldViewProj worldviewproj_matrix
+                // a float4(translationX, translationY, scaleX, scaleY)
+                param_named_auto transXYscaleXY custom 3001
+                param_named_auto colorAndHeightScale custom 3002
+			}
+			
+			fragment_program_ref Terrain/Terrain_texture
+			{
+			}
+		
+			texture_unit
+			{
+				binding_type vertex
+			    //texture BeachStones.jpg 2d 0 PF_FLOAT32_R
+                //texture perlinvolume.dds 2d 0 PF_FLOAT32_R
+                texture terrain.png 2d 0 PF_FLOAT32_R
+                filtering none
+			}
+		}
+	}
+}

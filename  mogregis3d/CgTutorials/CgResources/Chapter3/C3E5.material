@@ -1,0 +1,85 @@
+vertex_program CgTutorials/C3E5v_twoTextures cg
+{
+	source C3E5v_twoTextures.cg
+	entry_point C3E5v_twoTextures
+	profiles vs_2_0 arbvp1
+}
+
+fragment_program CgTutorials/C3E6f_twoTextures cg
+{
+	source C3E6f_twoTextures.cg
+	entry_point C3E6f_twoTextures
+	profiles ps_2_0 arbfp1
+}
+
+fragment_program CgTutorials/C3E6f_twoTexturesV2 cg
+{
+	source C3E6f_twoTextures.cg
+	entry_point C3E6f_twoTexturesV2
+	profiles ps_2_0 arbfp1
+}
+
+material CgTutorials/C3E5_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C3E5v_twoTextures
+			{	
+                param_named leftSeparation float2 0.0 0.07
+                param_named rightSeparation float2 0.0 -0.07
+                param_named_auto worldViewProj worldviewproj_matrix
+			}
+			
+			fragment_program_ref CgTutorials/C3E6f_twoTextures
+			{
+			}
+			
+			texture_unit
+			{
+				texture BeachStones.jpg   
+ 			}
+		}
+	}
+}
+
+material CgTutorials/C3E5_Materialv2
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C3E5v_twoTextures
+			{	
+                param_named leftSeparation float2 0.0 0.07
+                param_named rightSeparation float2 0.0 -0.07
+                param_named_auto worldViewProj worldviewproj_matrix
+			}
+			
+			fragment_program_ref CgTutorials/C3E6f_twoTexturesV2
+			{
+			}
+			
+			texture_unit
+			{
+				texture GreenSkin.jpg   
+                tex_coord_set 0
+
+ 			}
+ 			
+ 			texture_unit
+			{
+				texture dirt01.jpg   
+                tex_coord_set 1
+ 			}
+ 			
+ 			texture_unit
+			{
+				texture terrain.png 1d   
+                tex_coord_set 2
+ 			}
+
+		}
+	}
+}

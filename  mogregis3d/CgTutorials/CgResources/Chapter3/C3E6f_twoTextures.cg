@@ -1,0 +1,29 @@
+// This is C3E6f_twoTextures from "The Cg Tutorial" (Addison-Wesley, ISBN
+// 0321194969) by Randima Fernando and Mark J. Kilgard.  See page 85.
+
+void C3E6f_twoTextures(float2 leftTexCoord  : TEXCOORD0,
+                       float2 rightTexCoord : TEXCOORD1,
+
+                       out float4 color : COLOR,
+
+                       uniform sampler2D decal)
+{
+  float4 leftColor  = tex2D(decal, leftTexCoord);
+  float4 rightColor = tex2D(decal, rightTexCoord);
+  color = lerp(leftColor, rightColor, 0.5);
+}
+
+void C3E6f_twoTexturesV2(float2 TexCoord0  : TEXCOORD0,
+                         float2 TexCoord1 : TEXCOORD1,
+
+                       out float4 color : COLOR,
+
+                       uniform sampler2D texture0 : TEXTUNIT0,
+                       uniform sampler2D texture1 : TEXTUNIT1,
+                       uniform sampler1D texture2 : TEXTUNIT2)
+{
+  float4 color0  = tex2D(texture0, TexCoord0);
+  float4 color1  = tex2D(texture1, TexCoord1);
+  float  mix     = tex1D(texture2, TexCoord0);
+  color = lerp(color0, color1, mix-0.2);
+}

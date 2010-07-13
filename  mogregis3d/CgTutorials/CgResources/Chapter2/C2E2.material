@@ -1,0 +1,34 @@
+vertex_program CgTutorials/C2E2v_green_2 cg
+{
+	source C2E1v_green.cg
+	entry_point C2E1v_green_2
+	profiles vs_1_1 arbvp1
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+fragment_program CgTutorials/C2E2f_passthru cg
+{
+	source C2E2f_passthru.cg
+	entry_point C2E2f_passthru
+	profiles ps_1_1 arbfp1
+}
+
+material CgTutorials/C2E2_green_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C2E2v_green_2
+			{
+			}
+			
+			fragment_program_ref CgTutorials/C2E2f_passthru
+			{
+			}
+		}
+	}
+}

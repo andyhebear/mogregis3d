@@ -1,0 +1,38 @@
+struct Vertex_Output {
+  float4 position : POSITION;
+  float3 color    : COLOR;
+  float2 texCoord : TEXCOORD0;
+};
+
+Vertex_Output Terrain_green(float3 position : POSITION, 
+                            float2 texCoord : TEXCOORD0,
+                            
+                            uniform float4x4 worldViewProj,
+                            uniform float4 colorAndHeightScale,
+                            uniform float4 transXYscaleXY,
+                            uniform sampler2D heightMap)
+{	
+  Vertex_Output OUT;
+  
+  float4 t = float4(0,0,0,1);
+  t.xy = position.xy*transXYscaleXY.zw + transXYscaleXY.xy;
+  t.z = colorAndHeightScale.w*tex2Dlod(heightMap, float4(texCoord.xy, 0, 0) );
+  OUT.position = mul(worldViewProj, t);
+  OUT.color = float4(colorAndHeightScale.xyz, 1);
+  OUT.texCoord = texCoord;
+
+  return OUT;	
+}
+
+struct Fragment_Output {
+  float4 color : COLOR;
+};
+
+Fragment_Output Terrain_texture(float4 inputColor    : COLOR,
+                                float2 texCoord : TEXCOORD0,
+                                uniform sampler2D decal : TEX0)
+{
+  Fragment_Output OUT;
+  OUT.color = inputColor; //tex2D(decal,texCoord);
+  return OUT;
+}

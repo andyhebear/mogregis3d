@@ -1,0 +1,31 @@
+vertex_program CgTutorials/C3E4v_twist cg
+{
+	source C3E4v_twist.cg
+	entry_point C3E4v_twist
+	profiles vs_1_1 arbvp1
+}
+
+fragment_program CgTutorials/C2E4f_passthru cg
+{
+	source C2E4f_passthru.cg
+	entry_point C2E4f_passthru
+	profiles ps_1_1 arbfp1
+}
+material CgTutorials/C3E4_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C3E4v_twist
+			{	
+			    param_named_auto worldViewProj worldviewproj_matrix
+			    param_named twisting float 2.9
+			}
+			
+			fragment_program_ref CgTutorials/C2E4f_passthru
+			{
+			}
+		}
+	}
+}

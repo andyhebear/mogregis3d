@@ -76,6 +76,7 @@ namespace Mogre.Demo.CameraTrack
             // Add a head, give it it's own node
             SceneNode headNode = sceneMgr.RootSceneNode.CreateChildSceneNode();
             ent = sceneMgr.CreateEntity("cube", "cube.mesh");
+            ent.SetMaterialName("Examples/Chrome");
 
             headNode.AttachObject(ent);
 
