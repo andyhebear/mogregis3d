@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<project name="sample1">
+<project name="sample">
 
   <map name="default" terrain="full">
     <maplayer name="world_countries"/>
+    <maplayer name="world_cities"/>
   </map>
 
   <!-- A layer is a primary build target: -->
@@ -10,19 +11,29 @@
     <slice min_range="0" max_range="1e6" graph="countries"/>
   </layer>
   
+  <layer name="world_cities" source="cities">
+    <slice min_range="0" max_range="1e6" graph="cities"/>
+  </layer>
+  
   <!-- A source references a vector GIS source layer: -->
   <source name="countries" provider="ShapeFile">
     <uri>../../../Data/countries.shp</uri>
-    <project>../../../Data/countries.prj</project>
+  </source>
+
+  <source name="cities" provider="ShapeFile">
+    <uri>../../../Data/cities.shp</uri>
   </source>
 
   <!-- A filter graph defines the assembly pipeline for turning features into 3D geometry: -->
   <graph name="countries">
-    <filter type="MathTransform">
+    <filter type="Transform">
       <property name="localize" value="true"/>
-      <property name="latitude_of_origin" value="0"/>
-      <property name="scale_factor" value="0.9996="/>
     </filter>
+    <filter type="BuildGeom">
+      <property name="color" value="vec4(1,.6,.4,1)"/>
+    </filter>
+    <filter type="Collect"/>
+    <filter type="BuildNodes"/>
   </graph>
 
 </project>

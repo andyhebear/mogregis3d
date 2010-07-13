@@ -9,10 +9,6 @@ using System.Windows.Forms;
 
 using osgGISProjects;
 
-using SharpMap.Geometries;
-using SharpMap.Data;
-using SharpMap.Data.Providers;
-
 namespace MainAppTest
 {
     public partial class Form1 : Form
@@ -25,11 +21,11 @@ namespace MainAppTest
         private void Form1_Load(object sender, EventArgs e)
         {
             RenderProject project = new RenderProject();
-            project.render2d("Test1.xml");
+            Project prj = XmlSerializer.loadProject("Test1.xml");
+            project.render2d(prj, pictureBox1);
 
             label1.Text = project.getLabel();
-            project.getMap().Size = new Size(600,300);
-            pictureBox1.Image = project.getMap().GetMap();
+
         }
     }
 }

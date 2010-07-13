@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+//using osgGISProjects;
+
 namespace Mogre.Demo.CameraTrack
 {
     class Program
@@ -76,6 +78,14 @@ namespace Mogre.Demo.CameraTrack
             ent = sceneMgr.CreateEntity("cube", "cube.mesh");
 
             headNode.AttachObject(ent);
+
+            //TODO Dani.
+            // Aqui hacemos las pruebas de los filtros.
+
+            //RenderProject project = new RenderProject();
+            //Project prj = XmlSerializer.loadProject("Test1.xml");
+            //project.render3d(prj, sceneMgr);
+            //
 
             // Make sure the camera track this node
             camera.SetAutoTracking(true, headNode);
