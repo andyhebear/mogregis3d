@@ -1,0 +1,24 @@
+vertex_program SharpMap/Line3D_v cg
+{
+	source SimpleLines3d_v.cg
+	entry_point Lines3d_v
+	profiles vs_1_1 arbvp1
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	    param_named_auto constantColor custom 123
+    }
+}
+
+material SharpMap/Line3D_v1
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref SharpMap/Line3D_v
+			{
+			}
+		}
+	}
+}

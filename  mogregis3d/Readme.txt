@@ -10,7 +10,7 @@ MogreGis3D is software written in C# that enables you to visualize, query, and m
 data from within an 3D application. In short, you can generate spatially accurate 3D geometry 
 from GIS data layers while maintaining connectivity to the GIS data sources. 
 
-This project borrows the osgGis desgin but adapted to C# and using Mogre for 3D visualization.
+This project borrows the osgGis design but adapted to C# and using Mogre for 3D visualization.
 
 
 -------------------------------------
@@ -37,6 +37,6 @@ Thanks a lot guys!
 They provided the amazing C++/CLI wrapper for the Ogre 3D engine (www.ogre3d.org)
 
 --SharpMap team
-They are a fantastic doing geo-spatial on .net / mono platforms. Its library provides access to 
+They are a fantastic team doing geo-spatial on .net / mono platforms. Its library provides access to 
 many types of GIS data, enables spatial querying of that data, and renders beautiful maps. 
 The engine is written in C#.

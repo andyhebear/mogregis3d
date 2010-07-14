@@ -67,6 +67,8 @@
     <Compile Include="C5E1.cs" />
     <Compile Include="C5E2.cs" />
     <Compile Include="CgTutorials.cs" />
+    <Compile Include="Lines3dExample1.cs" />
+    <Compile Include="Lines3dExample2.cs" />
     <Compile Include="PolygonExample1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderToTexture.cs" />
@@ -160,6 +162,12 @@
     <None Include="CgResources\Other\RenderToTexture.material">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="CgResources\SharpMap\SimpleLines3d.material">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CgResources\SharpMap\SimpleLines3d_v.cg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="CgResources\Terrain\Terrain.cg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -186,6 +194,7 @@
       <Name>MogreExampleApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "C:\MogreSDK\bin\Release\*.dll" "$(TargetDir)"</PostBuildEvent>

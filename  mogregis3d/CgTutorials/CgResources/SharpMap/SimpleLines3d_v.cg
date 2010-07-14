@@ -1,0 +1,16 @@
+struct Lines3dv_Output {
+  float4 position : POSITION;
+  float4 color    : COLOR;
+};
+
+Lines3dv_Output Lines3d_v(float3 position : POSITION,
+						   uniform float4x4 worldViewProj,
+                           uniform float4 constantColor)
+{
+  Lines3dv_Output OUT;
+
+  OUT.position = mul(worldViewProj, float4(position,1));
+  OUT.color = constantColor;  // some RGB color
+  
+  return OUT;	
+}
