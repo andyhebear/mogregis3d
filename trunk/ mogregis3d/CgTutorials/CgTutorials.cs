@@ -31,8 +31,10 @@ namespace Mogre.Demo.CgTutorials
             tutorials.Add("RenderToTexture", new RenderToTextureTutorial());   // Render to Texture
 
             tutorials.Add("Polygon", new Mogre.Demo.PolygonExample.PolygonExample1());   // Polygon tesselation example
+            tutorials.Add("Lines3Dv1", new Mogre.Demo.Primitives.Lines3DExample1()); // Simple lines3d plotting
+            tutorials.Add("Lines3Dv2", new Mogre.Demo.Primitives.Lines3DExample2()); // lines3d plotting with a material
 
-            string tutorialToRun = "Polygon";
+            string tutorialToRun = "Lines3Dv2";
 
             try
             {

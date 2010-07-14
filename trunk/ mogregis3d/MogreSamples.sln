@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CgTutorials", "CgTutorials\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreExampleApp", "MogreExampleApp\MogreExampleApp.csproj", "{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreScenic", "MogreScenic\MogreScenic.csproj", "{1DE70490-E064-4522-9CB7-3806ABEE9546}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}.Release|x86.ActiveCfg = Release|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1DE70490-E064-4522-9CB7-3806ABEE9546}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

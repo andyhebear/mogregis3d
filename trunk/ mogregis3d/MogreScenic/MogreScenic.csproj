@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1DE70490-E064-4522-9CB7-3806ABEE9546}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MogreScenic</RootNamespace>
+    <AssemblyName>MogreScenic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mogre">
+      <HintPath>..\..\..\Dev\ mogregis3d\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CacheImage.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="DrawContext.cs" />
+    <Compile Include="FilledPath.cs" />
+    <Compile Include="FillRule.cs" />
+    <Compile Include="Filter\BoxKernel.cs" />
+    <Compile Include="Filter\CubicKernel.cs" />
+    <Compile Include="Filter\Filter.cs" />
+    <Compile Include="Filter\Kernel.cs" />
+    <Compile Include="Filter\SeparableKernel.cs" />
+    <Compile Include="Filter\TentKernel.cs" />
+    <Compile Include="GlyphCache.cs" />
+    <Compile Include="GlyphImage.cs" />
+    <Compile Include="Graphics.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="ImageInfo.cs" />
+    <Compile Include="ImageObserver.cs" />
+    <Compile Include="LineCapStyle.cs" />
+    <Compile Include="LineJoinStyle.cs" />
+    <Compile Include="Path\ArcSegment.cs" />
+    <Compile Include="Path\AWTShapePath.cs" />
+    <Compile Include="Path\CubicBezierSegment.cs" />
+    <Compile Include="Path\CurvedSegment.cs" />
+    <Compile Include="Path\GenericPath.cs" />
+    <Compile Include="Path\LineSegment.cs" />
+    <Compile Include="Path\Path.cs" />
+    <Compile Include="Path\PathBuilder.cs" />
+    <Compile Include="Path\PathWalker.cs" />
+    <Compile Include="Path\QuadraticBezierSegment.cs" />
+    <Compile Include="Path\Segment.cs" />
+    <Compile Include="Path\SubPath.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Render\Context.cs" />
+    <Compile Include="Render\IRendererCallback.cs" />
+    <Compile Include="Render\LineRenderer.cs" />
+    <Compile Include="Render\VertexStore.cs" />
+    <Compile Include="SceneClip.cs" />
+    <Compile Include="SceneContainer.cs" />
+    <Compile Include="SceneImage.cs" />
+    <Compile Include="SceneLeaf.cs" />
+    <Compile Include="SceneParent.cs" />
+    <Compile Include="SceneSettings.cs" />
+    <Compile Include="SceneShape.cs" />
+    <Compile Include="SceneTransform.cs" />
+    <Compile Include="StrokedPath.cs" />
+    <Compile Include="SupportClass.cs" />
+    <Compile Include="Tesselator.cs" />
+    <Compile Include="TextShape.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GluTessellator\GluTessellator.csproj">
+      <Project>{42EB3659-185E-42BE-9C73-002CC98CF343}</Project>
+      <Name>GluTessellator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
