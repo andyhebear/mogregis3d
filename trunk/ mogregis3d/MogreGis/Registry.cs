@@ -16,6 +16,10 @@ namespace MogreGis
      */
     public class Registry
     {
+        static Registry()
+        {
+            Registry.instance().addFilterType(MathTransformFilter.getStaticFilterType(), MathTransformFilter.getFilterFactory());
+        }
 
         /**
          * Gets the singleton registry instance.
@@ -187,6 +191,7 @@ namespace MogreGis
         */
         public Filter createFilterByType(string type)
         {
+#if TODO 
             //provisional code
             Filter f = null;
             if (type == "MathTransform")
@@ -194,12 +199,12 @@ namespace MogreGis
                 f = new MathTransformFilter();
             }
             return f;
+#endif
 
-#if TODO_AGUSTIN //IMPORTANTE
             string n = normalize(type);
             FilterFactory result;
             return filter_factories.TryGetValue(n, out result) ? result.createFilter() : null;
-#endif
+
         }
 
         /**
@@ -320,8 +325,8 @@ namespace MogreGis
         private FeatureStoreFactory feature_store_factory;
         private RasterStoreFactory raster_store_factory;
 #endif
-        private FilterFactoryMap filter_factories;
-        private ResourceFactoryMap resource_factories;
+        private FilterFactoryMap filter_factories = new FilterFactoryMap();
+        private ResourceFactoryMap resource_factories = new ResourceFactoryMap();
         private string work_dir;
 #if TODO_DANI
         private ReentrantMutex global_mutex;

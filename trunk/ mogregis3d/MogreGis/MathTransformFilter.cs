@@ -22,6 +22,8 @@ namespace MogreGis
         public static string getStaticFilterType() { return "MathTransformFilter"; }
         public static FilterFactory getFilterFactory() { return new FilterFactoryImpl<MathTransformFilter>(); }
 
+
+
         private const bool DEFAULT_LOCALIZE = false;
         private const bool DEFAULT_USE_TERRAIN_SRS = false;
 
@@ -287,9 +289,9 @@ namespace MogreGis
             {
                 foreach (GeoShape shape in input.getShapes())
                 {
-                        XformVisitor visitor = new XformVisitor();
-                        visitor.trans = transform;
-                        shape.accept(visitor);
+                    XformVisitor visitor = new XformVisitor();
+                    visitor.trans = transform;
+                    shape.accept(visitor);
                 }
             }
 
@@ -344,7 +346,7 @@ namespace MogreGis
                 p.set(p * mat);
                 p.setDim(3);
                 return true;
-#endif 
+#endif
             }
         }
 
