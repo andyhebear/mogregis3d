@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-#if TODO
+
 using MogreGis;
-#endif
+
 namespace osgGISProjects
 {
     public class Project
@@ -16,6 +16,8 @@ namespace osgGISProjects
             layers = new BuildLayerList();
             targets = new BuildTargetList();
             terrains = new TerrainList();
+
+            graphs = new FilterGraphList();
         }
 
         public void setSourceURI(string value)
@@ -76,8 +78,6 @@ namespace osgGISProjects
 #endif
         }
 
-
-#if TODO
         public FilterGraphList getFilterGraphs()
         {
             return graphs;
@@ -92,7 +92,7 @@ namespace osgGISProjects
             }
             return null;
         }
-#endif
+
         public SourceList getSources()
         {
             return sources;
@@ -258,10 +258,10 @@ namespace osgGISProjects
         protected BuildTargetList targets;
         protected TerrainList terrains;
 
+        protected FilterGraphList graphs;
+
 #if TODO
         protected ResourceList resources;//CAMBIAR
-
-        protected FilterGraphList graphs;
         protected RuntimeMapList maps;
         protected ScriptList scripts;
 #endif    
