@@ -196,13 +196,14 @@ namespace osgGISProjects
 
         static FilterGraph decodeFilterGraph(XmlElement e, Project proj)
         {
-#if TODO
+#if TODO_DANI
+#endif
             FilterGraph graph = null;
             if (e != null)
             {
                 string name = e.GetAttribute("name");
                 //TODO: assert name
-
+#if TODO_DANI
                 string parent_name = e.GetAttribute("inherits");
                 if (!string.IsNullOrEmpty(parent_name))
                 {
@@ -221,6 +222,7 @@ namespace osgGISProjects
                 }
                 else
                 {
+#endif
                     graph = new FilterGraph();
                     graph.setName(name);
 
@@ -230,6 +232,7 @@ namespace osgGISProjects
                         XmlElement f_e = (XmlElement)i;
 
                         string type = f_e.GetAttribute("type");
+
                         Filter f = MogreGis.Registry.instance().createFilterByType(type);
 
                         // try again with "Filter" suffix
@@ -249,9 +252,12 @@ namespace osgGISProjects
                             graph.appendFilter(f);
                         }
                     }
+#if TODO_DANI
                 }
+#endif
             }
             return graph;
+#if TODO_DANI
 #endif
             throw new NotImplementedException();
         }
@@ -832,8 +838,6 @@ namespace osgGISProjects
 
 #endif
 
-#if TODO_DANI //graphs
-
                 // graphs
                 XmlNodeList graphs = e.GetElementsByTagName("graph");
                 foreach (XmlNode j in graphs)
@@ -842,8 +846,6 @@ namespace osgGISProjects
                     if (graph != null)
                         project.getFilterGraphs().Add(graph);
                 }
-
-#endif
 
 #if TODO_DANI //terrains
 

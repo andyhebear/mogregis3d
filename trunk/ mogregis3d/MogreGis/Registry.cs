@@ -29,6 +29,8 @@ namespace MogreGis
             return singleton;
         }
 
+#if TODO_DANI
+
         /**
          * Gets the active SRS facotry. This is a convenience function that
          * simply calls Registry.instance().getSRSFactory().
@@ -159,6 +161,7 @@ namespace MogreGis
         {
             raster_store_factory = factory;
         }
+#endif
 
         /**
          * Creates a new interface for evaluating scripts.
@@ -184,9 +187,19 @@ namespace MogreGis
         */
         public Filter createFilterByType(string type)
         {
+            //provisional code
+            Filter f = null;
+            if (type == "MathTransform")
+            {
+                f = new MathTransformFilter();
+            }
+            return f;
+
+#if TODO_AGUSTIN //IMPORTANTE
             string n = normalize(type);
             FilterFactory result;
             return filter_factories.TryGetValue(n, out result) ? result.createFilter() : null;
+#endif
         }
 
         /**
@@ -277,7 +290,7 @@ namespace MogreGis
         {
             return !string.IsNullOrEmpty(work_dir);
         }
-
+#if TODO_DANI
         /**
          * Gets a reference to the registry-global mutex. Use sparingly.
          *
@@ -306,10 +319,13 @@ namespace MogreGis
         private SpatialReferenceFactory spatial_ref_factory;
         private FeatureStoreFactory feature_store_factory;
         private RasterStoreFactory raster_store_factory;
+#endif
         private FilterFactoryMap filter_factories;
         private ResourceFactoryMap resource_factories;
         private string work_dir;
+#if TODO_DANI
         private ReentrantMutex global_mutex;
+#endif
 
         //typedef std.map< std.string, osg.ref_ptr<SpatialIndex> > SpatialIndexCache;
         //SpatialIndexCache spatial_index_cache;
