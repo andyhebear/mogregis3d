@@ -69,9 +69,11 @@
     <Compile Include="CgTutorials.cs" />
     <Compile Include="Lines3dExample1.cs" />
     <Compile Include="Lines3dExample2.cs" />
+    <Compile Include="MogreRendererCallback.cs" />
     <Compile Include="PolygonExample1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderToTexture.cs" />
+    <Compile Include="ScenicTest.cs" />
     <Compile Include="TerrainBlock.cs" />
     <Compile Include="TerrainBlock2.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -192,6 +194,10 @@
     <ProjectReference Include="..\MogreExampleApp\MogreExampleApp.csproj">
       <Project>{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}</Project>
       <Name>MogreExampleApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MogreScenic\MogreScenic.csproj">
+      <Project>{1DE70490-E064-4522-9CB7-3806ABEE9546}</Project>
+      <Name>MogreScenic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

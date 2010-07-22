@@ -18,9 +18,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApa
 using System;
 using System.Collections.Generic;
 
-using Filter = scenic.filter.Filter;
+using Filter = Scenic.filter.Filter;
 //using Renderer = scenic.jni.Renderer;
-namespace scenic
+namespace Scenic
 {
     public class Device
     {
@@ -33,28 +33,79 @@ namespace scenic
         public const int SURFACE_TYPE_ALPHA2X = 2;
         public const int SURFACE_TYPE_ALPHA4X = 3;
 
-        List<Render.Context> contexts = new List<scenic.Render.Context>();
-        static Render.LineRenderer lineRenderer = new scenic.Render.LineRenderer();
+        List<Render.Context> contexts = new List<Scenic.Render.Context>();
+        static Render.LineRenderer lineRenderer = new Scenic.Render.LineRenderer();
 
         public Renderer(Render.IRendererCallback callbacks)
         {
-            scenic.Render.Context render = new scenic.Render.Context();
+            Scenic.Render.Context render = new Scenic.Render.Context();
             render.lineRenderer = lineRenderer;
             render.vertexRenderer = callbacks;
             contexts.Add(render);
         }
 
-        public void tessVertex(int contextId, double x, double y)
+        // Text 
+        public void beginText(int context)
         {
+            throw new NotImplementedException();
         }
 
-        public void tessTriangle(int contextId, int vertex1, bool edge1, int vertex2, bool edge2, int vertex3, bool edge3)
+        public void endText(int context)
         {
+            throw new NotImplementedException();
         }
 
-        Render.Context getContext(int contextid)
+        public void setTextTexture(int context, int image)
         {
-            return contexts[contextid];
+            throw new NotImplementedException();
+        }
+
+        public void drawGlyph(int context, float tex_x, float tex_y,
+                        float tex_width, float tex_height, int screen_x, int screen_y,
+                        int screen_widtht, int screen_height)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        // Tesselerator 
+        public void tessBegin(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void tessEnd(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void tessBeginContour(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void tessEndContour(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void tessVertex(int context, double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void tessTriangle(int context, int vertex1, bool edge1, int vertex2, bool edge2,
+                        int vertex3, bool edge3)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        // Line 
+        public void polylineSetStyle(int context, float width, int cap, int joint, float miterLimit,
+                        float[] lineDashLengths, double lineDashPhase)
+        {
+            throw new NotImplementedException();
         }
 
         public void polylineBegin(int contextId, bool closed)
@@ -62,7 +113,7 @@ namespace scenic
             Render.Context context = getContext(contextId);
 
             context.lineRenderer = lineRenderer;
-            context.lineRenderer.begin(context, closed ? true : false);
+            context.lineRenderer.begin(context, closed);
         }
 
         public void polylineEnd(int contextId)
@@ -78,10 +129,59 @@ namespace scenic
             context.lineRenderer.addPoint(p);
         }
 
-        public int beginSurface(int contextId, ref System.Drawing.Rectangle rec, int type)
+        // Primitives 
+        public void beginPrimitives(int context)
         {
+            throw new NotImplementedException();
+        }
 
+        public void setAttribute(int context, int index, int size, byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setAttribute(int context, int index, int size, float[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setFragmentParameter(int context, int index, float[] parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setTexture(int context, int index, int image)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void drawIndices(int context, int type, int[] indices)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void endPrimitives(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        // Surfaces 
+        public int beginClip(int context, int x, int y, int width, int height)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool beginClip(int context, ref System.Drawing.Rectangle bounds)
+        {
+            return beginClip(context, bounds.X, bounds.Y, bounds.Width, bounds.Height) != 0;
+        }
+
+        public int beginSurface(int contextId, int x, int y, int width, int height, int type)
+        {
+            throw new NotImplementedException();
             Render.Context context = getContext(contextId);
+
 #if PENDING
                 ClipArea clip = new ClipArea();
 
@@ -165,14 +265,16 @@ namespace scenic
             return 0;
         }
 
-        public void color(int contextId, ScenicColor pcolor)
+        public int beginSurface(int context, ref System.Drawing.Rectangle bounds, int type)
         {
-            Render.Context context = getContext(contextId);
-            context.color = pcolor;
+            return beginSurface(context, bounds.X, bounds.Y, bounds.Width, bounds.Height, type);
         }
 
         public void drawSurface(int contextId)
         {
+            Render.Context context = getContext(contextId);
+
+
 #if PENDING
 	        ENTER(Java_scenic_jni_Renderer_drawSurface);
 
@@ -221,6 +323,29 @@ namespace scenic
 	        delete surface;
 #endif
         }
+
+        public void drawSurfaceAndClip(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void discardSurface(int context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Render.Context getContext(int contextid)
+        {
+            return contexts[contextid];
+        }
+
+        public void color(int contextId, ScenicColor pcolor)
+        {
+            Render.Context context = getContext(contextId);
+            context.color = pcolor;
+        }
+
+
         public void setTransform(int contextId, System.Drawing.Drawing2D.Matrix affine)
         {
 #if PENDING
@@ -234,13 +359,13 @@ namespace scenic
 	        t.dx = dx;
 	        t.dy = dy;
 #endif
-            scenic.Render.Context context = getContext(contextId);
+            Scenic.Render.Context context = getContext(contextId);
             context.transform = affine;
         }
         public void polylineSetStyle(int contextId, float width, LineCapStyle cap, LineJoinStyle join,
                                         float miterLimit, float[] lineDashLengths, float lineDashPhase)
         {
-            scenic.Render.Context context = getContext(contextId);
+            Scenic.Render.Context context = getContext(contextId);
 
             context.lineWidth = width;
             context.lineCap = cap;

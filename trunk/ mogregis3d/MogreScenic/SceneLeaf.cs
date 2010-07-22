@@ -17,15 +17,15 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
 using Rectangle = System.Drawing.Rectangle;
-namespace scenic
+namespace Scenic
 {
-	
-	/// <summary> This is the base class for different leaf nodes. Leaf nodes are
-	/// nodes that do not contain other nodes.
-	/// </summary>
-	abstract public class SceneLeaf:SceneNode
-	{
-        const int safetyMargin = 4;
+
+    /// <summary> 
+    /// This is the base class for different leaf nodes. Leaf nodes are
+    /// nodes that do not contain other nodes.
+    /// </summary>
+    abstract public class SceneLeaf : SceneNode
+    {
 
         internal virtual void changed()
         {
@@ -42,5 +42,5 @@ namespace scenic
             return new Rectangle(bounds.X - hmargin, bounds.Y - vmargin,
                     bounds.Width + hmargin * 2, bounds.Height + vmargin * 2);
         }
-	}
+    }
 }

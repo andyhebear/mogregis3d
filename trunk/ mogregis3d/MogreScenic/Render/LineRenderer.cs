@@ -5,7 +5,7 @@ using System.Text;
 
 using PointF = System.Drawing.PointF;
 
-namespace scenic.Render
+namespace Scenic.Render
 {
     public class LineRenderer
     {
@@ -49,7 +49,7 @@ namespace scenic.Render
             closeStroke = false;
 
             //if (lineEdgeTexture == 0)
-                createEdgeTexture();
+            createEdgeTexture();
             //	if(lineDashTexture == 0)
             createDashTexture();
             dashPhase = context.lineDashPhase;
@@ -129,7 +129,7 @@ namespace scenic.Render
 
         private void createDashTexture()
         {
-             if (context.lineDashLengths.Count == 0)
+            if (context.lineDashLengths.Count == 0)
             {
                 dashLength = 1;
                 return;

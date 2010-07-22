@@ -1,6 +1,6 @@
 using System;
-using Util = scenic.Util;
-namespace scenic.path
+using Util = Scenic.Util;
+namespace Scenic.path
 {
 #if PENDING
 	

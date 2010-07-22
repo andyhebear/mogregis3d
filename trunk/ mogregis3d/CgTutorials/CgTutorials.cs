@@ -34,7 +34,9 @@ namespace Mogre.Demo.CgTutorials
             tutorials.Add("Lines3Dv1", new Mogre.Demo.Primitives.Lines3DExample1()); // Simple lines3d plotting
             tutorials.Add("Lines3Dv2", new Mogre.Demo.Primitives.Lines3DExample2()); // lines3d plotting with a material
 
-            string tutorialToRun = "Lines3Dv2";
+            tutorials.Add("Scenicv1", new Mogre.Demo.Primitives.ScenicTestExample1()); // Simple lines3d plotting
+
+            string tutorialToRun = "Scenicv1";
 
             try
             {
