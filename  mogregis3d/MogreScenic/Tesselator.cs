@@ -17,11 +17,11 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
 using System.Collections.Generic;
-using Path = scenic.path.Path;
-using PathWalker = scenic.path.PathWalker;
+using Path = Scenic.path.Path;
+using PathWalker = Scenic.path.PathWalker;
 using Mogre.Utils.GluTesselator;
 using Mogre;
-namespace scenic
+namespace Scenic
 {
 
     public class Tesselator
@@ -104,19 +104,25 @@ namespace scenic
             this.path = path;
         }
 
-        public virtual void draw(DrawContext context, System.Drawing.Drawing2D.Matrix transform)
+        public virtual void draw(DrawContext cntxt, System.Drawing.Drawing2D.Matrix transform)
         {
+            Console.WriteLine("Tesselator >>> begin draw");
+            context = cntxt;
             if (Glu == null)
             {
                 begin(path.Convex, context.context);
                 path.walk(new Walker(this), transform, context.pathError);
-                end();
+                end(context.context);
             }
             draw(context.context);
+            Console.WriteLine("Tesselator >>> end draw");
         }
 
         private void begin(bool isConvex, int contextId)
         {
+            Render.Context cntxt = context.renderer.getContext(contextId);
+            cntxt.vertexRenderer.BeginBlock();
+
             MogreTessellationCallbacks callback = new MogreTessellationCallbacks(null);
 
             Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
@@ -128,10 +134,14 @@ namespace scenic
             Glu.gluTessBeginPolygon(null);
         }
 
-        private void end()
+        private void end(int contextId)
         {
             Glu.gluTessNormal(0, 0, 1);
             Glu.gluTessEndPolygon();
+
+            Render.Context cntxt = context.renderer.getContext(contextId);
+            cntxt.vertexRenderer.EndBlock();
+            //cntxt.lineRenderer.end();
         }
 
         private void beginContour()

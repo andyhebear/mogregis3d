@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace scenic.Render
+namespace Scenic.Render
 {
     public interface IRendererCallback
     {

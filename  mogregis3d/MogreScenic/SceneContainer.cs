@@ -17,7 +17,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
 using System.Collections.Generic;
-namespace scenic
+namespace Scenic
 {
 
     /// <summary> This class is a base class for scene nodes that contain other
@@ -42,9 +42,9 @@ namespace scenic
         /// </param>
         public virtual void add(int index, SceneNode node)
         {
-			if (node == null)
-				throw new System.ArgumentException();
-			children.Add( node);
+            if (node == null)
+                throw new System.ArgumentException();
+            children.Add(node);
         }
 
         /// <summary> Adds a child node at the end of the child list.
@@ -54,9 +54,9 @@ namespace scenic
         /// </param>
         public virtual void add(SceneNode node)
         {
-			if (node == null)
-				throw new System.ArgumentException();
-			children.Add(node);
+            if (node == null)
+                throw new System.ArgumentException();
+            children.Add(node);
         }
 
         /// <summary> Removes all child nodes from this container.</summary>
@@ -95,7 +95,7 @@ namespace scenic
         //UPGRADE_NOTE: ref keyword was added to struct-type parameters. 'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1303_3"'
         internal override void draw(DrawContext context, System.Drawing.Drawing2D.Matrix transform, ref System.Drawing.Rectangle visibleArea)
         {
-			foreach (SceneNode node in children)
+            foreach (SceneNode node in children)
                 node.draw(context, transform, ref visibleArea);
         }
 

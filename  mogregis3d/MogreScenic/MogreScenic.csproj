@@ -78,6 +78,7 @@
     <Compile Include="Path\SubPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Render\Context.cs" />
+    <Compile Include="Render\SurfaceRenderer.cs" />
     <Compile Include="Render\IRendererCallback.cs" />
     <Compile Include="Render\LineRenderer.cs" />
     <Compile Include="Render\VertexStore.cs" />

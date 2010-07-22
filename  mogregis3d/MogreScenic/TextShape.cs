@@ -16,10 +16,10 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
-using Filter = scenic.filter.Filter;
+using Filter = Scenic.filter.Filter;
 //using AWTShapePath = scenic.path.AWTShapePath;
-using Path = scenic.path.Path;
-namespace scenic
+using Path = Scenic.path.Path;
+namespace Scenic
 {
 
     /// <summary> This shape draws text. The text is specified using glyph codes.
@@ -215,13 +215,10 @@ namespace scenic
 
         internal override int getDrawType(DrawContext context, System.Drawing.Drawing2D.Matrix transform, ScenicColor color)
         {
-#if PENDING
             if (usePolygon(context, transform))
                 return DRAW_SURFACE4X;
             else
                 return DRAW_SIMPLE;
-#endif
-            return 0;
         }
 
         internal override System.Drawing.Rectangle getBounds(DrawContext context, System.Drawing.Drawing2D.Matrix transform)

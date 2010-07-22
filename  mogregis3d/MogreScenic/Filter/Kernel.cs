@@ -17,8 +17,8 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
 //using Format = scenic.Format;
-using Image = scenic.Image;
-namespace scenic.filter
+using Image = Scenic.Image;
+namespace Scenic.filter
 {
 	
 	/// <summary> Abstract base class for 2d filter kernels.</summary>

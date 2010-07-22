@@ -16,7 +16,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
-namespace scenic
+namespace Scenic
 {
 	
 	/// <summary> This scene node transforms its children using a 2-dimensional 

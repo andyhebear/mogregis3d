@@ -16,12 +16,12 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
-namespace scenic
+namespace Scenic
 {
-	
-	
-	class CacheImage
-	{
+
+
+    class CacheImage
+    {
 #if PENDING
 		private Image cacheImage;
 		//UPGRADE_ISSUE: The following fragment of code could not be parsed and was not converted. 'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1156_3"'
@@ -105,5 +105,5 @@ namespace scenic
 			return r2;
 		}
 #endif
-	}
+    }
 }

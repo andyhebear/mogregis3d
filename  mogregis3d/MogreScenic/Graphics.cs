@@ -15,15 +15,40 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
+
 using System;
 using System.Collections.Generic;
-using Filter = scenic.filter.Filter;
-using Path = scenic.path.Path;
-using PathBuilder = scenic.path.PathBuilder;
-namespace scenic
+using Filter = Scenic.filter.Filter;
+using Path = Scenic.path.Path;
+using PathBuilder = Scenic.path.PathBuilder;
+
+namespace Scenic
 {
+    /// <summary>
+    ///
+    /// SceneNode
+    ///   |
+    ///   |--SceneLeaf
+    ///   |     |
+    ///   |     |-- SceneImage
+    ///   |     |
+    ///   |     |-- SceneShape
+    ///   |     |      |
+    ///   |     |      |-- StrokedPath
+    ///   |     |      |
+    ///   |     |      |-- FilledPath
+    ///   |     |      |
+    ///   |     |      |-- TextShape
+    /// </summary>
     public abstract class SceneNode
     {
+        public const int safetyMargin = 4;
+
+        public const int DRAW_SIMPLE = 0;
+        public const int DRAW_SURFACE = 1;
+        public const int DRAW_SURFACE2X = 2;
+        public const int DRAW_SURFACE4X = 3;
+
         internal abstract void draw(DrawContext context, System.Drawing.Drawing2D.Matrix transform, ref System.Drawing.Rectangle visibleArea);
         internal virtual void prepareDraw(DrawContext context, System.Drawing.Drawing2D.Matrix transform)
         {
@@ -38,13 +63,15 @@ namespace scenic
         protected internal virtual void show()
         {
         }
+       
         protected internal virtual void hide()
         {
         }
     }
 
 
-    /// <summary> ScenicGraphics class offers an easy to use interface for creating scene
+    /// <summary> 
+    /// ScenicGraphics class offers an easy to use interface for creating scene
     /// trees. Instead of creating scene graphs directly, Graphics class
     /// has a more traditional method-based interface. The Graphics class
     /// transforms the method calls into appropriate scene graphs. Paths can be
@@ -58,8 +85,8 @@ namespace scenic
     /// </summary>
     public class Graphics
     {
-        /// <summary> Gets the total transformation of the current scene node.
-        /// 
+        /// <summary> 
+        /// Gets the total transformation of the current scene node.
         /// </summary>
         /// <returns> the total transformation.
         /// </returns>
@@ -71,6 +98,7 @@ namespace scenic
             }
 
         }
+
         /// <summary> Gets the square root of the area of a 1 by 1 Rectangle 
         /// when transformed into screen coordinates.
         /// 
@@ -89,6 +117,7 @@ namespace scenic
             }
 
         }
+
         /// <summary> Sets the color that is used for stroking paths.
         /// 
         /// </summary>
@@ -103,8 +132,9 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the brush used for stroking paths.
-        /// 
+
+        /// <summary> 
+        /// Sets the brush used for stroking paths.
         /// </summary>
         /// <param name="brush">brush used for stroking.
         /// </param>
@@ -117,8 +147,9 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the color that is used for filling paths and drawing text.
-        /// 
+
+        /// <summary> 
+        /// Sets the color that is used for filling paths and drawing text.
         /// </summary>
         /// <param name="c">Fill color.
         /// </param>
@@ -131,8 +162,9 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the brush used for filling paths and drawing text.
-        /// 
+
+        /// <summary> 
+        /// Sets the brush used for filling paths and drawing text.
         /// </summary>
         /// <param name="brush">brush used for filling.
         /// </param>
@@ -145,8 +177,9 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the current font.
-        /// 
+
+        /// <summary> 
+        /// Sets the current font.
         /// </summary>
         /// <param name="font">the font.
         /// </param>
@@ -158,8 +191,9 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the line width. The line width is given in logical coordinates.
-        /// 
+
+        /// <summary> 
+        /// Sets the line width. The line width is given in logical coordinates.
         /// </summary>
         /// <param name="width">the line width.
         /// </param>
@@ -171,9 +205,10 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the line cap style. The line cap style determines how
+
+        /// <summary> 
+        /// Sets the line cap style. The line cap style determines how
         /// the ends of paths are drawn.
-        /// 
         /// </summary>
         /// <param name="lineCap">the line cap style.
         /// </param>
@@ -185,9 +220,10 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the line join style. The line join style determines how
+
+        /// <summary> 
+        /// Sets the line join style. The line join style determines how
         /// joints between lines are drawn.
-        /// 
         /// </summary>
         /// <param name="lineJoin">the line join style.
         /// </param>
@@ -200,9 +236,9 @@ namespace scenic
 
         }
 
-        /// <summary> Sets the miter limit. The miter limit determines the cutoff length
+        /// <summary> 
+        /// Sets the miter limit. The miter limit determines the cutoff length
         /// of the spikes when using miter join.
-        /// 
         /// </summary>
         /// <param name="miterLimit">the miter limit.
         /// </param>
@@ -215,11 +251,11 @@ namespace scenic
 
         }
 
-        /// <summary> Sets the line dash pattern. The dash pattern is defined
+        /// <summary> 
+        /// Sets the line dash pattern. The dash pattern is defined
         /// using an array which contains the lengths of consecutive
         /// visible and non-visible portions of the dash pattern. The 
         /// lenths are given in logical units. 
-        /// 
         /// </summary>
         /// <param name="lineDashLengths">the line dash pattern.
         /// </param>
@@ -231,9 +267,10 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets the phase of the line dash pattern. The phase defines the
+
+        /// <summary> 
+        /// Sets the phase of the line dash pattern. The phase defines the
         /// starting position of the line dash pattern.
-        /// 
         /// </summary>
         /// <param name="lineDashPhase">the line dash phase.
         /// </param>
@@ -246,9 +283,9 @@ namespace scenic
 
         }
 
-        /// <summary> Sets antialiasing. The antialiasing affects all graphics, including
+        /// <summary> 
+        /// Sets antialiasing. The antialiasing affects all graphics, including
         /// lines, polygons an text.
-        /// 
         /// </summary>
         /// <param name="aa">the antialiasing setting.
         /// </param>
@@ -261,8 +298,8 @@ namespace scenic
 
         }
 
-        /// <summary> Sets the filter that is used for antialiasing.
-        /// 
+        /// <summary> 
+        /// Sets the filter that is used for antialiasing.
         /// </summary>
         /// <param name="filter">antialiasing filter
         /// </param>
@@ -278,11 +315,12 @@ namespace scenic
             }
 
         }
-        /// <summary> Sets whatever fractional metrics are used to calculate glyph bounds.
+
+        /// <summary> 
+        /// Sets whatever fractional metrics are used to calculate glyph bounds.
         /// This parameter affects only the positioning of characters but
         /// does not change their appearance. This parameter also affects
         /// the bounds returned by getTextLogialBounds.
-        /// 
         /// </summary>
         /// <param name="b">the fractional metrics setting.
         /// </param>
@@ -294,8 +332,9 @@ namespace scenic
             }
 
         }
-        /// <summary> Gets a Path object that contains the current path.
-        /// 
+
+        /// <summary> 
+        /// Gets a Path object that contains the current path.
         /// </summary>
         /// <returns> the current path.
         /// </returns>

@@ -20,7 +20,7 @@ using System;
 //using ImageCapabilities = java.awt.ImageCapabilities;
 //UPGRADE_TODO: The type 'java.awt.image.VolatileImage' could not be found. If it was not included in the conversion, there may be compiler issues. 'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1262_3"'
 //using VolatileImage = java.awt.image.VolatileImage;
-namespace scenic
+namespace Scenic
 {
 	
 	/// <summary> <p>The ScenicImage class is used to store images that can be directly used

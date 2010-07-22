@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Affine2 = System.Drawing.Drawing2D.Matrix;
 using Color = System.Drawing.Color;
-namespace scenic.Render
+namespace Scenic.Render
 {
     public class Context
     {
@@ -44,6 +44,7 @@ namespace scenic.Render
         public float miterLimit;
         public float lineDashPhase;
         public LineRenderer lineRenderer;
+        public SurfaceRenderer surfaceRenderer;
         public IRendererCallback vertexRenderer;
 
         public bool beginScene()

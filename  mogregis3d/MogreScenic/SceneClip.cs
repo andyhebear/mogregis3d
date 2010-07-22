@@ -17,7 +17,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USApackage scenic;*/
 using System;
 //using Renderer = scenic.jni.Renderer;
-namespace scenic
+namespace Scenic
 {
 
     /// <summary> <p>This scene node clips its children inside a Clip area. The Clip
