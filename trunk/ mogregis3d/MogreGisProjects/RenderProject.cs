@@ -59,8 +59,7 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                     {
                         //aplicar filtro segun el tipo
                         //FilterEnv env = new FilterEnv();
-                        FeatureList list = new FeatureList();
-                        list = Feature.DataTableToList(features);
+                        FeatureList list = Feature.DataTableToList(features);
                         filter.process(list, null);
                     }
                 }

@@ -167,6 +167,8 @@ namespace Scenic.Render
         private void drawLine(PointF p1, PointF p2, PointF d, float length)
         {
             rendererCallback.BeginBlock();
+
+            //TODO: try to reuse this mesh
             rendererCallback.AddVertex(p1.X - d.X, p1.Y - d.Y, color, minu, 0.0f);
             rendererCallback.AddVertex(p1.X, p1.Y, color, maxu, 0.0f);
             rendererCallback.AddVertex(p1.X + d.X, p1.Y + d.Y, color, minu, 0.0f);

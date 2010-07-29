@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using SharpMap.Data;
+using MogreGis;
 
 namespace MogreGis
 {
@@ -23,9 +24,9 @@ namespace MogreGis
      * layer will generally share the same attribute schema as well.
      */
     // TODO Esto es similar al FeatureDataRow
-    public abstract class Feature : /* SharpMap.Data.FeatureDataRow, Attributed */ AttributedBase
+    public class Feature : /*SharpMap.Data.FeatureDataRow, MogreGis.Attributed*/ AttributedBase
     {
-     
+
         /**
          * Gets the unique object identifier (primary key) for this feature.
          * This ID is unique within the feature store from which the feature
@@ -33,7 +34,7 @@ namespace MogreGis
          *
          * @return A feature OID
          */
-        public abstract FeatureOID getOID();
+        public FeatureOID getOID() { throw new NotImplementedException(); }
 
         /** 
          * Gets the geodata associated with the feature. The geodata conveys
@@ -43,7 +44,7 @@ namespace MogreGis
          *
          * @return Immutable list of shapes
          */
-        public abstract GeoShapeList getShapes();
+        public GeoShapeList getShapes() { throw new NotImplementedException(); }
 
 
         /**
@@ -51,21 +52,21 @@ namespace MogreGis
          *
          * @return True if the feature has geometry; false if not
          */
-        public abstract bool hasShapeData();
+        public bool hasShapeData() { throw new NotImplementedException(); }
 
         /**
          * Gets the shape type of this feature.
          *
          * @return A shape type
          */
-        public abstract GeoShape.ShapeType getShapeType();
+        public GeoShape.ShapeType getShapeType() { throw new NotImplementedException(); }
 
         /**
          * Gets the dimensionality of the geometry in this feature.
          *
          * @return Dimension of the shape data (usually 2 or 3)
          */
-        public abstract int getShapeDim();
+        public int getShapeDim() { throw new NotImplementedException(); }
 
         /**
          * Gets the 2D minimum bounding rectangle containing all the points in
@@ -73,14 +74,14 @@ namespace MogreGis
          *
          * @return Geospatial bounding box encompassing the shape data
          */
-        public abstract GeoExtent getExtent();
+        public GeoExtent getExtent() { throw new NotImplementedException(); }
 
         /**
          * Gets the combined area of all this feature's shapes.
          *
          * @return Area, in square units.
          */
-        public abstract double getArea();
+        public double getArea() { throw new NotImplementedException(); }
 
 
         public void setFeature(FeatureDataRow r)
@@ -103,110 +104,12 @@ namespace MogreGis
         }
 
 
-        protected FeatureDataRow row;
+        public FeatureDataRow row;
 
 
-#if TODO 
-        // QUItar este codigo cuando la clase implemente de un interface
-        /**
-          * Gets a copy of the attribute associated with a key string
-          * @param key
-          *      Name of the attribute to return
-          */
-        public virtual Attribute getAttribute(string key)
-        {
-            string lkey = key.ToLowerInvariant();
-            return user_attrs[key];
-        }
 
-
-        /**
-         * Gets a (copied) collection of all attributes in this feature.
-         */
-        public virtual AttributeList getAttributes()
-        {
-            //AttributeList result;
-            //foreach (AttributeTable::const_iterator i = user_attrs.begin(); i != user_attrs.end(); i++)
-            //    result.push_back(i->second);
-            return (AttributeList)(user_attrs.Values.ToList<Attribute>());
-        }
-
-
-        /**
-         * Gets a copy of the full attribute schema for each attribute.
-         */
-        public virtual AttributeSchemaList getAttributeSchemas()
-        {
-            AttributeSchemaList result = new AttributeSchemaList();
-
-            foreach (KeyValuePair<string, Attribute> i in user_attrs)
-            {
-                result.Add(new AttributeSchema(i.Key, i.Value.getType(), new Properties()));
-            }
-
-            return result;
-        }
-
-        /**
-         * Sets an attribute to a string value.
-         */
-        public virtual void setAttribute(string key, string value)
-        {
-            string lkey = key.ToLowerInvariant();
-            user_attrs[lkey] = new Attribute(lkey, value);
-        }
-
-
-        /**
-         * Sets an attribute to an integer value.
-         */
-        public virtual void setAttribute(string key, int value)
-        {
-            string lkey = key.ToLowerInvariant();
-            user_attrs[lkey] = new Attribute(lkey, value);
-        }
-
-        /**
-         * Sets an attribute to a double value.
-         */
-        public virtual void setAttribute(string key, double value)
-        {
-            string lkey = key.ToLowerInvariant();
-            user_attrs[lkey] = new Attribute(lkey, value);
-        }
-
-
-        /**
-         * Sets an attribute to a boolean value.
-         */
-        public virtual void setAttribute(string key, bool value)
-        {
-            string lkey = key.ToLowerInvariant();
-            user_attrs[lkey] = new Attribute(lkey, value);
-        }
-
-        /**
-         * Sets an attribute to a copy of another attribute.
-         */
-        public virtual void setAttribute(Attribute attr)
-        {
-            string lkey = attr.getKey();
-            user_attrs[lkey] = attr;
-        }
-
-
-        /**
-         * Gets the set of user-created attributes.
-         */
-        protected AttributeTable getUserAttrs()
-        {
-            return user_attrs;
-        }
-
-        private AttributeTable user_attrs = new AttributeTable();
-#endif
+       
     }
-
 
     /** A list of reference-counted features. */
     public class FeatureList : List<Feature> { }
@@ -218,6 +121,7 @@ namespace MogreGis
     public class FeatureOIDList : List<FeatureOID> { }
 
 
+#if TODO
     /* (internal class - no api docs)
      *
      * Common base class for Feature implementations.
@@ -246,7 +150,8 @@ namespace MogreGis
 
         public override int getShapeDim()
         {
-#if TODO
+            throw new NotImplementedException();
+
             int dim = 2;
             if (getShapes().Count > 0)
             {
@@ -261,14 +166,13 @@ namespace MogreGis
                     }
                 }
             }
-            return dim;
-#endif
-            throw new NotImplementedException();
+            return dim;    
         }
 
         public override double getArea()
         {
-#if TODO
+            throw new NotImplementedException();
+
             double area = 0.0;
             foreach (GeoShape  i in getShapes())
             {
@@ -287,8 +191,6 @@ namespace MogreGis
                 }
             }
             return area;
-#endif 
-            throw new NotImplementedException();
         }
 
     }
@@ -304,4 +206,5 @@ namespace MogreGis
     {
         public abstract T get(Feature f);
     }
+#endif
 }

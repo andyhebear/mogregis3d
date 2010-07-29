@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using SharpMap.CoordinateSystems.Transformations;
+using SharpMap.CoordinateSystems;
 
 namespace MogreGis
 {
@@ -209,6 +211,35 @@ namespace MogreGis
 
         public override FeatureList process(FeatureList input, FilterEnv env)
         {
+            /* HACER ALGO DEL ESTILO:
+            */
+            if (transform == null)
+            {
+                //Create zone UTM 32N projection
+                IProjectedCoordinateSystem utmProj = CreateUtmProjection(32);
+
+                //Create geographic coordinate system (lets just reuse the CS from the projection)
+                IGeographicCoordinateSystem geoCS = utmProj.GeographicCoordinateSystem;
+
+                //Create transformation
+                CoordinateTransformationFactory ctFac = new CoordinateTransformationFactory();
+
+                // TODO DANI Mirar de donde viene este source y target
+                ICoordinateTransformation Coordinatetransform = null;// TODO = ctFac.CreateFromCoordinateSystems(source, target);
+
+                //Apply transformation
+                transform = Coordinatetransform.MathTransform;
+
+            }
+
+            foreach (Feature feature in input)
+                feature.row.Geometry = GeometryTransform.TransformGeometry(feature.row.Geometry, transform);
+
+
+            // Cosas a cambiar:
+            // Primero, la construccion del transform está siguiendo el ejemplo, pero hay que tener en cuenta los datos del xml y construirlo en consecuencia
+            // Segundo, el filtro debe retornar una NUEVA lista, y no modificar la inicial. Ahora modifica los valores de la lista inicial
+            // 
 #if TODO
             // first time through, establish a working SRS for output data.
             if (working_srs == null)
@@ -282,8 +313,40 @@ namespace MogreGis
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Creates a UTM projection for the northern/// hemisphere based on the WGS84 datum
+        /// </summary>
+        /// <param name="utmZone">Utm Zone</param>
+        /// <returns>Projection</returns>
+        private IProjectedCoordinateSystem CreateUtmProjection(int utmZone)
+        {
+            CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
+
+            //Create geographic coordinate system based on the WGS84 datum
+            IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("WGS 84", 6378137, 298.257223563, LinearUnit.Metre);
+            IHorizontalDatum datum = cFac.CreateHorizontalDatum("WGS_1984", DatumType.HD_Geocentric, ellipsoid, null);
+            IGeographicCoordinateSystem gcs = cFac.CreateGeographicCoordinateSystem("WGS 84", AngularUnit.Degrees, datum,
+              PrimeMeridian.Greenwich, new AxisInfo("Lon", AxisOrientationEnum.East),
+              new AxisInfo("Lat", AxisOrientationEnum.North));
+
+            //Create UTM projection
+            List<ProjectionParameter> parameters = new List<ProjectionParameter>();
+            parameters.Add(new ProjectionParameter("latitude_of_origin", 0));
+            parameters.Add(new ProjectionParameter("central_meridian", -183 + 6 * utmZone));
+            parameters.Add(new ProjectionParameter("scale_factor", 0.9996));
+            parameters.Add(new ProjectionParameter("false_easting", 500000));
+            parameters.Add(new ProjectionParameter("false_northing", 0.0));
+            IProjection projection = cFac.CreateProjection("Transverse Mercator", "TransverseMercator", parameters);
+
+            return cFac.CreateProjectedCoordinateSystem("WGS 84 / UTM zone " + utmZone.ToString() + "N", gcs,
+               projection, LinearUnit.Metre, new AxisInfo("East", AxisOrientationEnum.East),
+               new AxisInfo("North", AxisOrientationEnum.North));
+        }
+
         public override FeatureList process(Feature input, FilterEnv env)
         {
+
+
             FeatureList output = new FeatureList();
             if (transform != null && !transform.Identity())
             {
@@ -342,6 +405,7 @@ namespace MogreGis
             public override GeoPoint visitPoint(GeoPoint p)
             {
                 return new GeoPoint(trans.Transform(p.ToDoubleArray()));
+
 #if TODO
                 p.set(p * mat);
                 p.setDim(3);
@@ -444,5 +508,6 @@ namespace MogreGis
         private Matrix xform_matrix;
         private IMathTransform transform;
         private SpatialReference working_srs;
+
     }
 }
