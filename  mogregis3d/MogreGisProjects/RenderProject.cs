@@ -13,6 +13,8 @@ using SharpMap.Data.Providers;
 
 using Mogre;
 
+using MogreGis;
+
 using osgGISProjects;
 
 namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
@@ -48,6 +50,20 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                 setLabel(label);
 
                 //Show map
+
+                //Filters
+                FilterGraph graph = project.getFilterGraph(source.getName());
+                if (graph != null)
+                {
+                    foreach (FeatureFilter filter in graph.getFilters())
+                    {
+                        //aplicar filtro segun el tipo
+                        //FilterEnv env = new FilterEnv();
+                        FeatureList list = new FeatureList();
+                        list = Feature.DataTableToList(features);
+                        filter.process(list, null);
+                    }
+                }
 
                 SharpMap.Layers.VectorLayer myLayer = new SharpMap.Layers.VectorLayer(layer.getName());
                 myLayer.DataSource = source.DataSource;
