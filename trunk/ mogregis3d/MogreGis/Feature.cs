@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using SharpMap.Data;
+
 namespace MogreGis
 {
     /** Unique feature identifier type. */
@@ -23,7 +25,7 @@ namespace MogreGis
     // TODO Esto es similar al FeatureDataRow
     public abstract class Feature : /* SharpMap.Data.FeatureDataRow, Attributed */ AttributedBase
     {
-        
+     
         /**
          * Gets the unique object identifier (primary key) for this feature.
          * This ID is unique within the feature store from which the feature
@@ -79,6 +81,30 @@ namespace MogreGis
          * @return Area, in square units.
          */
         public abstract double getArea();
+
+
+        public void setFeature(FeatureDataRow r)
+        {
+            row = r;
+        }
+
+        public static FeatureList DataTableToList(FeatureDataTable table)
+        {
+            FeatureList list = new FeatureList();
+
+            foreach (FeatureDataRow row in table)
+            {
+                Feature f = new Feature();
+                f.setFeature(row);
+                list.Add(f);
+            }
+
+            return list;
+        }
+
+
+        protected FeatureDataRow row;
+
 
 #if TODO 
         // QUItar este codigo cuando la clase implemente de un interface

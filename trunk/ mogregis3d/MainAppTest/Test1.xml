@@ -21,7 +21,9 @@
     <filter type="MathTransform">
       <property name="localize" value="true"/>
       <property name="latitude_of_origin" value="0"/>
-      <property name="scale_factor" value="0.9996="/>
+      <property name="scale_factor" value="0.9996"/>
+      <property name="false_easting" value="500000"/>
+      <property name="false_northing" value="0.0"/>
     </filter>
   </graph>
 
