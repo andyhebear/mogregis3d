@@ -54,12 +54,12 @@ namespace Scenic
 
             public virtual void beginSubPath(bool isClosed)
             {
-                InternalTesselator.beginContour();
+                //InternalTesselator.beginContour();
             }
 
             public virtual void endSubPath()
             {
-                InternalTesselator.endContour();
+                //InternalTesselator.endContour();
             }
 
             public virtual void lineTo(float x, float y)
@@ -97,7 +97,7 @@ namespace Scenic
         private bool cacheTriangles = true;
         private Path path;
         private DrawContext context;
-        private GLUtessellatorImpl Glu;
+
 
         public Tesselator(Path path)
         {
@@ -108,55 +108,41 @@ namespace Scenic
         {
             Console.WriteLine("Tesselator >>> begin draw");
             context = cntxt;
-            if (Glu == null)
-            {
-                begin(path.Convex, context.context);
-                path.walk(new Walker(this), transform, context.pathError);
-                end(context.context);
-            }
+
+            begin(path.Convex, context.context);
+            path.walk(new Walker(this), transform, context.pathError);
+            end(context.context);
+
             draw(context.context);
             Console.WriteLine("Tesselator >>> end draw");
         }
 
         private void begin(bool isConvex, int contextId)
         {
-            Render.Context cntxt = context.renderer.getContext(contextId);
-            cntxt.vertexRenderer.BeginBlock();
+            context.renderer.tessBegin(contextId);
 
-            MogreTessellationCallbacks callback = new MogreTessellationCallbacks(null);
-
-            Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
-            Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
-            Glu.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
-            Glu.gluTessCallback(GLU.GLU_TESS_END, callback);
-            Glu.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
-            Glu.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
-            Glu.gluTessBeginPolygon(null);
         }
 
         private void end(int contextId)
         {
-            Glu.gluTessNormal(0, 0, 1);
-            Glu.gluTessEndPolygon();
-
-            Render.Context cntxt = context.renderer.getContext(contextId);
-            cntxt.vertexRenderer.EndBlock();
+            context.renderer.tessEnd(contextId);
             //cntxt.lineRenderer.end();
         }
 
-        private void beginContour()
+        private void beginContour(int contextId)
         {
-            Glu.gluTessBeginContour();
+            context.renderer.tessBeginContour(contextId);
         }
 
-        private void endContour()
+        private void endContour(int contextId)
         {
-            Glu.gluTessEndContour();
+            context.renderer.tessBeginContour(contextId);
+
         }
 
         private void vertex(double x, double y)
         {
-            Glu.gluTessVertex(new double[] { x, y, 0 }, 0, new Mogre.Vector3((float)x, (float)y, (float)0));
+            context.renderer.tessVertex(0, x, y);
         }
 
         private void draw(int contextId) { }
@@ -169,6 +155,7 @@ namespace Scenic
             else
                 context.renderer.tessVertex(context.context, x, y);
         }
+
         // Called from native code
         private void addTriangle(int vertex1, bool edge1, int vertex2, bool edge2, int vertex3, bool edge3)
         {
@@ -189,104 +176,6 @@ namespace Scenic
                 context.renderer.tessTriangle(context.context, vertex1, edge1, vertex2, edge2, vertex3, edge3);
             }
         }
-    }
-
-    public class MogreTessellationCallbacks : GLUtessellatorCallback
-    {
-        ManualObject manualObj;
-
-        public MogreTessellationCallbacks(ManualObject mo)
-        {
-            manualObj = mo;
-        }
-
-        #region GLUtessellatorCallback Members
-
-        public void begin(int type)
-        {
-            string typeName;
-            switch (type)
-            {
-                case GL.GL_LINE_LOOP:
-                    typeName = "GL_LINE_LOOP";
-                    break;
-                case GL.GL_TRIANGLE_FAN:
-                    typeName = "GL_TRIANGLE_FAN";
-                    //manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_FAN);
-                    break;
-                case GL.GL_TRIANGLE_STRIP:
-                    typeName = "GL_TRIANGLE_STRIP";
-                    //manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_STRIP);
-                    break;
-                case GL.GL_TRIANGLES:
-                    typeName = "GL_TRIANGLES";
-                    //manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_LIST);
-                    break;
-                default:
-                    typeName = "Unknown";
-                    break;
-            }
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + "Primitive type = " + typeName);
-        }
-
-        public void beginData(int type, object polygonData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void edgeFlag(bool boundaryEdge)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void edgeFlagData(bool boundaryEdge, object polygonData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void vertex(object vertexData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
-            //manualObj.Position((Vector3)vertexData);
-        }
-
-        public void vertexData(object vertexData, object polygonData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void end()
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-            //manualObj.End();
-        }
-
-        public void endData(object polygonData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void combine(double[] coords, object[] data, float[] weight, object[] outData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void combineData(double[] coords, object[] data, float[] weight, object[] outData, object polygonData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void error(int errnum)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        public void errorData(int errnum, object polygonData)
-        {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
-        }
-
-        #endregion
     }
 
 

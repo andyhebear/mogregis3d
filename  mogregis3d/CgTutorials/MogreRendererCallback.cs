@@ -18,7 +18,7 @@ namespace Mogre.Demo.Primitives
 
         NumberFormatInfo nfi = new CultureInfo("en-us").NumberFormat;
         protected List<Point> pointsList = new List<Point>();
-        protected ManualObject rendererObj;
+        public ManualObject rendererObj;
         protected SceneNode node1;
         protected int count = 0;
         protected System.Drawing.Drawing2D.Matrix transform;

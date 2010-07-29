@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace MogreGis
 {
     /* (internal class - no public api docs)

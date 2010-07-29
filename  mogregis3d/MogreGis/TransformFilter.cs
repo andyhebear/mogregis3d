@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing.Drawing2D;
 using SharpMap.CoordinateSystems.Transformations;
-
 namespace MogreGis
 {
     /**

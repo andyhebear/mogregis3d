@@ -20,7 +20,7 @@ namespace Mogre.Demo.Primitives
 
             Graphics g = new Graphics(new MogreRendererCallback(base.sceneMgr));
 
-#if !TESTLINE
+#if TESTLINE
             TestLine(g);
 #endif
 
@@ -38,6 +38,7 @@ namespace Mogre.Demo.Primitives
             // A filled green rectangle 
             g.Rectangle(0, 0, 5, 5);
             g.StrokeColor = new ScenicColor(0.0f, 1.0f, 0.0f, 1.0f);
+            g.FillColor = new ScenicColor(0.0f, 1.0f, 0.0f, 1.0f);
             g.LineWidth = 0.01f;
             g.LineJoin = LineJoinStyle.BEVEL_JOIN;
             //g.Fill();
