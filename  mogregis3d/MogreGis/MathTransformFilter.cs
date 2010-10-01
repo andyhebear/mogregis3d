@@ -227,13 +227,30 @@ namespace MogreGis
                 // TODO DANI Mirar de donde viene este source y target
                 ICoordinateTransformation Coordinatetransform = null;// TODO = ctFac.CreateFromCoordinateSystems(source, target);
 
+                string wkt = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
+                ICoordinateSystem cs = SharpMap.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wkt) as ICoordinateSystem;
+
+                GeographicCoordinateSystem wgs84 = GeographicCoordinateSystem.WGS84;
+
+                CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
+                //Create Bessel 1840 geographic coordinate system
+                IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Bessel 1840", 6377397.155, 299.15281, LinearUnit.Metre);
+                IHorizontalDatum datum = cFac.CreateHorizontalDatum("Bessel 1840", DatumType.HD_Geocentric, ellipsoid, null);
+                IGeographicCoordinateSystem gcs = cFac.CreateGeographicCoordinateSystem("Bessel 1840", AngularUnit.Degrees, datum,
+                    PrimeMeridian.Greenwich, new AxisInfo("Lon", AxisOrientationEnum.East),
+                    new AxisInfo("Lat", AxisOrientationEnum.North));
+
+                Coordinatetransform = ctFac.CreateFromCoordinateSystems(cs, gcs);//gcsWGS84 -> gcenCsWGS84
+
                 //Apply transformation
                 transform = Coordinatetransform.MathTransform;
 
             }
 
             foreach (Feature feature in input)
+            {
                 feature.row.Geometry = GeometryTransform.TransformGeometry(feature.row.Geometry, transform);
+            }
 
 
             // Cosas a cambiar:
@@ -310,7 +327,36 @@ namespace MogreGis
 
             return base.process(input, env);
 #endif
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return input;
+        }
+
+        //Creates a Mercator projection
+        private static ICoordinateSystem GetMercatorProjection()
+        {
+            var factory = new CoordinateSystemFactory();
+
+            var wgs84 = factory.CreateGeographicCoordinateSystem("WGS 84",
+                AngularUnit.Degrees, HorizontalDatum.WGS84, PrimeMeridian.Greenwich,
+                new AxisInfo("north", AxisOrientationEnum.North), new
+                AxisInfo("east", AxisOrientationEnum.East));
+
+            var parameters = new List<ProjectionParameter>
+            {
+                new ProjectionParameter("semi_major", 6371000), // 6378137
+                new ProjectionParameter("semi_minor", 6371000), // 6378137
+                new ProjectionParameter("latitude_of_origin", 0.0),
+                new ProjectionParameter("central_meridian", 0.0),
+                new ProjectionParameter("scale_factor", 1.0),
+                new ProjectionParameter("false_easting", 0.0),
+                new ProjectionParameter("false_northing", 0.0)
+            };
+            var projection = factory.CreateProjection("Mercator", "mercator_1sp", parameters);
+            var mercator = factory.CreateProjectedCoordinateSystem("Mercator",
+                wgs84, projection, LinearUnit.Metre,
+                new AxisInfo("East", AxisOrientationEnum.East),
+                new AxisInfo("North", AxisOrientationEnum.North));
+            return mercator;
         }
 
         /// <summary>
@@ -336,7 +382,7 @@ namespace MogreGis
             parameters.Add(new ProjectionParameter("scale_factor", 0.9996));
             parameters.Add(new ProjectionParameter("false_easting", 500000));
             parameters.Add(new ProjectionParameter("false_northing", 0.0));
-            IProjection projection = cFac.CreateProjection("Transverse Mercator", "TransverseMercator", parameters);
+            IProjection projection = cFac.CreateProjection("Transverse Mercator", "Transverse Mercator", parameters);
 
             return cFac.CreateProjectedCoordinateSystem("WGS 84 / UTM zone " + utmZone.ToString() + "N", gcs,
                projection, LinearUnit.Metre, new AxisInfo("East", AxisOrientationEnum.East),
