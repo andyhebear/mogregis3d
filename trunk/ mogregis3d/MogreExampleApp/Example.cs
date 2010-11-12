@@ -28,7 +28,7 @@ namespace Mogre.Demo.ExampleApplication
         protected float statDelay = 0.0f;
         protected TextureFilterOptions filtering = TextureFilterOptions.TFO_BILINEAR;
         protected uint aniso = 1;
-        protected float camSpeed = 100f;
+        protected float camSpeed = 600f;
         protected Degree rotateSpeed = 36;
 
         protected bool shutDown = false;
