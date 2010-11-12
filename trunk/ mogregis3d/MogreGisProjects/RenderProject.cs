@@ -30,7 +30,7 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
             {
                 Source source = layer.getSource();
 
-                BoundingBox envelope = new BoundingBox(0.0, 0.0, 1000.0, 1000.0);//TODO
+                BoundingBox envelope = new BoundingBox(-1000.0, -1000.0, 1000.0, 1000.0);//TODO
                 FeatureDataSet ds = new FeatureDataSet();
                 source.DataSource.Open();
                 source.DataSource.ExecuteIntersectionQuery(envelope, ds);
@@ -84,7 +84,7 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
             {
                 Source source = layer.getSource();
 
-                BoundingBox envelope = new BoundingBox(0.0, 0.0, 1000.0, 1000.0);//TODO
+                BoundingBox envelope = new BoundingBox(-1000.0, -1000.0, 1000.0, 1000.0);//TODO
                 FeatureDataSet ds = new FeatureDataSet();
                 source.DataSource.Open();
                 source.DataSource.ExecuteIntersectionQuery(envelope, ds);
@@ -104,9 +104,12 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                 float x = 0.0F;
                 float y = 0.0F;
 
+                //point of reference 0,0,0
                 Entity ent = sceneMgr.CreateEntity("Ninja", "ninja.mesh");
-                SceneNode node = sceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode");
+                SceneNode node = sceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode", new Vector3(-500, 0,-500));
                 node.AttachObject(ent);
+
+                SceneNode nodeAux;
 
                 foreach (Feature feature in list)
                 {
@@ -114,14 +117,16 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                     SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
                     x = (float)p.X * 51.0f; //longitud eje X
                     y = (float)p.Y * 51.0f; //latitud eje Y
-                    if ((x < 0) || (y < 0)) {//breakpoint
+                    /*if ((x < 0) || (y < 0)) {//breakpoint
                         i++;
-                    }
+                    }*/
 
                     i++;
+
+                    //create new point
                     ent = sceneMgr.CreateEntity("city_"+i, "cube.mesh");
                     //ent.SetMaterialName("Examples/Chrome");
-                    SceneNode nodeAux = node.CreateChildSceneNode("CityNode_" + i, new Vector3(y, 0, x));
+                    nodeAux = node.CreateChildSceneNode("CityNode_" + i, new Vector3(y, 0, x));
                     nodeAux.AttachObject(ent);
                 }
 
