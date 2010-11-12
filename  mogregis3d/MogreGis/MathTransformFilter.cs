@@ -227,11 +227,14 @@ namespace MogreGis
                 // TODO DANI Mirar de donde viene este source y target
                 ICoordinateTransformation Coordinatetransform = null;// TODO = ctFac.CreateFromCoordinateSystems(source, target);
 
+                //cs
                 string wkt = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
                 ICoordinateSystem cs = SharpMap.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wkt) as ICoordinateSystem;
 
+                //wgs84
                 GeographicCoordinateSystem wgs84 = GeographicCoordinateSystem.WGS84;
 
+                //gcs
                 CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
                 //Create Bessel 1840 geographic coordinate system
                 IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Bessel 1840", 6377397.155, 299.15281, LinearUnit.Metre);
@@ -240,16 +243,35 @@ namespace MogreGis
                     PrimeMeridian.Greenwich, new AxisInfo("Lon", AxisOrientationEnum.East),
                     new AxisInfo("Lat", AxisOrientationEnum.North));
 
-                Coordinatetransform = ctFac.CreateFromCoordinateSystems(cs, gcs);//gcsWGS84 -> gcenCsWGS84
+                //coordsys
+                //Collection<ProjectionParameter> parameters = new Collection<ProjectionParameter>(5);
+                List<ProjectionParameter> parameters = new List<ProjectionParameter>();
+                parameters.Add(new ProjectionParameter("latitude_of_origin", 0));
+                parameters.Add(new ProjectionParameter("central_meridian", 110));
+                parameters.Add(new ProjectionParameter("scale_factor", 0.997));
+                parameters.Add(new ProjectionParameter("false_easting", 3900000));
+                parameters.Add(new ProjectionParameter("false_northing", 900000));
+                IProjection projection = cFac.CreateProjection("Mercator_1SP", "Mercator_1SP", parameters);
+                IProjectedCoordinateSystem coordsys =
+               cFac.CreateProjectedCoordinateSystem("Makassar / NEIEZ", gcs, projection, LinearUnit.Metre,
+                                                    new AxisInfo("East", AxisOrientationEnum.East),
+                                                    new AxisInfo("North", AxisOrientationEnum.North));
+
+                Coordinatetransform = ctFac.CreateFromCoordinateSystems(gcs, coordsys);//gcsWGS84 -> gcenCsWGS84
 
                 //Apply transformation
                 transform = Coordinatetransform.MathTransform;
 
             }
 
+            SharpMap.Geometries.Point p = new SharpMap.Geometries.Point(30.0, 20.0);
+
+            p = GeometryTransform.TransformPoint(p,transform);
+
             foreach (Feature feature in input)
             {
                 feature.row.Geometry = GeometryTransform.TransformGeometry(feature.row.Geometry, transform);
+                //feature.row.Geometry = GeometryTransform.TransformMultiPolygon(feature.row.Geometry, transform);
             }
 
 

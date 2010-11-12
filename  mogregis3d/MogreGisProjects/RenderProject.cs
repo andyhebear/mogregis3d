@@ -61,6 +61,7 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                         //FilterEnv env = new FilterEnv();
                         FeatureList list = Feature.DataTableToList(features);
                         filter.process(list, null);
+                        //falta devolver la lista y procesarla ***************************************
                     }
                 }
 
@@ -92,7 +93,54 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                 FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
 
                 //El codigo del PFC
+
+                //**********************************************************************************************************
+
+                FeatureList list = Feature.DataTableToList(features);
+
+                //cuidado con las entidades dentro del for
+
+                int i = 0;
+                float x = 0.0F;
+                float y = 0.0F;
+
+                Entity ent = sceneMgr.CreateEntity("Ninja", "ninja.mesh");
+                SceneNode node = sceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode");
+                node.AttachObject(ent);
+
+                foreach (Feature feature in list)
+                {
+                    //feature.row.Geometry;
+                    SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
+                    x = (float)p.X * 51.0f; //longitud eje X
+                    y = (float)p.Y * 51.0f; //latitud eje Y
+                    if ((x < 0) || (y < 0)) {//breakpoint
+                        i++;
+                    }
+
+                    i++;
+                    ent = sceneMgr.CreateEntity("city_"+i, "cube.mesh");
+                    //ent.SetMaterialName("Examples/Chrome");
+                    SceneNode nodeAux = node.CreateChildSceneNode("CityNode_" + i, new Vector3(y, 0, x));
+                    nodeAux.AttachObject(ent);
+                }
+
+                i = 0;//breakpoint
+
+                
+
+                /*
+                Entity ent = sceneMgr.CreateEntity("cube", "cube.mesh");
+                ent.SetMaterialName("Examples/Chrome");
+                sceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(ent);
+                */
+         
+                //**********************************************************************************************************
+
             }
+
+            
+
         }
 
         public void setLabel(string label)

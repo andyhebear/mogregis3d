@@ -2,23 +2,16 @@
 <project name="sample2">
 
   <map name="default" terrain="full">
-    <maplayer name="world_countries"/>
     <maplayer name="world_cities"/>
   </map>
 
   <!-- A layer is a primary build target: -->
-  <layer name="world_countries" source="countries">
-    <slice min_range="0" max_range="1e6" graph="countries"/>
-  </layer>
   
   <layer name="world_cities" source="cities">
     <slice min_range="0" max_range="1e6" graph="cities"/>
   </layer>
   
   <!-- A source references a vector GIS source layer: -->
-  <source name="countries" provider="ShapeFile">
-    <uri>../../../Data/countries.shp</uri>
-  </source>
 
   <source name="cities" provider="ShapeFile">
     <uri>../../../Data/cities.shp</uri>
@@ -29,11 +22,6 @@
     <filter type="MathTransform">
       <property name="localize" value="true"/>
     </filter>
-    <filter type="BuildGeom">
-      <property name="color" value="vec4(1,.6,.4,1)"/>
-    </filter>
-    <filter type="Collect"/>
-    <filter type="BuildNodes"/>
   </graph>
 
 </project>

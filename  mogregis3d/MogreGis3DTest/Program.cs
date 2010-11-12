@@ -2,17 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-//using osgGISProjects;
+using Mogre;
+using MogreFramework;
+
+using osgGISProjects;
+
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace Mogre.Demo.CameraTrack
 {
     class Program
     {
         static void Main(string[] args)
+        //static void Main()
         {
             try
             {
                 MogreGisApplication app = new MogreGisApplication();
+                //new SceneCreator(app);
                 app.Go();
             }
             catch (System.Runtime.InteropServices.SEHException)
@@ -25,9 +33,154 @@ namespace Mogre.Demo.CameraTrack
             }
         }
     }
+#if TODO_DANI
+    class MogreGisApplication : OgreWindow
+    {
+//#if TODO_DANI
+        const float TRANSLATE = 200;
+        const float ROTATE = 0.2f;
+        bool mRotating = false;
+        Vector3 mTranslation = Vector3.ZERO;
+        Point mLastPosition;
 
+        protected override void CreateInputHandler()
+        {
+            this.Root.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
+
+            this.KeyDown += new KeyEventHandler(KeyDownHandler);
+            this.KeyUp += new KeyEventHandler(KeyUpHandler);
+
+            this.MouseDown += new MouseEventHandler(MouseDownHandler);
+            this.MouseUp += new MouseEventHandler(MouseUpHandler);
+            this.MouseMove += new MouseEventHandler(MouseMoveHandler);
+        }
+
+        bool FrameStarted(FrameEvent evt)
+        {
+            Camera.Position += Camera.Orientation * mTranslation * evt.timeSinceLastFrame;
+
+            return true;
+        }
+
+        void KeyDownHandler(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.W:
+                    mTranslation.z = -TRANSLATE;
+                    break;
+
+                case Keys.Down:
+                case Keys.S:
+                    mTranslation.z = TRANSLATE;
+                    break;
+
+                case Keys.Left:
+                case Keys.A:
+                    mTranslation.x = -TRANSLATE;
+                    break;
+
+                case Keys.Right:
+                case Keys.D:
+                    mTranslation.x = TRANSLATE;
+                    break;
+
+                case Keys.PageUp:
+                case Keys.Q:
+                    mTranslation.y = TRANSLATE;
+                    break;
+
+                case Keys.PageDown:
+                case Keys.E:
+                    mTranslation.y = -TRANSLATE;
+                    break;
+            }
+        }
+
+        void KeyUpHandler(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.W:
+                case Keys.Down:
+                case Keys.S:
+                    mTranslation.z = 0;
+                    break;
+
+                case Keys.Left:
+                case Keys.A:
+                case Keys.Right:
+                case Keys.D:
+                    mTranslation.x = 0;
+                    break;
+
+                case Keys.PageUp:
+                case Keys.Q:
+                case Keys.PageDown:
+                case Keys.E:
+                    mTranslation.y = 0;
+                    break;
+            }
+        }
+
+        void MouseDownHandler(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Cursor.Hide();
+                mRotating = true;
+                mLastPosition = Cursor.Position;
+            }
+        }
+
+        void MouseUpHandler(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Cursor.Show();
+                mRotating = false;
+            }
+        }
+
+        void MouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            if (mRotating)
+            {
+                float x = mLastPosition.X - Cursor.Position.X;
+                float y = mLastPosition.Y - Cursor.Position.Y;
+
+                Camera.Yaw(new Degree(x * ROTATE));
+                Camera.Pitch(new Degree(y * ROTATE));
+
+                mLastPosition = Cursor.Position;
+            }
+        }
+//#endif
+    }
+
+    class SceneCreator
+    {
+        public SceneCreator(OgreWindow win)
+        {
+            win.SceneCreating += new OgreWindow.SceneEventHandler(SceneCreating);
+        }
+
+        void SceneCreating(OgreWindow win)
+        {
+            win.Camera.Position = new Vector3(0, 200, 400);
+
+            RenderProject project = new RenderProject();
+            Project prj = XmlSerializer.loadProject("Test1.xml");
+            project.render3d(prj, win.SceneManager);
+        }
+    }
+#endif
+//#if TODO_DANI
     class MogreGisApplication : Mogre.Demo.ExampleApplication.Example
     {
+#if TODO_DANI
         AnimationState animState = null;
 
         bool FrameStarted(FrameEvent evt)
@@ -41,6 +194,7 @@ namespace Mogre.Demo.CameraTrack
             base.CreateFrameListener();
             Root.Singleton.FrameStarted += FrameStarted;
         }
+#endif
 
         // Scene creation
         public override void CreateScene()
@@ -72,22 +226,24 @@ namespace Mogre.Demo.CameraTrack
 
             // Attach to child of root node, better for culling (otherwise bounds are the combination of the 2)
             sceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(ent);
-
+/*
             // Add a head, give it it's own node
             SceneNode headNode = sceneMgr.RootSceneNode.CreateChildSceneNode();
             ent = sceneMgr.CreateEntity("cube", "cube.mesh");
             ent.SetMaterialName("Examples/Chrome");
 
             headNode.AttachObject(ent);
-
+*/
             //TODO Dani.
             // Aqui hacemos las pruebas de los filtros.
 
-            //RenderProject project = new RenderProject();
-            //Project prj = XmlSerializer.loadProject("Test1.xml");
-            //project.render3d(prj, sceneMgr);
-            //
+            RenderProject project = new RenderProject();
+            Project prj = XmlSerializer.loadProject("Test2.xml");
+            project.render3d(prj, sceneMgr);
 
+            camera.Position = new Vector3(0, 4000, 0);
+            
+#if TODO_DANI
             // Make sure the camera track this node
             camera.SetAutoTracking(true, headNode);
 
@@ -118,9 +274,10 @@ namespace Mogre.Demo.CameraTrack
             // Create a new animation state to track this
             animState = sceneMgr.CreateAnimationState("CameraTrack");
             animState.Enabled = true;
-
+#endif
             // Put in a bit of fog for the hell of it        
-            sceneMgr.SetFog(FogMode.FOG_EXP, ColourValue.White, 0.0002F);
+            sceneMgr.SetFog(FogMode.FOG_EXP, ColourValue.White, 0.0001F);
         }
     }
+//#endif
 }
