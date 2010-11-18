@@ -241,7 +241,7 @@ namespace Mogre.Demo.CameraTrack
             Project prj = XmlSerializer.loadProject("Test2.xml");
             project.render3d(prj, sceneMgr);
 
-            camera.Position = new Vector3(0, 4000, 0);
+            camera.Position = new Vector3(-6500, 4000, 0);
             
 #if TODO_DANI
             // Make sure the camera track this node

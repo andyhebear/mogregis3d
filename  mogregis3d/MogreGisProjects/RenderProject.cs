@@ -101,44 +101,51 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                 //cuidado con las entidades dentro del for
 
                 int i = 0;
-                float x = 0.0F;
-                float y = 0.0F;
 
-                //point of reference 0,0,0
-                Entity ent = sceneMgr.CreateEntity("Ninja", "ninja.mesh");
-                SceneNode node = sceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode", new Vector3(-500, 0,-500));
-                node.AttachObject(ent);
-
-                SceneNode nodeAux;
+                SceneNode node = null;
+                point3d(source.getName(),i,0,0,0,ref node,sceneMgr);
 
                 foreach (Feature feature in list)
                 {
-                    //feature.row.Geometry;
-                    SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
-                    x = (float)p.X * 51.0f; //longitud eje X
-                    y = (float)p.Y * 51.0f; //latitud eje Y
-                    /*if ((x < 0) || (y < 0)) {//breakpoint
+                    //if type of features is Point
+                    if (string.Equals(feature.row.Geometry.GetType() , new SharpMap.Geometries.Point().GetType())) 
+                    {
+                        SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
+
                         i++;
-                    }*/
+                        point3d(source.getName(), i, (float)p.X, (float)p.Y, 0, ref node, sceneMgr);
+                    }
 
-                    i++;
+                    //if type of features is MultiPolygon
+                    if (string.Equals(feature.row.Geometry.GetType(), new SharpMap.Geometries.MultiPolygon().GetType()))
+                    {
+                        SharpMap.Geometries.MultiPolygon mp = (SharpMap.Geometries.MultiPolygon)feature.row.Geometry;
 
-                    //create new point
-                    ent = sceneMgr.CreateEntity("city_"+i, "cube.mesh");
-                    //ent.SetMaterialName("Examples/Chrome");
-                    nodeAux = node.CreateChildSceneNode("CityNode_" + i, new Vector3(y, 0, x));
-                    nodeAux.AttachObject(ent);
+                        // 1 MultiPolygon = N polygon
+                        foreach(SharpMap.Geometries.Polygon polygon in mp.Polygons)
+                        {
+
+                            //1 polygon = N vertices
+                            foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
+                            {
+                                i++;
+                                //if ((i % 3) == 0)//pinta menos para aligerar
+                                //{
+                                    point3d(source.getName(), i, (float)point.X, (float)point.Y, 0, ref node, sceneMgr);
+                                //}
+                                
+                            }
+                        }
+
+                    }
+                    /*
+                     * countries = 147 multipolygon
+                     * 1 MultiPolygon = N polygon
+                     * 1 polygon = N vertices
+                     */
                 }
 
                 i = 0;//breakpoint
-
-                
-
-                /*
-                Entity ent = sceneMgr.CreateEntity("cube", "cube.mesh");
-                ent.SetMaterialName("Examples/Chrome");
-                sceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(ent);
-                */
          
                 //**********************************************************************************************************
 
@@ -148,6 +155,32 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
 
         }
 
+        public void point3d(string name, int id, float x, float y, float z, ref SceneNode node, SceneManager sceneMgr)
+        {
+            Entity ent;
+            if (node == null)//point of reference 0,0,0
+            {
+                ent = sceneMgr.CreateEntity(name + "INI", "ninja.mesh");
+                node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + "NodeINI", new Vector3(y, z, x));
+                node.AttachObject(ent);
+            }
+            else//create new point
+            {
+                float xAux = 0.0F;
+                float yAux = 0.0F;
+                SceneNode nodeAux;
+
+                xAux = x * 51.0f; //longitud eje X
+                yAux = y * 51.0f; //latitud eje Y
+
+                ent = sceneMgr.CreateEntity(name + id, "cube.mesh");
+                //ent.SetMaterialName("Examples/Chrome");
+                nodeAux = node.CreateChildSceneNode(name + "Node_" + id, new Vector3(yAux, z, xAux));
+                nodeAux.AttachObject(ent);
+            }
+        
+        }
+        
         public void setLabel(string label)
         {
             this.label = label;
