@@ -30,6 +30,11 @@ namespace MogreGis
             //NOP
         }
 
+        public Fragment(SceneNode node)
+        {
+            this.node = node;
+        }
+
         /**
          * Creates a new fragment that holds a single osg::Drawable.
          *
@@ -120,6 +125,8 @@ namespace MogreGis
 
         private string name;
         private DrawableList drawables = new DrawableList();
+
+        private SceneNode node;
     }
 
 
