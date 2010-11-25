@@ -19,6 +19,7 @@ namespace MogreGis
         static Registry()
         {
             Registry.instance().addFilterType(MathTransformFilter.getStaticFilterType(), MathTransformFilter.getFilterFactory());
+            Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());
         }
 
         /**

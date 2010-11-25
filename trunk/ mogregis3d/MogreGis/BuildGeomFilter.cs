@@ -199,6 +199,66 @@ namespace MogreGis
         // FragmentFilter overrides
         public override FragmentList process(FeatureList input, FilterEnv env)
         {
+            FragmentList output = new FragmentList();
+
+            //cuidado con las entidades dentro del for
+
+            int i = 0;
+
+            SceneNode nodeIni = point3d(env.getName(), i, 0, 0, 0, null, env.getSceneMgr());
+
+            Fragment fIni = new Fragment(nodeIni);
+            output.Add(fIni);
+
+            foreach (Feature feature in input)
+            {
+                //if type of features is Point
+                if (string.Equals(feature.row.Geometry.GetType(), new SharpMap.Geometries.Point().GetType()))
+                {
+                    SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
+
+                    i++;
+                    SceneNode n = point3d(env.getName(), i, (float)p.X, (float)p.Y, 0, nodeIni, env.getSceneMgr());
+
+                    Fragment f = new Fragment(n);
+                    output.Add(f);
+                }
+
+                //if type of features is MultiPolygon
+                if (string.Equals(feature.row.Geometry.GetType(), new SharpMap.Geometries.MultiPolygon().GetType()))
+                {
+                    SharpMap.Geometries.MultiPolygon mp = (SharpMap.Geometries.MultiPolygon)feature.row.Geometry;
+
+                    // 1 MultiPolygon = N polygon
+                    foreach (SharpMap.Geometries.Polygon polygon in mp.Polygons)
+                    {
+
+                        //1 polygon = N vertices
+                        foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
+                        {
+                            i++;
+                            //if ((i % 3) == 0)//pinta menos para aligerar
+                            //{
+                            SceneNode n = point3d(env.getName(), i, (float)point.X, (float)point.Y, 0, nodeIni, env.getSceneMgr());
+                            //}
+
+                            Fragment f = new Fragment(n);
+                            output.Add(f);
+                        }
+                    }
+
+                }
+                /*
+                 * countries = 147 multipolygon
+                 * 1 MultiPolygon = N polygon
+                 * 1 polygon = N vertices
+                 */
+            }
+
+            i = 0;//breakpoint
+
+            
+
 #if TODO
             // if features are arriving in batch, resolve the color here.
             // otherwise we will resolve it later in process(feature,env).
@@ -215,7 +275,35 @@ namespace MogreGis
 
             return base.process(input, env);
 #endif 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return output;
+        }
+
+        public SceneNode point3d(string name, int id, float x, float y, float z, SceneNode node, SceneManager sceneMgr)
+        {
+            Entity ent;
+            if (node == null)//point of reference 0,0,0
+            {
+                ent = sceneMgr.CreateEntity(name + "INI", "ninja.mesh");
+                node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + "NodeINI", new Vector3(y, z, x));
+                node.AttachObject(ent);
+                return node;
+            }
+            else//create new point
+            {
+                float xAux = 0.0F;
+                float yAux = 0.0F;
+                SceneNode nodeAux;
+
+                xAux = x * 51.0f; //longitud eje X
+                yAux = y * 51.0f; //latitud eje Y
+
+                ent = sceneMgr.CreateEntity(name + id, "cube.mesh");
+                //ent.SetMaterialName("Examples/Chrome");
+                nodeAux = node.CreateChildSceneNode(name + "Node_" + id, new Vector3(yAux, z, xAux));
+                nodeAux.AttachObject(ent);
+                return nodeAux;
+            }
         }
 
         public override FragmentList process(Feature input, FilterEnv env)

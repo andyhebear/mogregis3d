@@ -19,7 +19,7 @@
 
   <!-- A filter graph defines the assembly pipeline for turning features into 3D geometry: -->
   <graph name="cities">
-    <filter type="MathTransform">
+    <filter type="BuildGeom">
       <property name="localize" value="true"/>
     </filter>
   </graph>

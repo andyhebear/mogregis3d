@@ -26,6 +26,13 @@ namespace MogreGis
     public class FilterEnv
     {
 
+
+        public FilterEnv(SceneManager sceneMgr,string name)
+        {
+            this.sceneMgr = sceneMgr;
+            this.name = name;
+        }
+
         /**
          * Constructs a new, default filter environment.
          *
@@ -339,6 +346,19 @@ namespace MogreGis
         private ResourceCache resource_cache;
         private Properties properties;
         private OptimizerHints optimizer_hints;
+
+        public string getName()
+        {
+            return this.name;
+        }
+
+        public SceneManager getSceneMgr()
+        {
+            return this.sceneMgr;
+        }
+
+        private string name;
+        private SceneManager sceneMgr;
 
     }
 }
