@@ -119,9 +119,14 @@ namespace MogreGis
             //NOP
         }
 
-
+        public void SetSuccessor(Filter successor)
+        {
+            this.successor = successor;
+        }
 
         private string name;
+
+        protected Filter successor;
     }
 
 

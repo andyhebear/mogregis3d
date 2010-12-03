@@ -166,17 +166,56 @@ namespace MogreGis
             return feature_name_script;
         }
 
+        //Set properties
+        public void setNameEntityINI(string name)
+        {
+            nameEntityINI = name;
+        }
+
+        public void setNameEntities(string name)
+        {
+            nameEntities = name;
+        }
+
+        public void setNameMaterial(string name)
+        {
+            nameMaterial = name;
+        }
+
+        //Get properties
+        public string getNameEntityINI()
+        {
+            return nameEntityINI;
+        }
+
+        public string getNameEntities()
+        {
+            return nameEntities;
+        }
+
+        public string getNameMaterial()
+        {
+            return nameMaterial;
+        }
+
         // Filter overrides    
         public override void setProperty(Property prop)
         {
-            if (prop.getName() == "color")
+            /*if (prop.getName() == "color")
                 setColorScript(new Script(prop.getValue()));
             else if (prop.getName() == "raster_overlay")
                 setRasterOverlayScript(new Script(prop.getValue()));
             else if (prop.getName() == "raster_overlay_max_size")
                 setRasterOverlayMaxSize(prop.getIntValue(DEFAULT_RASTER_OVERLAY_MAX_SIZE));
             else if (prop.getName() == "feature_name")
-                setFeatureNameScript(new Script(prop.getValue()));
+                setFeatureNameScript(new Script(prop.getValue()));*/
+
+            if (prop.getName() == "nameEntityINI")
+                setNameEntityINI(prop.getValue());
+            else if (prop.getName() == "nameEntities")
+                setNameEntities(prop.getValue());
+            else if (prop.getName() == "nameMaterial")
+                setNameMaterial(prop.getValue());
 
             base.setProperty(prop);
         }
@@ -213,7 +252,7 @@ namespace MogreGis
             foreach (Feature feature in input)
             {
                 //if type of features is Point
-                if (string.Equals(feature.row.Geometry.GetType(), new SharpMap.Geometries.Point().GetType()))
+                if (feature.row.Geometry is SharpMap.Geometries.Point)
                 {
                     SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
 
@@ -225,7 +264,7 @@ namespace MogreGis
                 }
 
                 //if type of features is MultiPolygon
-                if (string.Equals(feature.row.Geometry.GetType(), new SharpMap.Geometries.MultiPolygon().GetType()))
+                if (feature.row.Geometry is SharpMap.Geometries.MultiPolygon)
                 {
                     SharpMap.Geometries.MultiPolygon mp = (SharpMap.Geometries.MultiPolygon)feature.row.Geometry;
 
@@ -284,7 +323,7 @@ namespace MogreGis
             Entity ent;
             if (node == null)//point of reference 0,0,0
             {
-                ent = sceneMgr.CreateEntity(name + "INI", "ninja.mesh");
+                ent = sceneMgr.CreateEntity(name + "INI", getNameEntityINI());
                 node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + "NodeINI", new Vector3(y, z, x));
                 node.AttachObject(ent);
                 return node;
@@ -298,8 +337,8 @@ namespace MogreGis
                 xAux = x * 51.0f; //longitud eje X
                 yAux = y * 51.0f; //latitud eje Y
 
-                ent = sceneMgr.CreateEntity(name + id, "cube.mesh");
-                //ent.SetMaterialName("Examples/Chrome");
+                ent = sceneMgr.CreateEntity(name + id, getNameEntities());
+                ent.SetMaterialName(getNameMaterial());
                 nodeAux = node.CreateChildSceneNode(name + "Node_" + id, new Vector3(yAux, z, xAux));
                 nodeAux.AttachObject(ent);
                 return nodeAux;
@@ -547,6 +586,10 @@ namespace MogreGis
         //TODO OSGGIS_DEFINE_FILTER( BuildGeomFilter );
 
         private const int DEFAULT_RASTER_OVERLAY_MAX_SIZE = 0;
+
+        protected string nameEntityINI;
+        protected string nameEntities;
+        protected string nameMaterial;
 
     }
 }
