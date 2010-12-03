@@ -256,6 +256,7 @@ namespace osgGISProjects
                 }
 #endif
             }
+
             return graph;
 #if TODO_DANI
 #endif
