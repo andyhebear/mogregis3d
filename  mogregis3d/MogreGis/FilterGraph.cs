@@ -423,6 +423,27 @@ namespace MogreGis
             return null;
         }
 
+        /**
+         * Finds a filter by its position. 
+         * 
+         * @param name
+         *      position of the filter to find
+         * @return
+         *      Filter found, or NULL if it was not found
+         */
+        public Filter getFilter(int position)
+        {
+            int n = 1;//begin pos 1
+            foreach (Filter f in filter_prototypes)
+            {
+                if (n == position)
+                    return f;
+                else
+                    n++;
+            }
+            return null;
+        }
+
 
         /**
          * Gets the collection of filters in the graph.
@@ -457,7 +478,20 @@ namespace MogreGis
             throw new NotImplementedException();
         }
 
+        public void Successors()
+        {
+            int n = filter_prototypes.Count;
+            int i = 1;//begin pos 1
 
+            foreach (Filter f in filter_prototypes)
+            {
+                if (i < n)
+                {
+                        getFilter(i).SetSuccessor(getFilter(i + 1));
+                }
+                i++;
+            }
+        }
 
         private string name;
         private FilterList filter_prototypes = new FilterList();

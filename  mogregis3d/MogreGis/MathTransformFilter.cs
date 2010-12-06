@@ -211,8 +211,10 @@ namespace MogreGis
 
         public override FeatureList process(FeatureList input, FilterEnv env)
         {
-            /* HACER ALGO DEL ESTILO:
-            */
+            FeatureList output = new FeatureList();
+
+            // HACER ALGO DEL ESTILO:
+
             if (transform == null)
             {
                 //Create zone UTM 32N projection
@@ -267,18 +269,22 @@ namespace MogreGis
             SharpMap.Geometries.Point p = new SharpMap.Geometries.Point(30.0, 20.0);
 
             p = GeometryTransform.TransformPoint(p,transform);
-
+/*IMPORTANTE
             foreach (Feature feature in input)
             {
                 feature.row.Geometry = GeometryTransform.TransformGeometry(feature.row.Geometry, transform);
                 //feature.row.Geometry = GeometryTransform.TransformMultiPolygon(feature.row.Geometry, transform);
             }
-
+IMPORTANTE*/
+            foreach (Feature f in input)
+            {
+                output.Add(f);//output = input
+            }
 
             // Cosas a cambiar:
             // Primero, la construccion del transform está siguiendo el ejemplo, pero hay que tener en cuenta los datos del xml y construirlo en consecuencia
             // Segundo, el filtro debe retornar una NUEVA lista, y no modificar la inicial. Ahora modifica los valores de la lista inicial
-            // 
+            // IMPORTANTE RETORNAR NUEVA LISTA OUTPUT <----------- FALTA POR HACER
 #if TODO
             // first time through, establish a working SRS for output data.
             if (working_srs == null)
@@ -350,7 +356,22 @@ namespace MogreGis
             return base.process(input, env);
 #endif
             //throw new NotImplementedException();
-            return input;
+
+            if (successor != null)
+            {
+                if (successor is FeatureFilter)
+                {
+                    FeatureFilter filter = (FeatureFilter)successor;
+                    FeatureList l = filter.process(output, env);
+                }
+                else if (successor is FragmentFilter)
+                {
+                    FragmentFilter filter = (FragmentFilter)successor;
+                    FragmentList l = filter.process(output, env);
+                }
+            }
+
+            return output;
         }
 
         //Creates a Mercator projection
