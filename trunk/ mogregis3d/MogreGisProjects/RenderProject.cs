@@ -102,17 +102,24 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                 FilterGraph graph = project.getFilterGraph(source.getName());
                 if (graph != null)
                 {
-                    foreach (FragmentFilter filter in graph.getFilters())
+
+                    graph.Successors();
+
+                    FilterEnv env = new FilterEnv(sceneMgr, source.getName());
+                    FeatureList list = Feature.DataTableToList(features);
+
+                    if (graph.getFilter(1) is FeatureFilter)
                     {
-                        //aplicar filtro segun el tipo
-                        FilterEnv env = new FilterEnv(sceneMgr, source.getName());
-                        FeatureList list = Feature.DataTableToList(features);
+                        FeatureFilter filter = (FeatureFilter)graph.getFilter(1);
+                        FeatureList l = filter.process(list, env);
+                    }
+                    else if (graph.getFilter(1) is FragmentFilter)
+                    {
+                        FragmentFilter filter = (FragmentFilter)graph.getFilter(1);
                         FragmentList l = filter.process(list, env);
                     }
+
                 }
-
-
-                
          
                 //**********************************************************************************************************
 
@@ -121,10 +128,6 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
             
 
         }
-
-        
-        
-        
         
         public void setLabel(string label)
         {

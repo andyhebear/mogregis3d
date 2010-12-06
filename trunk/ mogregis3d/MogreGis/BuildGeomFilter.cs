@@ -315,6 +315,21 @@ namespace MogreGis
             return base.process(input, env);
 #endif 
             //throw new NotImplementedException();
+
+            if (successor != null)
+            {
+                if (successor is FeatureFilter)
+                {
+                    FeatureFilter filter = (FeatureFilter)successor;
+                    FeatureList l = filter.process(input, env);
+                }
+                else if (successor is FragmentFilter)
+                {
+                    FragmentFilter filter = (FragmentFilter)successor;
+                    FragmentList l = filter.process(input, env);
+                }
+            }
+
             return output;
         }
 
