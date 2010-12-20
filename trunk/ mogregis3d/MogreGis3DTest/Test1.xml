@@ -26,14 +26,17 @@
 
   <!-- A filter graph defines the assembly pipeline for turning features into 3D geometry: -->
   <graph name="countries">
-    <filter type="Transform">
-      <property name="localize" value="true"/>
-    </filter>
     <filter type="BuildGeom">
-      <property name="color" value="vec4(1,.6,.4,1)"/>
+      <property name="nameEntityINI" value="ninja.mesh"/>
     </filter>
-    <filter type="Collect"/>
-    <filter type="BuildNodes"/>
+  </graph>
+
+  <graph name="cities">
+    <filter type="BuildGeom">
+      <property name="nameEntityINI" value="ninja.mesh"/>
+      <property name="nameEntities" value="cube.mesh"/>
+      <property name="nameMaterial" value="Examples/Chrome"/>
+    </filter>
   </graph>
 
 </project>
