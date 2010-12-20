@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Sharp3D.Math.Core;
 using Mogre;
 
+using Mogre.Utils.GluTesselator;
+
 namespace MogreGis
 {
     /**
@@ -249,6 +251,10 @@ namespace MogreGis
             Fragment fIni = new Fragment(nodeIni);
             output.Add(fIni);
 
+            //PRUEBA
+            int prueba = 0;
+            //PRUEBA
+
             foreach (Feature feature in input)
             {
                 //if type of features is Point
@@ -271,20 +277,75 @@ namespace MogreGis
                     // 1 MultiPolygon = N polygon
                     foreach (SharpMap.Geometries.Polygon polygon in mp.Polygons)
                     {
-
-                        //1 polygon = N vertices
-                        foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
+//PRUEBA
+                        if (prueba < 30)
                         {
-                            i++;
-                            //if ((i % 3) == 0)//pinta menos para aligerar
-                            //{
-                            SceneNode n = point3d(env.getName(), i, (float)point.X, (float)point.Y, 0, nodeIni, env.getSceneMgr());
-                            //}
+                            prueba++;
+//PRUEBA                   
+                        ManualObject polygonNode = null;
 
-                            Fragment f = new Fragment(n);
-                            output.Add(f);
+                        if (polygonNode == null)
+                        {
+                            polygonNode = env.getSceneMgr().CreateManualObject(env.getName() + "Node_" + i);
+                            MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon",
+                                     ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                            material.GetTechnique(0).GetPass(0).VertexColourTracking =
+                                           (int)TrackVertexColourEnum.TVC_AMBIENT;
+
+                            MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode);
+
+                            GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
+                            Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
+                            Glu.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
+                            Glu.gluTessCallback(GLU.GLU_TESS_END, callback);
+                            Glu.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
+                            Glu.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
+                            Glu.gluTessBeginPolygon(null);
+                            Glu.gluTessBeginContour();
+
+                            int numVertices = polygon.ExteriorRing.NumPoints;
+                            int numValores = 3;
+                            double[][] data = new double[numVertices][];
+
+                            for (int j = 0; j < numVertices; j++)
+                            {
+                                data[j] = new double[numValores];
+                            }
+
+                            int k = 0;
+                            //1 polygon = N vertices
+                            foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
+                            {
+
+                                data[k][0] = point.X;
+                                data[k][1] = point.Y;
+                                data[k][2] = 0;
+
+                                k++;
+
+                                //SceneNode n = point3d(env.getName(), i, (float)point.X, (float)point.Y, 0, nodeIni, env.getSceneMgr());
+
+                            }
+                            for (int j = 0; j < data.GetLength(0); j++)
+                            {
+                                Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * 51.0f, ((float)data[j][2]) * 51.0f, ((float)data[j][0]) * 51.0f));
+                            }
+
+                            Glu.gluTessEndContour();
+                            Glu.gluTessNormal(0, 0, 1);
+                            Glu.gluTessEndPolygon();
+
+                            nodeIni.AttachObject(polygonNode);
+
                         }
+                        i++;
+                        }//PRUEBA
                     }
+//ENDPRUEBA
+                    
+
+                    Fragment f = new Fragment(nodeIni);
+                    output.Add(f);
 
                 }
                 /*
@@ -358,6 +419,104 @@ namespace MogreGis
                 nodeAux.AttachObject(ent);
                 return nodeAux;
             }
+        }
+
+        public class MogreTessellationCallbacks : GLUtessellatorCallback
+        {
+            ManualObject manualObj;
+
+            public MogreTessellationCallbacks(ManualObject mo)
+            {
+                manualObj = mo;
+            }
+
+            #region GLUtessellatorCallback Members
+
+            public void begin(int type)
+            {
+                string typeName;
+                switch (type)
+                {
+                    case GL.GL_LINE_LOOP:
+                        typeName = "GL_LINE_LOOP";
+                        break;
+                    case GL.GL_TRIANGLE_FAN:
+                        typeName = "GL_TRIANGLE_FAN";
+                        manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_FAN);
+                        break;
+                    case GL.GL_TRIANGLE_STRIP:
+                        typeName = "GL_TRIANGLE_STRIP";
+                        manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_STRIP);
+                        break;
+                    case GL.GL_TRIANGLES:
+                        typeName = "GL_TRIANGLES";
+                        manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_LIST);
+                        break;
+                    default:
+                        typeName = "Unknown";
+                        break;
+                }
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + "Primitive type = " + typeName);
+            }
+
+            public void beginData(int type, object polygonData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void edgeFlag(bool boundaryEdge)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void edgeFlagData(bool boundaryEdge, object polygonData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void vertex(object vertexData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
+                manualObj.Position((Vector3)vertexData);
+            }
+
+            public void vertexData(object vertexData, object polygonData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void end()
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+                manualObj.End();
+            }
+
+            public void endData(object polygonData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void combine(double[] coords, object[] data, float[] weight, object[] outData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void combineData(double[] coords, object[] data, float[] weight, object[] outData, object polygonData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void error(int errnum)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            public void errorData(int errnum, object polygonData)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            #endregion
         }
 
         public override FragmentList process(Feature input, FilterEnv env)
