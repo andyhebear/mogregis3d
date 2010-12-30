@@ -238,7 +238,7 @@ namespace Mogre.Demo.CameraTrack
             // Aqui hacemos las pruebas de los filtros.
 
             RenderProject project = new RenderProject();
-            Project prj = XmlSerializer.loadProject("Test1.xml");
+            Project prj = XmlSerializer.loadProject("Test2.xml");
             project.render3d(prj, sceneMgr);
 
             camera.Position = new Vector3(-6500, 4000, 0);
