@@ -487,7 +487,8 @@ namespace MogreGis
             {
                 if (i < n)
                 {
-                        getFilter(i).SetSuccessor(getFilter(i + 1));
+                    //getFilter(i).SetSuccessor(getFilter(i + 1)); 
+                    getFilter(i).Successor = getFilter(i + 1);
                 }
                 i++;
             }
