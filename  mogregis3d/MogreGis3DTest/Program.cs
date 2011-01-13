@@ -206,12 +206,12 @@ namespace Mogre.Demo.CameraTrack
             sceneMgr.SetSkyDome(true, "Examples/CloudySky", 5, 8);
 
             // Create a light
-            Light l = sceneMgr.CreateLight("MainLight");
+            //Light l = sceneMgr.CreateLight("MainLight");
 
             // Accept default settings: point light, white diffuse, just set position
             // NB I could attach the light to a SceneNode if I wanted it to move automatically with
             //  other objects, but I don't
-            l.Position = new Vector3(20F, 80F, 50F);
+            //l.Position = new Vector3(20F, 80F, 50F);
 
             // Define a floor plane mesh
             /*Plane p;
@@ -225,8 +225,8 @@ namespace Mogre.Demo.CameraTrack
             Entity ent;
             // Create an entity (the floor)
             ent = sceneMgr.CreateEntity("floor", "FloorPlane");
-            ent.SetMaterialName("Examples/RustySteel");
-            //ent.SetMaterialName("Examples/Water5");
+            //ent.SetMaterialName("Examples/RustySteel");
+            ent.SetMaterialName("Examples/TextureEffect2");
 
             // Attach to child of root node, better for culling (otherwise bounds are the combination of the 2)
             sceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(ent);
@@ -280,7 +280,7 @@ namespace Mogre.Demo.CameraTrack
             animState.Enabled = true;
 #endif
             // Put in a bit of fog for the hell of it        
-            sceneMgr.SetFog(FogMode.FOG_EXP, ColourValue.White, 0.0001F);
+            sceneMgr.SetFog(FogMode.FOG_EXP, ColourValue.White, 0.00005F);
         }
     }
 //#endif
