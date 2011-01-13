@@ -127,6 +127,19 @@ namespace MogreGis
         private DrawableList drawables = new DrawableList();
 
         private SceneNode node;
+
+        public SceneNode Node
+        {
+            set
+            {
+                this.node = value;
+            }
+
+            get
+            {
+                return node;
+            }
+        }
     }
 
 

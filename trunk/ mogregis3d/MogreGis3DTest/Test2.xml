@@ -22,6 +22,12 @@
     <filter type="MathTransform">
       <property name="localize" value="true"/>
     </filter>
+    <filter type="Area">
+      <property name="latitudeMin" value="-60"/>
+      <property name="latitudeMax" value="10"/>
+      <property name="longitudeMin" value="90"/>
+      <property name="longitudeMax" value="180"/>
+    </filter>
     <filter type="BuildGeom">
       <property name="nameEntityINI" value="ninja.mesh"/>
       <property name="nameEntities" value="cube.mesh"/>

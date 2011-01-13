@@ -251,9 +251,22 @@ namespace MogreGis
             Fragment fIni = new Fragment(nodeIni);
             output.Add(fIni);
 
-            //PRUEBA
-            int prueba = 0;
-            //PRUEBA
+            //PRUEBA ESCALA
+            Int64 min = 999999;
+            Int64 max = 0;
+
+            foreach (Feature feature in input)
+            {
+                if (min > (Int64)feature.row.ItemArray[1])
+                {
+                    min = (Int64)feature.row.ItemArray[1];
+                }
+                if (max < (Int64)feature.row.ItemArray[1])
+                {
+                    max = (Int64)feature.row.ItemArray[1];
+                }
+            }
+            //PRUEBA ESCALA
 
             foreach (Feature feature in input)
             {
@@ -265,23 +278,94 @@ namespace MogreGis
                     i++;
                     SceneNode n = point3d(env.getName(), i, (float)p.X, (float)p.Y, 0, nodeIni, env.getSceneMgr());
 
+
+                    max = (Int64)feature.row.ItemArray[1] / min;
+                    if (max > 3)
+                    {
+                        max = max / 3;
+                    }
+
+                    n.Scale(0.5f, max, 0.5f);
+                    //n.SetScale(1, 1, 1);
+                    //n.SetPosition(n.Position.x, 0, n.Position.z);
+
                     Fragment f = new Fragment(n);
                     output.Add(f);
                 }
 
+                //if type of features is Polygon
+                else if (feature.row.Geometry is SharpMap.Geometries.Polygon)
+                {
+                    SharpMap.Geometries.Polygon polygon = (SharpMap.Geometries.Polygon)feature.row.Geometry;
+
+                    ManualObject polygonNode = null;
+
+                    if (polygonNode == null)
+                    {
+                        polygonNode = env.getSceneMgr().CreateManualObject(env.getName() + "Node_" + i);
+                        MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon",
+                                 ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                        material.GetTechnique(0).GetPass(0).VertexColourTracking =
+                                       (int)TrackVertexColourEnum.TVC_AMBIENT;
+
+                        MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode);
+
+                        GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
+                        Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_END, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
+                        Glu.gluTessBeginPolygon(null);
+                        Glu.gluTessBeginContour();
+
+                        int numVertices = polygon.ExteriorRing.NumPoints;
+                        int numValores = 3;
+                        double[][] data = new double[numVertices][];
+
+                        for (int j = 0; j < numVertices; j++)
+                        {
+                            data[j] = new double[numValores];
+                        }
+
+                        int k = 0;
+                        //1 polygon = N vertices
+                        foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
+                        {
+
+                            data[k][0] = point.X;
+                            data[k][1] = point.Y;
+                            data[k][2] = 0;
+
+                            k++;
+
+                            //SceneNode n = point3d(env.getName(), i, (float)point.X, (float)point.Y, 0, nodeIni, env.getSceneMgr());
+
+                        }
+                        for (int j = 0; j < data.GetLength(0); j++)
+                        {
+                            Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * 51.0f, ((float)data[j][2]) * 51.0f, ((float)data[j][0]) * 51.0f));
+                        }
+
+                        Glu.gluTessEndContour();
+                        Glu.gluTessNormal(0, 0, 1);
+                        Glu.gluTessEndPolygon();
+
+                        nodeIni.AttachObject(polygonNode);
+
+                    }
+                    i++;
+                }
+
                 //if type of features is MultiPolygon
-                if (feature.row.Geometry is SharpMap.Geometries.MultiPolygon)
+                else if (feature.row.Geometry is SharpMap.Geometries.MultiPolygon)
                 {
                     SharpMap.Geometries.MultiPolygon mp = (SharpMap.Geometries.MultiPolygon)feature.row.Geometry;
 
                     // 1 MultiPolygon = N polygon
                     foreach (SharpMap.Geometries.Polygon polygon in mp.Polygons)
                     {
-//PRUEBA
-                        if (prueba < 30)
-                        {
-                            prueba++;
-//PRUEBA                   
+
                         ManualObject polygonNode = null;
 
                         if (polygonNode == null)
@@ -339,25 +423,23 @@ namespace MogreGis
 
                         }
                         i++;
-                        }//PRUEBA
                     }
-//ENDPRUEBA
-                    
+                }
 
+                if ((feature.row.Geometry is SharpMap.Geometries.Polygon) | (feature.row.Geometry is SharpMap.Geometries.MultiPolygon))
+                {
                     Fragment f = new Fragment(nodeIni);
                     output.Add(f);
-
                 }
-                /*
-                 * countries = 147 multipolygon
-                 * 1 MultiPolygon = N polygon
-                 * 1 polygon = N vertices
-                 */
+                
             }
 
             i = 0;//breakpoint
 
-            
+            /*foreach (Fragment fragment in output)
+            {
+                fragment.Node.Scale(0,0,0);
+            }*/
 
 #if TODO
             // if features are arriving in batch, resolve the color here.
@@ -383,11 +465,12 @@ namespace MogreGis
                 {
                     FeatureFilter filter = (FeatureFilter)successor;
                     FeatureList l = filter.process(input, env);
+                    //FeatureList l = successor.process(input, env);
                 }
                 else if (successor is FragmentFilter)
                 {
                     FragmentFilter filter = (FragmentFilter)successor;
-                    FragmentList l = filter.process(input, env);
+                    FragmentList l = filter.process(output, env);
                 }
             }
 

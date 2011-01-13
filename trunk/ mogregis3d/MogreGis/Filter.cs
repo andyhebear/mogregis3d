@@ -119,6 +119,12 @@ namespace MogreGis
             //NOP
         }
 
+
+        //public abstract FeatureList process(FeatureList input, FilterEnv env);
+
+        //public abstract FragmentList process(FeatureList input, FilterEnv env);
+
+
         /*public void SetSuccessor(Filter successor)
         {
             this.successor = successor;
