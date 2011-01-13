@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaFilter.cs" />
     <Compile Include="Attribute.cs">
       <SubType>Code</SubType>
     </Compile>

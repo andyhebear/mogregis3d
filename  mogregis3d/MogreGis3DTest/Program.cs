@@ -214,15 +214,19 @@ namespace Mogre.Demo.CameraTrack
             l.Position = new Vector3(20F, 80F, 50F);
 
             // Define a floor plane mesh
-            Plane p;
+            /*Plane p;
             p.normal = Vector3.UNIT_Y;
-            p.d = 200;
+            p.d = 200;*/
+
+            Plane p = new Plane(Vector3.UNIT_Y, -2);
+
             MeshManager.Singleton.CreatePlane("FloorPlane", ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, p, 200000F, 20000F, 20, 20, true, 1, 50F, 50F, Vector3.UNIT_Z);
 
             Entity ent;
             // Create an entity (the floor)
             ent = sceneMgr.CreateEntity("floor", "FloorPlane");
             ent.SetMaterialName("Examples/RustySteel");
+            //ent.SetMaterialName("Examples/Water5");
 
             // Attach to child of root node, better for culling (otherwise bounds are the combination of the 2)
             sceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(ent);
@@ -238,7 +242,7 @@ namespace Mogre.Demo.CameraTrack
             // Aqui hacemos las pruebas de los filtros.
 
             RenderProject project = new RenderProject();
-            Project prj = XmlSerializer.loadProject("Test2.xml");
+            Project prj = XmlSerializer.loadProject("Test1.xml");
             project.render3d(prj, sceneMgr);
 
             camera.Position = new Vector3(-6500, 4000, 0);
