@@ -27,10 +27,10 @@
   <!-- A filter graph defines the assembly pipeline for turning features into 3D geometry: -->
   <graph name="countries">
     <filter type="Area">
-      <property name="latitudeMin" value="-50"/>
-      <property name="latitudeMax" value="25"/>
-      <property name="longitudeMin" value="80"/>
-      <property name="longitudeMax" value="178"/>
+      <property name="latitudeMin" value="-57"/>
+      <property name="latitudeMax" value="80"/>
+      <property name="longitudeMin" value="-173"/>
+      <property name="longitudeMax" value="-30"/>
     </filter>
     <filter type="BuildGeom">
       <property name="nameEntityINI" value="ninja.mesh"/>
@@ -39,15 +39,15 @@
 
   <graph name="cities">
     <filter type="Area">
-      <property name="latitudeMin" value="-50"/>
-      <property name="latitudeMax" value="25"/>
-      <property name="longitudeMin" value="80"/>
-      <property name="longitudeMax" value="178"/>
+      <property name="latitudeMin" value="-57"/>
+      <property name="latitudeMax" value="80"/>
+      <property name="longitudeMin" value="-173"/>
+      <property name="longitudeMax" value="-30"/>
     </filter>
     <filter type="BuildGeom">
       <property name="nameEntityINI" value="ninja.mesh"/>
       <property name="nameEntities" value="cube.mesh"/>
-      <property name="nameMaterial" value="Examples/BumpyMetal"/>
+      <property name="nameMaterial" value="Examples/LightRibbonTrail"/>
     </filter>
   </graph>
 
