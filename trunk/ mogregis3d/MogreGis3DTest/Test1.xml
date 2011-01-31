@@ -45,6 +45,7 @@
       <property name="longitudeMax" value="-30"/>
     </filter>
     <filter type="BuildGeom">
+      <property name="scale" value="(POPULATION)"/>
       <property name="nameEntityINI" value="ninja.mesh"/>
       <property name="nameEntities" value="cube.mesh"/>
       <property name="nameMaterial" value="Examples/LightRibbonTrail"/>
