@@ -200,6 +200,19 @@ namespace MogreGis
             return nameMaterial;
         }
 
+        public string Scale
+        {
+            set
+            {
+                this.scale = value;
+            }
+
+            get
+            {
+                return scale;
+            }
+        }
+
         // Filter overrides    
         public override void setProperty(Property prop)
         {
@@ -218,6 +231,11 @@ namespace MogreGis
                 setNameEntities(prop.getValue());
             else if (prop.getName() == "nameMaterial")
                 setNameMaterial(prop.getValue());
+            else if (prop.getName() == "scale")
+            {
+                string s = prop.getValue().Substring(1, (prop.getValue().Length)-2);
+                Scale = s;
+            }
 
             base.setProperty(prop);
         }
@@ -255,6 +273,8 @@ namespace MogreGis
             Int64 min = 999999;
             Int64 max = 0;
 
+            int pos = 0;
+            /*
             foreach (Feature feature in input)
             {
                 if (min > (Int64)feature.row.ItemArray[1])
@@ -265,7 +285,7 @@ namespace MogreGis
                 {
                     max = (Int64)feature.row.ItemArray[1];
                 }
-            }
+            }*/
             //PRUEBA ESCALA
 
             foreach (Feature feature in input)
@@ -278,14 +298,22 @@ namespace MogreGis
                     i++;
                     SceneNode n = point3d(env.getName(), i, (float)p.X, (float)p.Y, 0, nodeIni, env.getSceneMgr());
 
-
-                    max = (Int64)feature.row.ItemArray[1] / min;
-                    if (max > 3)
+                    if (feature.row.Table.Columns.Contains(Scale) == true)
                     {
-                        max = max / 3;
+                        pos = feature.row.Table.Columns.IndexOf(Scale);
+
+                        max = (Int64)feature.row.ItemArray[pos] / 208040;
+
+                        if (max > 3)
+                        {
+                            max = max / 3;
+                        }
+
+                        n.Scale(0.5f, max, 0.5f);
                     }
 
-                    n.Scale(0.5f, max, 0.5f);
+                    //max = (Int64)feature.row.ItemArray[1] / min;
+                    
                     //n.SetScale(1, 1, 1);
                     //n.SetPosition(n.Position.x, 0, n.Position.z);
 
@@ -847,6 +875,6 @@ namespace MogreGis
         protected string nameEntityINI;
         protected string nameEntities;
         protected string nameMaterial;
-
+        protected string scale;
     }
 }
