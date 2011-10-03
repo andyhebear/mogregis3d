@@ -1,0 +1,12 @@
+struct R3Tex_Output {
+  float4 color : COLOR;
+};
+
+R3Tex_Output RenderToTexture(float2 texCoord : TEXCOORD0,
+                             uniform sampler2D decal : TEX0)
+{
+  R3Tex_Output OUT;
+  OUT.color = tex2D(decal,texCoord);
+  return OUT;
+}
+

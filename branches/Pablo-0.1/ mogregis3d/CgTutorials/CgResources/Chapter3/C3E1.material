@@ -1,0 +1,26 @@
+vertex_program CgTutorials/C3E1v_anycolor cg
+{
+	source C3E1v_anycolor.cg
+	entry_point C3E1v_anycolor
+	profiles vs_1_1 arbvp1
+	
+    default_params
+	{
+        param_named_auto worldViewProj worldviewproj_matrix
+        param_named_auto constantColor custom 123
+        //param_named constantColor float4 1.0 0.0 0.0 1.0
+    }
+}
+
+material CgTutorials/C3E1_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C3E1v_anycolor
+			{	
+			}
+		}
+	}
+}

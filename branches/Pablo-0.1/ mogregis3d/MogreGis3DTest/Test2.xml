@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="sample2">
+
+  <map name="default" terrain="full">
+    <maplayer name="world_cities"/>
+  </map>
+
+  <!-- A layer is a primary build target: -->
+  
+  <layer name="world_cities" source="cities">
+    <slice min_range="0" max_range="1e6" graph="cities"/>
+  </layer>
+  
+  <!-- A source references a vector GIS source layer: -->
+
+  <source name="cities" provider="ShapeFile">
+    <uri>../../../Data/cities.shp</uri>
+  </source>
+
+  <!-- A filter graph defines the assembly pipeline for turning features into 3D geometry: -->
+  <graph name="cities">
+    <filter type="MathTransform">
+      <property name="localize" value="true"/>
+    </filter>
+    <filter type="Area">
+      <property name="latitudeMin" value="-60"/>
+      <property name="latitudeMax" value="10"/>
+      <property name="longitudeMin" value="90"/>
+      <property name="longitudeMax" value="180"/>
+    </filter>
+    <filter type="BuildGeom">
+      <property name="scale" value="(POPULATION)"/>
+      <property name="nameEntityINI" value="ninja.mesh"/>
+      <property name="nameEntities" value="cube.mesh"/>
+      <property name="nameMaterial" value="Examples/Chrome"/>
+    </filter>
+    <filter type="MathTransform">
+      <property name="localize" value="false"/>
+    </filter>
+  </graph>
+
+</project>

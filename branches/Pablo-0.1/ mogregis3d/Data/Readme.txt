@@ -1,0 +1,1 @@
+These files (cities.*, countries.* and rivers.*) are from SharpMap project.

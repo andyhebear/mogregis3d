@@ -1,0 +1,20 @@
+vertex_program CgTutorials/C3E2v_varying cg
+{
+	source C3E2v_varying.cg
+	entry_point C3E2v_varying
+	profiles vs_1_1 arbvp1
+}
+
+material CgTutorials/C3E2_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C3E2v_varying
+			{	
+			    param_named_auto worldViewProj worldviewproj_matrix
+			}
+		}
+	}
+}
