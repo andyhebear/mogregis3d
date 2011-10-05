@@ -56,14 +56,14 @@
       <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
     </Reference>
     <Reference Include="ProjNET">
-      <HintPath>..\Libs\SharpMap-0.9\Debug\ProjNET.dll</HintPath>
+      <HintPath>..\Libs\SharpMap-0.9\Release\ProjNET.dll</HintPath>
     </Reference>
-    <Reference Include="Sharp3D.Math, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sharp3D.Math, Version=1.1.3.0, Culture=neutral, PublicKeyToken=529e2e82fcc0ba71">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\Sharp3D.Math.v1.1.3\bin\Release\Sharp3D.Math.dll</HintPath>
     </Reference>
     <Reference Include="SharpMap">
-      <HintPath>..\Libs\SharpMap-0.9\Debug\SharpMap.dll</HintPath>
+      <HintPath>..\Libs\SharpMap-0.9\Release\SharpMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />

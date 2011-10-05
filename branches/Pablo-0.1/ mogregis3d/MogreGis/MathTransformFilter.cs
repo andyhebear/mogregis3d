@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
-using SharpMap.CoordinateSystems.Transformations;
-using SharpMap.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
+using ProjNet.CoordinateSystems;
+//using SharpMap.CoordinateSystems.Transformations;
+//using SharpMap.CoordinateSystems;
 
 namespace MogreGis
 {
@@ -231,13 +233,14 @@ namespace MogreGis
 
                 //cs
                 string wkt = "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]";
-                ICoordinateSystem cs = SharpMap.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wkt) as ICoordinateSystem;
-
+                //ICoordinateSystem cs = SharpMap.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wkt) as ICoordinateSystem;
+                ICoordinateSystem cs = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wkt) as ICoordinateSystem;
                 //wgs84
                 GeographicCoordinateSystem wgs84 = GeographicCoordinateSystem.WGS84;
 
                 //gcs
-                CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
+                CoordinateSystemFactory cFac = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+                //CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
                 //Create Bessel 1840 geographic coordinate system
                 IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Bessel 1840", 6377397.155, 299.15281, LinearUnit.Metre);
                 IHorizontalDatum datum = cFac.CreateHorizontalDatum("Bessel 1840", DatumType.HD_Geocentric, ellipsoid, null);
@@ -409,7 +412,8 @@ IMPORTANTE*/
         /// <returns>Projection</returns>
         private IProjectedCoordinateSystem CreateUtmProjection(int utmZone)
         {
-            CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
+            CoordinateSystemFactory cFac = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+            //CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
 
             //Create geographic coordinate system based on the WGS84 datum
             IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("WGS 84", 6378137, 298.257223563, LinearUnit.Metre);
