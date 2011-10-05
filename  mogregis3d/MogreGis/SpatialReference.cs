@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 
 using Sharp3D.Math.Core;
-using SharpMap.CoordinateSystems;
+using ProjNet.CoordinateSystems;
+//using SharpMap.CoordinateSystems;
 
 namespace MogreGis
 {
