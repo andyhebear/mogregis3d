@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if TODO_PH
+using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using ProjNet.CoordinateSystems.Transformations;
@@ -604,3 +605,4 @@ IMPORTANTE*/
 
     }
 }
+#endif

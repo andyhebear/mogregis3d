@@ -11,8 +11,14 @@ namespace MogreGis
     public class SRSResource : Resource
     {
         //TODO OSGGIS_META_RESOURCE(SRSResource);
+        public string getResourceType() { return getStaticResourceType(); }
+        static string getStaticResourceType() { return "srsresource"; }
+        static ResourceFactory getResourceFactory() { return new ResourceFactoryImpl<SRSResource>(); }
 
-
+        static SRSResource()
+        {
+            bool _osggsis_dr = Registry.instance().addResourceType(SRSResource.getStaticResourceType(), SRSResource.getResourceFactory());
+        }
         /**
          * Constructs a new SRS resource.
          */
@@ -41,7 +47,7 @@ namespace MogreGis
          */
         public SpatialReference getSRS()
         {
-            return srs.get();
+            return srs;
         }
 
 
@@ -51,9 +57,9 @@ namespace MogreGis
         {
             if (prop.getName() == "wkt")
                 setSRS(Registry.SRSFactory().createSRSfromWKT(prop.getValue()));
-            base.setProperty(prop);
+            //base.setProperty(prop);
         }
-        public virtual Properties getProperties()
+        public override Properties getProperties()
         {
             Properties props = base.getProperties();
             if (getSRS() != null)
@@ -64,6 +70,8 @@ namespace MogreGis
 
         private SpatialReference srs;
     }
+
+
 
     public class SRSResourceVec : List<SRSResource> { }
 }

@@ -11,7 +11,7 @@ namespace MogreGis
     /**
      * Interface for creating SpatialReference instances.
      */
-    public class SpatialReferenceFactory
+    public interface SpatialReferenceFactory
     {
 
         /**
@@ -20,7 +20,7 @@ namespace MogreGis
          * @return A spatial reference. Caller is responsible for deleting
          *         the return object.
          */
-        public abstract SpatialReference createWGS84();
+        SpatialReference createWGS84();
 
         /**
          * Creates a new Cylindrical Equal Area projection.
@@ -28,7 +28,7 @@ namespace MogreGis
          * @return A spatial reference. Caller is responsible for deleting
          *         the return object.
          */
-        public abstract SpatialReference createCEA();
+        SpatialReference createCEA();
 
         /**
          * Creates a new SRS from an OSG WKT string.
@@ -39,7 +39,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromWKT(string wkt);
+        SpatialReference createSRSfromWKT(string wkt);
 
         /**
          * Creates a new SRS from an OSG WKT string.
@@ -52,7 +52,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromWKT(string wkt, Matrix4D reference_frame);
+        SpatialReference createSRSfromWKT(string wkt, Matrix4D reference_frame);
 
         /**
          * Creates a new SRS from an ESRI-style WKT/PRJ string.
@@ -63,7 +63,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromESRI(string wkt);
+        SpatialReference createSRSfromESRI(string wkt);
 
         /**
          * Creates a new SRS from an ESRI-style WKT/PRJ string.
@@ -76,7 +76,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromESRI(string wkt, Matrix4D reference_frame);
+        SpatialReference createSRSfromESRI(string wkt, Matrix4D reference_frame);
 
         /**
          * Creates a new SRS from an OSG WKT string in a file.
@@ -88,7 +88,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromWKTfile(string abs_path);
+        SpatialReference createSRSfromWKTfile(string abs_path);
 
         /**
          * Creates a new SRS from a PROJ4 init string.
@@ -99,7 +99,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromPROJ4(string proj4_def);
+        SpatialReference createSRSfromPROJ4(string proj4_def);
 
         /**
          * Creates a new SRS from data found in a scene graph.
@@ -110,7 +110,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createSRSfromTerrain(Node node);
+        SpatialReference createSRSfromTerrain(Node node);
 
         /**
          * Creates a new geocentric SRS based on the WGS84 datum.
@@ -119,7 +119,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createGeocentricSRS();
+        SpatialReference createGeocentricSRS();
 
         /**
          * Creates a new geocentric SRS based on the user-supplied 
@@ -130,7 +130,7 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createGeocentricSRS(SpatialReference basis);
+        SpatialReference createGeocentricSRS(SpatialReference basis);
 
         /**
          * Creates a new geocentric SRS based on the user-supplied 
@@ -144,8 +144,9 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createGeocentricSRS(SpatialReference basis, Matrix4D reference_frame);
+        SpatialReference createGeocentricSRS(SpatialReference basis, Matrix4D reference_frame);
 
+#if TODO_PH
         /**
          * Creates a new SRS from data found in an osg::CoordinateSystemNode.
          *
@@ -155,8 +156,8 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference createGeocentricSRS(osg.CoordinateSystemNode cs_node);
-
+        public SpatialReference createGeocentricSRS(osg.CoordinateSystemNode cs_node);
+#endif
         /**
          * Examines an SRS and if broken, attempts to repair it so that it works.
          *
@@ -166,6 +167,6 @@ namespace MogreGis
          *      A spatial reference. Caller is responsible for deleting
          *      the return object.
          */
-        public abstract SpatialReference validateSRS(SpatialReference srs_to_validate);
+        SpatialReference validateSRS(SpatialReference srs_to_validate);
     }
 }

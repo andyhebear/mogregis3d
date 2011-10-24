@@ -17,3 +17,16 @@ C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\Sharp
 C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\SharpMapTest.Properties.Resources.resources
 C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\MogreGisProjects.dll
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\MogreGis.dll
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Mogre.dll
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\GluTessellator.dll
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Sharp3D.Math.dll
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\MogreGisProjects.pdb
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\MogreGis.pdb
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Mogre.pdb
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Mogre.xml
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\GluTessellator.pdb
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Sharp3D.Math.xml
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Test1.xml

@@ -223,35 +223,35 @@ namespace osgGISProjects
                 else
                 {
 #endif
-                    graph = new FilterGraph();
-                    graph.setName(name);
+                graph = new FilterGraph();
+                graph.setName(name);
 
-                    XmlNodeList filter_els = e.GetElementsByTagName("filter");
-                    foreach (XmlNode i in filter_els)
+                XmlNodeList filter_els = e.GetElementsByTagName("filter");
+                foreach (XmlNode i in filter_els)
+                {
+                    XmlElement f_e = (XmlElement)i;
+
+                    string type = f_e.GetAttribute("type");
+
+                    Filter f = MogreGis.Registry.instance().createFilterByType(type);
+
+                    // try again with "Filter" suffix
+                    if (f == null && !type.EndsWith("Filter", false, System.Globalization.CultureInfo.InvariantCulture))
+                        f = MogreGis.Registry.instance().createFilterByType(type + "Filter");
+
+                    if (f != null)
                     {
-                        XmlElement f_e = (XmlElement)i;
-
-                        string type = f_e.GetAttribute("type");
-
-                        Filter f = MogreGis.Registry.instance().createFilterByType(type);
-
-                        // try again with "Filter" suffix
-                        if (f == null && !type.EndsWith("Filter", false, System.Globalization.CultureInfo.InvariantCulture))
-                            f = MogreGis.Registry.instance().createFilterByType(type + "Filter");
-
-                        if (f != null)
+                        XmlNodeList prop_els = f_e.GetElementsByTagName("property");
+                        foreach (XmlNode k in prop_els)
                         {
-                            XmlNodeList prop_els = f_e.GetElementsByTagName("property");
-                            foreach (XmlNode k in prop_els)
-                            {
-                                XmlElement k_e = (XmlElement)k;
-                                string name_ = k_e.GetAttribute("name");
-                                string value_ = k_e.GetAttribute("value");
-                                f.setProperty(new Property(name_, value_));
-                            }
-                            graph.appendFilter(f);
+                            XmlElement k_e = (XmlElement)k;
+                            string name_ = k_e.GetAttribute("name");
+                            string value_ = k_e.GetAttribute("value");
+                            f.setProperty(new Property(name_, value_));
                         }
+                        graph.appendFilter(f);
                     }
+                }
 #if TODO_DANI
                 }
 #endif
@@ -299,7 +299,7 @@ namespace osgGISProjects
                 graph_e.AppendChild(filter_e);
             }
             return graph_e;
-#endif 
+#endif
             throw new NotImplementedException();
         }
 #if TODO
@@ -325,7 +325,7 @@ namespace osgGISProjects
             }
             return e;
         }
-
+#endif
 
         static void parseSRSResource(XmlElement e, SRSResource resource)
         {
@@ -343,12 +343,12 @@ namespace osgGISProjects
         {
             foreach (Resource i in list)
             {
-                if (i != null && i.getName() == name)
+                if (i != null && i.Name == name)
                     return (SRSResource)i;
             }
             return null;
         }
-
+#if TODO
         static void parseRasterResource(XmlElement e, RasterResource resource)
         {
             XmlNodeList parts = e.GetElementsByTagName("uri");
@@ -357,9 +357,10 @@ namespace osgGISProjects
                 resource.addPartURI(((XmlElement)i).InnerText);
             }
         }
-
+#endif
         static Resource decodeResource(XmlElement e, Project proj)
         {
+            SRSResource a = new SRSResource();
             Resource resource = null;
             if (e != null)
             {
@@ -372,9 +373,9 @@ namespace osgGISProjects
 
                 if (resource != null)
                 {
-                    resource.setBaseURI(proj.getBaseURI());
+                    resource.BaseUri = proj.getBaseURI();
 
-                    resource.setName(e.GetAttribute("name"));
+                    resource.Name = e.GetAttribute("name");
 
                     string csv_tags = e.GetAttribute("tags");
                     if (!string.IsNullOrEmpty(csv_tags))
@@ -387,7 +388,7 @@ namespace osgGISProjects
                     }
 
                     resource.addTag(e.GetAttribute("tags"));
-                    resource.setURI(e.GetElementsByTagName("uri")[0].InnerText);
+                    resource.Uri = e.GetElementsByTagName("uri")[0].InnerText;
 
                     XmlNodeList prop_els = e.GetElementsByTagName("property");
                     foreach (XmlNode k in prop_els)
@@ -402,10 +403,12 @@ namespace osgGISProjects
                     {
                         parseSRSResource(e, (SRSResource)resource);
                     }
+#if TODO_PH
                     else if (resource != null && resource is RasterResource)
                     {
                         parseRasterResource(e, (RasterResource)resource);
                     }
+#endif
                 }
                 else
                 {
@@ -414,7 +417,6 @@ namespace osgGISProjects
             }
             return resource;
         }
-#endif
         static XmlElement encodeURI(XmlDocument doc, string uri)
         {
             XmlElement e = doc.CreateElement("", "uri", "");
@@ -826,7 +828,7 @@ namespace osgGISProjects
                 }
 #endif
 
-#if TODO_DANI //resources
+#if !TODO_DANI //resources
 
                 // resources
                 XmlNodeList resources = e.GetElementsByTagName("resource");
@@ -888,7 +890,7 @@ namespace osgGISProjects
                     decodeSource((XmlElement)j, project, 1);
                 }
 
-//#if TODO_DANI //layers
+                //#if TODO_DANI //layers
 
                 // layers
                 XmlNodeList layers = e.GetElementsByTagName("layer");
@@ -907,7 +909,7 @@ namespace osgGISProjects
                     }
                 }
 
-//#endif
+                //#endif
 
 #if TODO_DANI //targets
 

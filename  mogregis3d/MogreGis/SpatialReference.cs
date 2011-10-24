@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using Sharp3D.Math.Core;
 using ProjNet.CoordinateSystems;
-//using SharpMap.CoordinateSystems;
 
 namespace MogreGis
 {
@@ -76,7 +75,7 @@ namespace MogreGis
          *
          * @return An ellipsoid model approximating the shape of the planet.
          */
-        public abstract IEllipsoid getEllipsoid();
+        public abstract Ellipsoid getEllipsoid();
 
         /**
          * Gets the "up" vector relative to this spatial reference.
@@ -97,7 +96,7 @@ namespace MogreGis
 
             v.Normalize();
             return v;
-#endif 
+#endif
             throw new NotImplementedException();
         }
 
@@ -114,7 +113,7 @@ namespace MogreGis
          * @return A matrix that places a point into the SRS's local reference frame.
          *         i.e., P(in) = P(out) * getReferenceFrame()
          */
-        public abstract Matrix3D getReferenceFrame();
+        public abstract Mogre.Matrix4 getReferenceFrame();
 
         /**
          * Gets the inverse of the reference frame for points expressed relative to this SRS.
@@ -122,7 +121,7 @@ namespace MogreGis
          * @return A matrix that removes a point from the SRS's local reference frame.
          *         i.e., P(out) = P(in) * getInverseReferenceFrame()
          */
-        public abstract Matrix3D getInverseReferenceFrame();
+        public abstract Mogre.Matrix4 getInverseReferenceFrame();
 
         /**
          * Creates an exact copy of this SRS, and then applies a new reference frame
@@ -130,7 +129,7 @@ namespace MogreGis
          *
          * @return A new SRS
          */
-        public abstract SpatialReference cloneWithNewReferenceFrame(Matrix3D rf);
+        public abstract SpatialReference cloneWithNewReferenceFrame(Mogre.Matrix4 rf);
 
 
 
@@ -191,9 +190,6 @@ namespace MogreGis
          *      Spatial reference to compare to this one
          */
         public abstract bool equivalentTo(SpatialReference rhs);
-
-
-
 
         /**
          * Gets whether two spatial references are mathematically equivalent.

@@ -1,12 +1,12 @@
-﻿
+﻿using System;
 namespace MogreGis
 {
     /**
     * A 2D spatially referenced bounding rectangle.
     */
-    public class GeoExtent: SharpMap.Geometries.BoundingBox
+    public class GeoExtent   //: SharpMap.Geometries.BoundingBox
     {
-#if TODO
+
         /**
          * Constructs a new, empty (but valid) extent.
          */
@@ -91,7 +91,7 @@ namespace MogreGis
             is_valid = sw != null && ne != null && _srs != null;
             recalc();
         }
-#endif
+
         /**
          * Checks whether the extent is valid.
          */
@@ -109,7 +109,7 @@ namespace MogreGis
             return is_infinite;
         }
 
-#if TODO
+#if !TODO
         /**
          * Checks whether the extent is of finite size (and valid). Analagous
          * to getArea() > 0.
@@ -159,10 +159,10 @@ namespace MogreGis
 
                 return
                     point.isValid() &&
-                    (point.x() >= sw.x() || Math.Abs(point.x() - sw.x()) < EPSILON) &&
-                    (point.x() <= ne.x() || Math.Abs(point.x() - ne.x()) < EPSILON) &&
-                    (point.y() >= sw.y() || Math.Abs(point.y() - sw.y()) < EPSILON) &&
-                    (point.y() <= ne.y() || Math.Abs(point.y() - ne.y()) < EPSILON);
+                    (point.X >= sw.X || Math.Abs(point.X - sw.X) < EPSILON) &&
+                    (point.X <= ne.X || Math.Abs(point.X - ne.X) < EPSILON) &&
+                    (point.Y >= sw.Y || Math.Abs(point.Y - sw.Y) < EPSILON) &&
+                    (point.Y <= ne.Y || Math.Abs(point.Y - ne.Y) < EPSILON);
                 //point.x() >= sw.x() && point.x() <= ne.x() &&
                 //point.y() >= sw.y() && point.y() <= ne.y();
             }
@@ -188,8 +188,8 @@ namespace MogreGis
 
             bool isect;
 
-            if (ne.x() < input_sw.x() || sw.x() > input_ne.x() ||
-                ne.y() < input_sw.y() || sw.y() > input_ne.y())
+            if (ne.X < input_sw.X || sw.X > input_ne.X ||
+                ne.Y < input_sw.Y || sw.Y > input_ne.Y)
             {
                 isect = false;
             }
@@ -267,10 +267,10 @@ namespace MogreGis
                 return false;
 
             return
-                (sw.x() <= p.x() || Math.Abs(sw.x() - p.x()) < EPSILON) &&
-                (p.x() <= ne.x() || Math.Abs(p.x() - ne.x()) < EPSILON) &&
-                (sw.y() <= p.y() || Math.Abs(sw.y() - p.y()) < EPSILON) &&
-                (p.y() <= ne.y() || Math.Abs(p.y() - ne.y()) < EPSILON);
+                (sw.X <= p.X || Math.Abs(sw.X - p.X) < EPSILON) &&
+                (p.X <= ne.X || Math.Abs(p.X - ne.X) < EPSILON) &&
+                (sw.Y <= p.Y || Math.Abs(sw.Y - p.Y) < EPSILON) &&
+                (p.Y <= ne.Y || Math.Abs(p.Y - ne.Y) < EPSILON);
 
             //return sw.x() <= p.x() && p.x() <= ne.x() && sw.y() <= p.y() && p.y() <= ne.y();
         }
@@ -339,7 +339,7 @@ namespace MogreGis
          */
         public double getXMin()
         {
-            return isValid() ? sw.x() : -1.0;
+            return isValid() ? sw.X : -1.0;
         }
 
         /**
@@ -347,7 +347,7 @@ namespace MogreGis
          */
         public double getYMin()
         {
-            return isValid() ? sw.y() : -1.0;
+            return isValid() ? sw.Y : -1.0;
         }
 
         /**
@@ -355,7 +355,7 @@ namespace MogreGis
          */
         public double getXMax()
         {
-            return isValid() ? ne.x() : -1.0;
+            return isValid() ? ne.X : -1.0;
         }
 
         /**
@@ -363,7 +363,7 @@ namespace MogreGis
          */
         public double getYMax()
         {
-            return isValid() ? ne.y() : -1.0;
+            return isValid() ? ne.Y : -1.0;
         }
 
         /**
@@ -387,12 +387,12 @@ namespace MogreGis
          */
         public GeoPoint getCentroid()
         {
-            GeoPoint result;
+            GeoPoint result = null;
             if (isValid() && !isInfinite())
             {
                 result = new GeoPoint(
-                        (sw.x() + ne.x()) / 2.0,
-                        (sw.y() + ne.y()) / 2.0,
+                        (sw.X + ne.X) / 2.0,
+                        (sw.Y + ne.Y) / 2.0,
                         getSRS());
             }
             return result;
@@ -417,7 +417,7 @@ namespace MogreGis
                 }
                 else
                 {
-                    return (ne.x() - sw.x()) * (ne.y() - sw.y());
+                    return (ne.X - sw.X) * (ne.Y - sw.Y);
                 }
             }
             else
@@ -447,9 +447,9 @@ namespace MogreGis
             {
                 string str =
                      "("
-                    + sw.x() + ", " + sw.y()
+                    + sw.X + ", " + sw.Y
                     + " => "
-                    + ne.x() + ", " + ne.y()
+                    + ne.X + ", " + ne.Y
                     + ")";
 
                 return str;
@@ -461,10 +461,10 @@ namespace MogreGis
          */
         public void expand(double x, double y)
         {
-            sw.x() -= .5 * x;
-            ne.x() += .5 * x;
-            sw.y() -= .5 * y;
-            ne.y() += .5 * y;
+            sw.X -= .5 * x;
+            ne.X += .5 * x;
+            sw.Y -= .5 * y;
+            ne.Y += .5 * y;
         }
 
         /**
@@ -491,22 +491,22 @@ namespace MogreGis
                     GeoPoint new_point = getSRS().transform(input);
                     if (new_point.isValid())
                     {
-                        double xmin = sw.x();
-                        double ymin = sw.y();
-                        double xmax = ne.x();
-                        double ymax = ne.y();
+                        double xmin = sw.X;
+                        double ymin = sw.Y;
+                        double xmax = ne.X;
+                        double ymax = ne.Y;
 
-                        if (new_point.x() < xmin)
-                            xmin = new_point.x();
-                        if (new_point.x() > xmax)
-                            xmax = new_point.x();
-                        if (new_point.y() < ymin)
-                            ymin = new_point.y();
-                        if (new_point.y() > ymax)
-                            ymax = new_point.y();
+                        if (new_point.X < xmin)
+                            xmin = new_point.X;
+                        if (new_point.X > xmax)
+                            xmax = new_point.X;
+                        if (new_point.Y < ymin)
+                            ymin = new_point.Y;
+                        if (new_point.Y > ymax)
+                            ymax = new_point.Y;
 
-                        sw.set(xmin, ymin, sw.z());
-                        ne.set(xmax, ymax, ne.z());
+                        sw.set((float)xmin, (float)ymin, (float)sw.Z);
+                        ne.set((float)xmax, (float)ymax, (float)ne.Z);
                     }
                     else
                     {
@@ -581,29 +581,31 @@ namespace MogreGis
 
         private bool is_valid;
         private bool is_infinite;
-#if TODO
-        private GeoPoint sw, ne, se, nw;
+#if !TODO
+        public GeoPoint sw {get;set;}
+        public GeoPoint ne {get;set;}
+        public GeoPoint se {get;set;}
+        public GeoPoint nw {get;set;}
 
         private const double EPSILON = 0.00001;
 #endif
 
-        private GeoExtent(bool _is_valid, bool _is_infinite):
-            base(double.MinValue,double.MinValue,double.MaxValue,double.MaxValue)
+        private GeoExtent(bool _is_valid, bool _is_infinite)
         {
             is_valid = _is_valid;
             is_infinite = _is_infinite;
         }
 
-#if TODO
+#if !TODO
         private void recalc()
         {
             if (isValid() && !isInfinite())
             {
-                se = new GeoPoint(ne.x(), sw.y(), sw.getSRS());
-                nw = new GeoPoint(sw.x(), ne.y(), sw.getSRS());
+                se = new GeoPoint(ne.X, sw.Y, sw.getSRS());
+                nw = new GeoPoint(sw.X, ne.Y, sw.getSRS());
             }
 
-            if (sw.x() > ne.x() || sw.y() > ne.y())
+            if (sw.X > ne.X || sw.Y > ne.Y)
             {
                 is_valid = false;
             }

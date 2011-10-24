@@ -27,7 +27,7 @@ namespace MogreGis
     {
 
 
-        public FilterEnv(SceneManager sceneMgr,string name)
+        public FilterEnv(SceneManager sceneMgr, string name)
         {
             this.sceneMgr = sceneMgr;
             this.name = name;
@@ -278,10 +278,13 @@ namespace MogreGis
          */
         public ScriptEngine getScriptEngine()
         {
+#if TODO_PH
             if (script_engine == null && session != null)
                 script_engine = session.createScriptEngine();
 
             return script_engine;
+#endif
+            throw new NotImplementedException();
         }
 
         /**

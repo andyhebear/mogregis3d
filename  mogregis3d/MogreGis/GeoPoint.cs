@@ -6,33 +6,30 @@ using Sharp3D.Math.Core;
 
 namespace MogreGis
 {
-
+    #region GEOPOINT
     /**
      * A 2D or 3D georeferenced point in space.
      */
-    public class GeoPoint : SharpMap.Geometries.Point
+    public class GeoPoint : SharpMap.Geometries.Point3D
     {
-        public GeoPoint() : base() { }
-        public GeoPoint(double[] point) : base(point) { }
-        public GeoPoint(double x, double y) : base(x, y) { }
-
-#if TODO
-
+        #region CONSTRUCTORES
         /**
          * Constructs a new invalid point.
          */
-        public GeoPoint() { }
-
-        /**
-         * Copy constructor.
-         */
-        public GeoPoint(GeoPoint to_copy)
+        public GeoPoint()
         {
-            dim = to_copy.dim;
-            spatial_ref = to_copy.spatial_ref;
-            point = to_copy.point;
+            spatialReference = null;
+            dim = 0;
         }
 
+        /**
+         * Copyc constructor
+         */
+        [System.Obsolete]
+        public GeoPoint(GeoPoint p)
+        {
+            throw new NotImplementedException();
+        }
 
         /**
          * Creates a new 2D georeferenced point.
@@ -42,13 +39,11 @@ namespace MogreGis
          *      Spatial reference system.
          */
         public GeoPoint(Vector2D input, SpatialReference srs)
+            : base(input.X, input.Y, 0)
         {
-            point.X = input.X;
-            point.Y = input.Y;
-            spatial_ref = srs;
+            spatialReference = srs;
             dim = 2;
         }
-
 
         /**
          * Create a new 3D georeferenced point.
@@ -58,86 +53,65 @@ namespace MogreGis
          *      Spatial reference system.
          */
         public GeoPoint(Vector3D input, SpatialReference srs)
+            : base(input.X, input.Y, input.Z)
         {
-            point = input;
-            spatial_ref = srs;
+            spatialReference = srs;
             dim = 3;
         }
 
-
         /**
          * Creates a new 2D georeferenced point.
-         * @param x, y
+         * @param x, y 
          *      2D point data
          * @param srs
          *      Spatial reference system.
          */
         public GeoPoint(double x, double y, SpatialReference srs)
+            : base(x, y, 0)
         {
-            point.X = x;
-            point.Y = y;
-            spatial_ref = srs;
+            spatialReference = srs;
             dim = 2;
         }
 
-
         /**
-         * Create a new 3D georeferenced point.
+         * Create  a new 3D georeferenced point.
          * @param x, y, z
          *      3D point data
          * @param srs
          *      Spatial reference system.
          */
         public GeoPoint(double x, double y, double z, SpatialReference srs)
+            : base(x, y, z)
         {
-            point.X = x;
-            point.Y = y;
-            point.Z = z;
-            spatial_ref = srs;
-            dim = 2;
+            spatialReference = srs;
+            dim = 3;
         }
+        #endregion
 
-        public double X
-        {
-            get { return point.X; }
-        }
-
-        public double Y
-        {
-            get { return point.Y; }
-        }
-
-        public double Z
-        {
-            get { return point.Z; }
-        }
-
+        #region METODOS
         /**
-                 * Returns true if the point contains valid data.
-                 */
+         * Returns true if the point contains valid data.
+         */
         public bool isValid()
         {
-            return dim > 0 && spatial_ref != null;
+            return dim > 0 && spatialReference != null;
         }
 
-
         /**
-         * Returns the dimensionality of the point (2 or 3)
+         * Returns the dimensionality of the point (2 or 3).
          */
-        public uint getDim()
+        public int getDim()
         {
             return dim;
         }
 
-
         /**
-         * Sets the dimensionality of the point (2 or 3)
+         * Sets the dimesionality of the point (2 or 3).
          */
-        public void setDim(uint _dim)
+        public void setDim(int value)
         {
-            dim = _dim > 0 && _dim <= 3 ? _dim : dim;
+            dim = value > 0 && dim <= 3 ? value : dim;
         }
-
 
         /**
          * Returns the spatial reference system relative to which the point
@@ -145,19 +119,17 @@ namespace MogreGis
          */
         public SpatialReference getSRS()
         {
-            return spatial_ref;
+            return spatialReference;
         }
 
-
         /**
-         * Gets a copy of the point that is transformed out of its SRS'
+         * Gets a copy of the point that is transformed out of its SRS
          * reference frame, if applicable.
          */
         public GeoPoint getAbsolute()
         {
-            return new GeoPoint(
-                 this.point * getSRS().getInverseReferenceFrame(),
-                getSRS().cloneWithNewReferenceFrame(Matrix3D.Identity));
+            throw new NotImplementedException();
+            //return new GeoPoint ((this) * getSRS().getInverseReferenceFrame(),getSRS().cloneWithNewReferenceFrame(Mogre.Matrix4.IDENTITY));
         }
 
         /**
@@ -165,43 +137,37 @@ namespace MogreGis
          */
         public override string ToString()
         {
-            string str = "INVALID";
+            string str;
             if (isValid() && getDim() == 2)
-                str = point.X + ", " + point.Y;
+            {
+                str = X + "," + Y;
+            }
             else if (isValid() && getDim() == 3)
-                str = point.X + ", " + point.Y + ", " + point.Z;
-
+            {
+                str = X + "," + Y + "," + Z;
+            }
+            else
+                str = "INVALID";
             return str;
         }
 
         /**
          * Returns true if this point is mathematically equivalent to another.
          */
-        public static bool operator ==(GeoPoint lhs, GeoPoint rhs)
+        public static bool operator ==(GeoPoint rhs, GeoPoint rhs2)
         {
-            return
-                lhs.isValid() && rhs.isValid() &&
-                SpatialReference.equivalent(lhs.getSRS(), rhs.getSRS()) &&
-                lhs.getDim() == rhs.getDim() &&
-                lhs.point.X == rhs.point.X &&
-                (lhs.getDim() < 2 || lhs.point.Y == rhs.point.Y) &&
-                (lhs.getDim() < 3 || lhs.point.Z == rhs.point.Z);
-        }
-        public static bool operator !=(GeoPoint lhs, GeoPoint rhs)
-        {
-            return !(lhs == rhs);
+            return rhs2.isValid() && rhs.isValid() &&
+                rhs2.getSRS().Equals(rhs.getSRS()) && rhs2.getDim() == rhs.getDim() &&
+                rhs2.X == rhs.X &&
+                (rhs2.getDim() < 2 || rhs2.Y == rhs.Y) && (rhs2.getDim() < 3 || rhs2.Z == rhs.Z);
         }
 
-        public override bool Equals(object obj)
+        /**
+         * Returns true if this point is mathematically diferent to another.
+         */
+        public static bool operator !=(GeoPoint rhs, GeoPoint rhs2)
         {
-            if (obj == null || !(obj is GeoPoint))
-                return false;
-            return this == obj;
-        }
-
-        public override int GetHashCode()
-        {
-            return point.GetHashCode();
+            return !(rhs == rhs2);
         }
 
         /**
@@ -213,83 +179,106 @@ namespace MogreGis
         }
 
 
-
-
-        private uint dim = 0;
-      
-        private Vector3D point = new Vector3D();
-#endif
-        private SpatialReference spatial_ref = null;
-        internal void setSpatialReference(SpatialReference sr)
+        public void setSpatialReference(SpatialReference sr)
         {
-            spatial_ref = sr;
+            spatialReference = sr;
         }
 
-    }
+        public void set(float x, float y, float z)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+        }
+        #endregion
 
+
+
+        #region ATRIBUTOS
+        private int dim;
+        private SpatialReference spatialReference;
+        #endregion
+    }
+    #endregion
+
+    #region GEOPOINTLIST
     public class GeoPointList : List<GeoPoint>
     {
-
+        #region CONSTRUCTORES
         public GeoPointList() { }
         public GeoPointList(int cap) : base(cap) { }
+        #endregion
 
+        #region METODOS
         public bool intersects(GeoExtent ex)
         {
-#if TODO
             if (ex.isInfinite())
-                return true;
-
-            //TODO: srs transform
-
-            if (ex.isPoint()) // do a point-in-polygon test
             {
-                GeoPoint point = ex.getSouthwest();
+                return true;
+            }
+            if (ex.isPoint())
+            {
+                GeoPoint point = ex.sw;
                 bool result = false;
                 GeoPointList polygon = this;
                 for (int i = 0, j = polygon.Count - 1; i < polygon.Count; j = i++)
                 {
                     if ((((polygon[i].Y <= point.Y) && (point.Y < polygon[j].Y)) ||
-                         ((polygon[j].Y <= point.Y) && (point.Y < polygon[i].Y))) &&
-                        (point.X < (polygon[j].X - polygon[i].X) * (point.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) + polygon[i].X))
+                        ((polygon[j].Y <= point.Y) && (point.Y < polygon[i].Y))) &&
+                        (point.X < (polygon[j].X - polygon[i].X) *
+                        (point.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) + polygon[i].X))
                     {
                         result = !result;
                     }
                 }
                 return result;
             }
-            else // check for all points within extent -- not actually correct //TODO
+            else //check for all points within extent -- not actually correct //TODO
             {
-                GeoExtent e = new GeoExtent();
-                foreach (GeoPoint i in this)
+                GeoExtent e;
+                e = new GeoExtent(this[0], this[0]);
+                foreach (GeoPoint geoPoint in this)
                 {
-                    e.expandToInclude(i);
+
+                    if (geoPoint == this[0])
+                    {
+                        //NOP
+                    }
+                    else
+                    {
+                        e.expandToInclude(geoPoint);
+                    }
                 }
                 return e.intersects(ex);
             }
-#endif
-            throw new NotImplementedException();
         }
 
         /**
          * Returns true is the point list is "closed", i.e. the last point
-         * is equal to the first (in 2D)
+         * is equal to the first (in 2D).
          */
         public bool isClosed()
         {
-            return this.Count >= 2 && this.First() == this.Last();
+            return Count >= 2 && this[0].Equals(this[Count - 1]);
+            //return Count >= 2 && front() == back();
         }
+        #endregion
     }
+    #endregion
 
+    #region GEOPARTVISITOR
     public class GeoPartVisitor
     {
         public GeoPartVisitor() { }
-        public virtual bool visitPart(GeoPointList part) { return true; }
+        public bool visitPart(GeoPointList part) { return true; }
     }
+    #endregion
 
-    //TODO Esto no se podría cambiar por un Action
+    #region GEOPOINTVISITOR
     public class GeoPointVisitor
     {
         public GeoPointVisitor() { }
-        public virtual GeoPoint visitPoint(GeoPoint point) { return null; }
+        public bool visitPoint(GeoPoint point) { return true; }
     }
+    #endregion
 }
