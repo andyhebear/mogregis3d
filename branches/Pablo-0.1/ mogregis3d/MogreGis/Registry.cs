@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !TODO_PH_MIRAR_RESOURCEFACTORIMAP
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,20 @@ namespace MogreGis
      */
     public class Registry
     {
+        /**
+         * Es un constructor statico que añade al MathTransformFilter, el BuildGeomFilter y el AreaFilter.
+         * Esta comentado porque de momento no esta implementado ninguno de esos filtros, y hay que mirar
+         * si no se deberia hacer como con los resources, que fueran ellos los que se fueran añadiendo
+         * ellos mismos.
+         */
+#if TODO_PH
         static Registry()
         {
             Registry.instance().addFilterType(MathTransformFilter.getStaticFilterType(), MathTransformFilter.getFilterFactory());
             Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());
             Registry.instance().addFilterType(AreaFilter.getStaticFilterType(), AreaFilter.getFilterFactory());
         }
+#endif
 
         /**
          * Gets the singleton registry instance.
@@ -35,7 +44,6 @@ namespace MogreGis
             return singleton;
         }
 
-#if TODO_DANI
 
         /**
          * Gets the active SRS facotry. This is a convenience function that
@@ -45,7 +53,7 @@ namespace MogreGis
         {
             return Registry.instance().getSRSFactory();
         }
-
+#if TODO_PH
         /**
          * Creates a feature layer by connecting to a feature store.
          *
@@ -98,7 +106,7 @@ namespace MogreGis
             return result;
         }
 
-
+#endif
         /**
          * Gets an interface for creating spatial reference systems.
          *
@@ -108,7 +116,7 @@ namespace MogreGis
         {
             return spatial_ref_factory;
         }
-
+#if TODO
         /** 
          * Sets the interface for creating spatial reference systems.
          * You can call this to replace the default implememtation with
@@ -323,10 +331,11 @@ namespace MogreGis
             setRasterStoreFactory(new DefaultRasterStoreFactory());
         }
 
-        private SpatialReferenceFactory spatial_ref_factory;
         private FeatureStoreFactory feature_store_factory;
         private RasterStoreFactory raster_store_factory;
 #endif
+        private SpatialReferenceFactory spatial_ref_factory;
+
         private FilterFactoryMap filter_factories = new FilterFactoryMap();
         private ResourceFactoryMap resource_factories = new ResourceFactoryMap();
         private string work_dir;
@@ -345,3 +354,4 @@ namespace MogreGis
         }
     }
 }
+#endif

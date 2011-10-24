@@ -9,7 +9,7 @@ namespace MogreGis
     /**
      * A set of points that taken together form a one- or multi-part shape.
      */
-    public abstract class GeoShape : SharpMap.Geometries.Geometry 
+    public abstract class GeoShape : SharpMap.Geometries.Geometry
     {
 
         /** Types of shapes. */
@@ -163,11 +163,10 @@ namespace MogreGis
                 GeoPointList part = getPart(pi);
                 for (int vi = 0; vi < part.Count; vi++)
                 {
-                    GeoPoint point = visitor.visitPoint(part[vi]);
-                    if (point == null)
+                    if (!visitor.visitPoint(part[vi]))
+                    {
                         return false;
-                    else
-                        part[vi] = point;
+                    }
                 }
             }
             return true;

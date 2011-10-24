@@ -248,6 +248,11 @@ namespace osgGISProjects
             return null;
         }
 
+        public ResourceList getResources()
+        {
+            return resources;
+        }
+
         protected string source_uri;
         protected string name;
         protected string work_dir;
@@ -260,8 +265,10 @@ namespace osgGISProjects
 
         protected FilterGraphList graphs;
 
-#if TODO
         protected ResourceList resources;//CAMBIAR
+
+#if TODO
+      
         protected RuntimeMapList maps;
         protected ScriptList scripts;
 #endif    

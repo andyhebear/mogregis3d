@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using osgGISProjects;
 
 namespace WindowsFormsApplication1
 {
@@ -63,5 +64,21 @@ namespace WindowsFormsApplication1
         {
             pictureBox1.Image = _sharpMap.GetMap();
         }
+
+      
+            
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string fichero = "";
+            
+                fichero = "Test1.xml";
+            
+
+            RenderProject project = new RenderProject();
+            Project prj = XmlSerializer.loadProject(fichero);
+            project.render2d(prj, pictureBox1);
+
+        }
+        
     }
 }

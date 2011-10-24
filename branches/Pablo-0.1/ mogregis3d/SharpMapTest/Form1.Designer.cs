@@ -36,8 +36,8 @@ namespace WindowsFormsApplication1
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,49 +49,35 @@ namespace WindowsFormsApplication1
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 8);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 501);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
-
-
-            //--> Initialize the map
-            _sharpMap = new SharpMap.Map(new Size(600, 300));
-            _sharpMap.BackColor = Color.White;
-            //--> Add the countries shapefile to the map
-            SharpMap.Layers.VectorLayer placesLayer = new SharpMap.Layers.VectorLayer(DATA_NAME);
-            placesLayer.DataSource = new SharpMap.Data.Providers.ShapeFile(DATA_PATH, true);
-            _sharpMap.Layers.Add(placesLayer);
-            SharpMap.Layers.VectorLayer waterWaysLayer = new SharpMap.Layers.VectorLayer(DATA_NAME2);
-            waterWaysLayer.DataSource = new SharpMap.Data.Providers.ShapeFile(DATA_PATH2, true);
-            _sharpMap.Layers.Add(waterWaysLayer);
-            //--> Zoom the map to the entire extent
-            _sharpMap.ZoomToExtents();
-
-            placesLayer.Style.Fill = Brushes.LightGreen;
-            placesLayer.Style.EnableOutline = true;
-            placesLayer.Style.Outline = Pens.Black;
-
-            waterWaysLayer.Style.Fill = Brushes.Aqua;
-            waterWaysLayer.Style.EnableOutline = true;
-            waterWaysLayer.Style.Outline = Pens.Blue;
-
-            _sharpMap.BackColor = Color.LightBlue;
-
-            RefreshMap();
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

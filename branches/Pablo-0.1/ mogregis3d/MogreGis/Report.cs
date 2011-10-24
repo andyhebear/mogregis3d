@@ -24,154 +24,196 @@ namespace MogreGis
             STATE_ERROR = 20
         }
 
-#if TODO
-        /**
-         * Constructs a new, empty report
-         */
-        public Report();
+        #region ATRIBUTOS
+        public State ReportState
+        {
+            set
+            {
+                ReportState = value;
+            }
 
-        /**
-         * Copy constructor
-         */
-        public Report(Report rhs);
+            get
+            {
+                return ReportState;
+            }
+        }
 
-        /**
-         * Sets the name of this report.
-         *
-         * @param name
-         *      A human-readable string
-         */
-        public void setName(string name);
+        public String Name
+        {
+            set
+            {
+                Name = value;
+            }
+            get
+            {
+                return Name;
+            }
+        }
 
-        /**
-         * Gets the name of this report.
-         *
-         * @return A human-readable string
-         */
-        public string getName();
+        public ReportList SubReports
+        {
+            get
+            {
+                return SubReports;
+            }
+            private set
+            {
+                SubReports = value;
+            }
+        }
 
-        /**
-         * Updates the overall state of this report. This method will only
-         * set the new state if it is "worse" than the previous state (unless
-         * you force a state upgrade).
-         *
-         * @param state
-         *      New state to set
-         * @param force_downgrade
-         *      If true, you can override the current state with a "better"
-         *      status (e.g. go from WARNING back to OK). If false (the default),
-         *      attempts to upgrade the state are ignored. 
-         */
-        // public void setState( State state, bool force_ugprade=false );
-        public void setState(State state, bool force_ugprade);
+        public Properties ReportProperties
+        {
+            get
+            {
+                return ReportProperties;
+            }
 
-        /**
-         * Gets the overall status code of the report.
-         *
-         * @return A status code
-         */
-        public State getState();
+            private set
+            {
+                ReportProperties = value;
+            }
+        }
 
-        // statistics
+        public List<String> Messages
+        {
+            get
+            {
+                return Messages;
+            }
 
-        /**
-         * Sets the timing mode so that all the duration measurement functions
-         * return information based on aggregating sub-report data instead of
-         * local data.
-         */
-        //TODO
+            private set
+            {
+                Messages = value;
+            }
+        }
 
-        /**
-         * Stores the current time as the start time for duration measurement.
-         */
-        public void markStartTime();
+        private long firstStartTime;
+        private long startTime;
+        private long endTime;
 
-        /**
-         * Stores the current time as the end time for duration measurement.
-         */
-        public void markEndTime();
+        public List<double> Durations
+        {
+            get
+            {
+                return Durations;
+            }
 
-        /** 
-         * Gets the total duration based on the first marked start time and the last 
-         * marked end time.
-         */
-        public double getDuration();
+            private set
+            {
+                Durations = value;
+            }
+        }
+        #endregion
 
-        /**
-         * Gets the average duration. Each time you call markEndTime()
-         * a duration is stored (time from markStartTime() to markEndTime().
-         * This method returns the average of all stored durations.
-         *
-         * @return Average duration, in seconds
-         */
-        public double getAverageDuration();
+        #region CONSTRUCTORES
+        public Report()
+        {
+            ReportState = State.STATE_OK;
+            firstStartTime = 0;
+            startTime = 0;
+            endTime = 0;
+        }
 
-        /**
-         * Gets the maximum stored duration. Each time you call markEndTime()
-         * a duration is stored (time from markStartTime() to markEndTime().
-         * This method returns the maximum of all stored durations.
-         *
-         * @return Maximum duration, in seconds
-         */
-        public double getMaxDuration();
+        [System.Obsolete]
+        public Report(Report rhs)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
-        /**
-         * Gets the minimum stored duration. Each time you call markEndTime()
-         * a duration is stored (time from markStartTime() to markEndTime().
-         * This method returns the minimum of all stored durations.
-         *
-         * @return Minimum duration, in seconds
-         */
-        public double getMinDuration();
+        #region METODOS
+        #region TIMERS
+        public void markStartTime()
+        {
+            startTime = startTime = System.DateTime.Now.Ticks;
+            if (firstStartTime == 0)
+            {
+                firstStartTime = startTime;
 
-        // messages
+            }
+        }
 
-        public void notice(string msg);
+        public void markEndTime()
+        {
+            endTime = System.DateTime.Now.Ticks;
+            Durations.Add(((endTime - startTime) / 10000000));
+        }
 
-        public void warning(string msg);
+        public double getDuration()
+        {
+            double total = .0;
+            foreach (double d in Durations)
+            {
+                total += d;
+            }
+            return total;
+        }
 
-        public void error(string msg);
+        public double getAverageDuration()
+        {
+            return Durations.Count > 0 ? getDuration() / Durations.Count : 0.0;
+        }
 
-        public List<string> getMessages();
+        public double getMaxDuration()
+        {
+            double most = .0;
+            foreach (double d in Durations)
+            {
+                if (d > most)
+                {
+                    most = d;
+                }
+            }
+            return most;
+        }
 
-        // report nesting
+        public double getMinDuration()
+        {
+            double least = .0;
+            foreach (double d in Durations)
+            {
+                if (least == 0 || d < least)
+                {
+                    least = d;
+                }
+            }
+            return least;
+        }
+        #endregion
 
-        /**
-         * Gets a read-only list of and sub-reports belonging to this report.
-         *
-         * @return Read-only list of sub-reports
-         */
-        public ReportList getSubReports();
+        public void addSubReport(Report subReport)
+        {
+            SubReports.Add(subReport);
+        }
 
-        /** 
-         * Adds a sub-report under this report
-         *
-         * @param sub_report
-         *      Report to add as a sub-report to this report
-         */
-        public void addSubReport(Report sub_report);
+        public void setProperty(Property p)
+        {
+            ReportProperties.set(p);
+        }
 
-        // user-defined properties
+        public void notice(string msg)
+        {
+            string auxiliar;
+            auxiliar = "NOTICE: " + msg;
+            Messages.Add(auxiliar);
+        }
 
-        /**
-         * Sets one of the report's properties by name.
-         */
-        public void setProperty(Property prop);
+        public void warning(string msg)
+        {
+            string auxiliar;
+            auxiliar = "WARNING: " + msg;
+            Messages.Add(auxiliar);
+            ReportState = State.STATE_WARNING;
+        }
 
-        /**
-         * Gets a collection of all this report's properties.
-         */
-        public Properties getProperties();
-
-
-
-        private string name;
-        private State state;
-        private DateTime first_start_time, start_time, end_time;
-        private List<double> durations;
-        private List<string> messages;
-        private ReportList sub_reports;
-        private Properties properties;
-#endif
+        public void error(string msg)
+        {
+            string auxiliar;
+            auxiliar = "ERROR: " + msg;
+            Messages.Add(auxiliar);
+            ReportState = State.STATE_ERROR;
+        }
+        #endregion
     }
 }

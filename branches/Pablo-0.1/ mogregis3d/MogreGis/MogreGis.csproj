@@ -85,6 +85,7 @@
     <Compile Include="CollectionFilterState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Ellipsoid.cs" />
     <Compile Include="MathTransformFilter.cs" />
     <Compile Include="Feature.cs">
       <SubType>Code</SubType>
@@ -128,6 +129,7 @@
     <Compile Include="GeoShape.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Matrix4Extension.cs" />
     <Compile Include="NodeFilter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -166,6 +168,8 @@
     <Compile Include="SpatialReference.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SpatialReferenceFactory.cs" />
+    <Compile Include="SRSResource.cs" />
     <Compile Include="Tags.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Sharp3D.Math.Core;
-using SharpMapEllipsoid = SharpMap.CoordinateSystems.Ellipsoid;
+using SharpMapEllipsoid = ProjNet.CoordinateSystems.Ellipsoid;
 
 namespace MogreGis
 {
@@ -115,7 +115,7 @@ namespace MogreGis
          * @param input
          *      Input point (geocentric)
          */
-        public Matrix3D createGeocentricInvRefFrame(GeoPoint input)
+        public Mogre.Matrix4 createGeocentricInvRefFrame(GeoPoint input)
         {
             // first make the point geocentric if necessary:
             GeoPoint p = input;
@@ -132,7 +132,7 @@ namespace MogreGis
             //xyzToLatLonHeight( p.x(), p.y(), p.z(), lat_rad, lon_rad, height );
 
             double X = p.X, Y = p.Y, Z = p.Z;
-            Matrix3D localToWorld;
+            Mogre.Matrix4 localToWorld = null;
             localToWorld.makeTranslate(X, Y, Z);
 
             // normalize X,Y,Z
@@ -146,23 +146,23 @@ namespace MogreGis
             double inverse_length_XY = 1.0 / length_XY;
 
             // Vx = |(-Y,X,0)|
-            localToWorld[0, 0] = -Y * inverse_length_XY;
-            localToWorld[0, 1] = X * inverse_length_XY;
-            localToWorld[0, 2] = 0.0;
+            localToWorld[0, 0] = (float)(-Y * inverse_length_XY);
+            localToWorld[0, 1] = (float)(X * inverse_length_XY);
+            localToWorld[0, 2] = 0.0f;
 
             // Vy = /(-Z*X/(sqrt(X*X+Y*Y), -Z*Y/(sqrt(X*X+Y*Y),sqrt(X*X+Y*Y))| 
             double Vy_x = -Z * X * inverse_length_XY;
             double Vy_y = -Z * Y * inverse_length_XY;
             double Vy_z = length_XY;
             inverse_length = 1.0 / Math.Sin(Vy_x * Vy_x + Vy_y * Vy_y + Vy_z * Vy_z);
-            localToWorld[1, 0] = Vy_x * inverse_length;
-            localToWorld[1, 1] = Vy_y * inverse_length;
-            localToWorld[1, 2] = Vy_z * inverse_length;
+            localToWorld[1, 0] = (float)(Vy_x * inverse_length);
+            localToWorld[1, 1] = (float)(Vy_y * inverse_length);
+            localToWorld[1, 2] = (float)(Vy_z * inverse_length);
 
             // Vz = (X,Y,Z)
-            localToWorld[2, 0] = X;
-            localToWorld[2, 1] = Y;
-            localToWorld[2, 2] = Z;
+            localToWorld[2, 0] = (float)X;
+            localToWorld[2, 1] = (float)Y;
+            localToWorld[2, 2] = (float)Z;
 
             return localToWorld;
         }
