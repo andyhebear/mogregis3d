@@ -130,12 +130,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Matrix4Extension.cs" />
+    <Compile Include="MatrixTransform.cs" />
     <Compile Include="NodeFilter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NodeFilterState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SharpMapSpatialReference.cs" />
+    <Compile Include="SharpMapSpatialReferenceFactory.cs" />
     <Compile Include="OptimizerHints.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -176,6 +179,7 @@
     <Compile Include="TransformFilter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Wgs84ConversionInfoExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

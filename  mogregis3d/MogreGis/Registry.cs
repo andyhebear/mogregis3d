@@ -23,14 +23,15 @@ namespace MogreGis
          * si no se deberia hacer como con los resources, que fueran ellos los que se fueran añadiendo
          * ellos mismos.
          */
-#if TODO_PH
         static Registry()
         {
+#if TODO_PH
             Registry.instance().addFilterType(MathTransformFilter.getStaticFilterType(), MathTransformFilter.getFilterFactory());
             Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());
             Registry.instance().addFilterType(AreaFilter.getStaticFilterType(), AreaFilter.getFilterFactory());
-        }
 #endif
+            Registry.instance().addFilterType(TransformFilter.getStaticFilterType(), TransformFilter.getFilterFactory() );
+        }
 
         /**
          * Gets the singleton registry instance.
@@ -116,7 +117,7 @@ namespace MogreGis
         {
             return spatial_ref_factory;
         }
-#if TODO
+
         /** 
          * Sets the interface for creating spatial reference systems.
          * You can call this to replace the default implememtation with
@@ -130,6 +131,7 @@ namespace MogreGis
             spatial_ref_factory = _factory;
         }
 
+#if TODO   
         /**
          * Gets the interface for creating feature store connections.
          *
@@ -323,14 +325,16 @@ namespace MogreGis
          */
         //SpatialIndex* getOrCreateSpatialIndex( FeatureStore* store );
 
-
+#endif
         private Registry()
         {
-            setSRSFactory(new OGR_SpatialReferenceFactory());
+            setSRSFactory(new SharpMapSpatialReferenceFactory());
+#if TODO_PH
             setFeatureStoreFactory(new DefaultFeatureStoreFactory());
             setRasterStoreFactory(new DefaultRasterStoreFactory());
+#endif
         }
-
+#if TODO_PH
         private FeatureStoreFactory feature_store_factory;
         private RasterStoreFactory raster_store_factory;
 #endif

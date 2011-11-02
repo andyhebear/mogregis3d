@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpMap.Geometries;
+using ProjNet.CoordinateSystems.Transformations;
 
 namespace MogreGis
 {
@@ -81,6 +83,7 @@ namespace MogreGis
 
         private SpatialReference workingSrs;
 
+        private Mogre.Matrix4 matrix;
         public Mogre.Matrix4 Matrix
         {
             /**
@@ -93,7 +96,7 @@ namespace MogreGis
             */
             set
             {
-                Matrix = value;
+                matrix = value;
             }
 
             /**
@@ -104,10 +107,11 @@ namespace MogreGis
              */
             get
             {
-                return Matrix;
+                return matrix;
             }
         }
 
+        private SpatialReference srs;
         public SpatialReference Srs
         {
             /**
@@ -118,7 +122,7 @@ namespace MogreGis
              */
             set
             {
-                Srs = value;
+                srs = value;
             }
             /**
              * Gets the spatial reference sytem into which the filter will reproject
@@ -129,10 +133,11 @@ namespace MogreGis
              */
             get
             {
-                return Srs;
+                return srs;
             }
         }
 
+        private Boolean useTerrainSrs;
         public Boolean UseTerrainSrs
         {
             /**
@@ -141,7 +146,7 @@ namespace MogreGis
              */
             set
             {
-                UseTerrainSrs = value;
+                useTerrainSrs = value;
             }
             /**
              * Gets whether the filter should use the terrain SRS (as reported by the
@@ -149,10 +154,11 @@ namespace MogreGis
              */
             get
             {
-                return UseTerrainSrs;
+                return useTerrainSrs;
             }
         }
 
+        private Boolean localize;
         public Boolean Localize
         {
             /**
@@ -166,7 +172,7 @@ namespace MogreGis
              */
             set
             {
-                Localize = value;
+                localize = value;
             }
 
             /**
@@ -177,14 +183,17 @@ namespace MogreGis
              */
             get
             {
-                return Localize;
+                return localize;
             }
         }
         #endregion
 
         #region METODOS
-        //Script functions
 
+        public static FilterFactory getFilterFactory() { return new FilterFactoryImpl<TransformFilter>(); }
+
+        //Script functions
+        private Script srsScript;
         public Script SrsScript
         {
             /**
@@ -196,7 +205,7 @@ namespace MogreGis
              */
             set
             {
-                SrsScript = value;
+                srsScript = value;
             }
 
             /**
@@ -207,10 +216,11 @@ namespace MogreGis
              */
             get
             {
-                return SrsScript;
+                return srsScript;
             }
         }
 
+        private Script translateScript;
         public Script TranslateScript
         {
             /**
@@ -222,7 +232,7 @@ namespace MogreGis
              */
             set
             {
-                TranslateScript = value;
+                translateScript = value;
             }
 
             /**
@@ -231,7 +241,7 @@ namespace MogreGis
              */
             get
             {
-                return TranslateScript;
+                return translateScript;
             }
         }
 
@@ -257,19 +267,24 @@ namespace MogreGis
             }
             if (workingSrs != null || (workingMatrix != null && workingMatrix != Mogre.Matrix4.IDENTITY))
             {
-                foreach (GeoShape shape in input.getShapes())
-                {
-                    if (workingMatrix != null && !workingMatrix.Equals(Mogre.Matrix4.IDENTITY))
-                    {
+                //TODO foreach (Geometry shape in input.getGeometry())
+                //{
+                //    if (workingMatrix != null && !workingMatrix.Equals(Mogre.Matrix4.IDENTITY))
+                //    {
 
-                        XformVisitor visitor = new XformVisitor();
-                        visitor.mat = workingMatrix;
-                        shape.accept(visitor);
-                    }
-                    if (workingSrs != null && !(workingSrs.equivalentTo(env.getInputSRS())))
-                    {
-                        workingSrs.transformInPlace(shape);
-                    }
+                //        XformVisitor visitor = new XformVisitor();
+                //        visitor.mat = workingMatrix;
+                //        shape.accept(visitor);
+                //    }
+                //    if (workingSrs != null && !(workingSrs.equivalentTo(env.getInputSRS())))
+                //    {
+                //        workingSrs.transformInPlace(shape);
+                //    }
+                //}
+                //TODO if (workingSrs != null && !(workingSrs.equivalentTo(env.getInputSRS())))
+                {
+                   GeometryTransform.TransformGeometry(input.getGeometry(), ((SharpMapSpatialReference)workingSrs).MathTransform);
+                    // workingSrs.transformInPlace(input.getGeometry());
                 }
             }
             output.Add(input);
@@ -349,7 +364,7 @@ namespace MogreGis
             return base.process(input, env);
         }
 
-        public void SetProperty(Property p)
+        public override void setProperty(Property p)
         {
             if (p.getName() == "localize")
             {
@@ -512,7 +527,12 @@ GeomUtils::clampToTerrain( const GeoPoint& input, osg::Node* terrain, SpatialRef
             return new TransformFilter(this);
         }
 
-        override public string getFilterType()
+        public static string getStaticFilterType()
+        {
+            return "TRANSFORMFILTER";
+        }
+
+        public override string getFilterType()
         {
             return "TRANSFORMFILTER";
         }

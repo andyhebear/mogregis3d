@@ -227,6 +227,13 @@ namespace MogreGis
 
     public class Resource : ObjectWithTags
     {
+
+        private string baseUri;
+        private string uri;
+        private string name;
+        private bool singleUse;
+        private Object sincronizedFlag;
+
         public string Name
         {
             /**
@@ -234,7 +241,7 @@ namespace MogreGis
              */
             get
             {
-                return Name;
+                return name;
             }
 
             /**
@@ -242,7 +249,7 @@ namespace MogreGis
              */
             set
             {
-                Name = value;
+                name = value;
             }
         }
 
@@ -256,7 +263,7 @@ namespace MogreGis
              */
             get
             {
-                return Uri;
+                return uri;
             }
 
             /**
@@ -265,7 +272,7 @@ namespace MogreGis
              */
             set
             {
-                Uri = value;
+                uri = value;
                 cachedAbsPath = "";
             }
         }
@@ -277,7 +284,7 @@ namespace MogreGis
              */
             set
             {
-                BaseUri = value;
+                baseUri = value;
                 cachedAbsPath = "";
             }
 
@@ -286,7 +293,7 @@ namespace MogreGis
              */
             get
             {
-                return BaseUri;
+                return baseUri;
             }
         }
 
@@ -302,7 +309,7 @@ namespace MogreGis
              */
             get
             {
-                return SingleUse;
+                return singleUse;
             }
 
             /**
@@ -311,7 +318,7 @@ namespace MogreGis
              */
             set
             {
-                SingleUse = value;
+                singleUse = value;
             }
         }
 
@@ -325,7 +332,7 @@ namespace MogreGis
             {
                 if (SincronizedFlag == null)
                 {
-                    SincronizedFlag = new Object();
+                    sincronizedFlag = new Object();
                     ownsMutex = true;
                 }
                 return SincronizedFlag;
@@ -333,7 +340,7 @@ namespace MogreGis
 
             set
             {
-                SincronizedFlag = value;
+                sincronizedFlag = value;
                 ownsMutex = false;
             }
         }
