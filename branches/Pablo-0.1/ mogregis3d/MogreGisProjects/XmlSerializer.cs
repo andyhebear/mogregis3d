@@ -388,7 +388,10 @@ namespace osgGISProjects
                     }
 
                     resource.addTag(e.GetAttribute("tags"));
-                    resource.Uri = e.GetElementsByTagName("uri")[0].InnerText;
+                    XmlNodeList listuri = e.GetElementsByTagName("uri");
+                    if (listuri.Count > 0)
+                        resource.Uri = listuri[0].InnerText;
+
 
                     XmlNodeList prop_els = e.GetElementsByTagName("property");
                     foreach (XmlNode k in prop_els)

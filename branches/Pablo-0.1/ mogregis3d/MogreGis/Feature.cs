@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using SharpMap.Data;
 using MogreGis;
+using SharpMap.Geometries;
 
 namespace MogreGis
 {
@@ -45,7 +46,7 @@ namespace MogreGis
          * @return Immutable list of shapes
          */
         public GeoShapeList getShapes() { throw new NotImplementedException(); }
-
+        public Geometry getGeometry() { return this.row.Geometry; }
 
         /**
          * Checks whether the feature has at least one point in its shape set.

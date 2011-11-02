@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Sharp3D.Math.Core;
 using ProjNet.CoordinateSystems;
+using SharpMap.Geometries;
 
 namespace MogreGis
 {
@@ -172,7 +173,7 @@ namespace MogreGis
          *      True upon success, false upon failure.
          */
         public abstract bool transformInPlace(GeoShape input);
-
+        public abstract bool transformInPlace(Geometry input);
         /**
          * Transforms an extent into this srs.
          *

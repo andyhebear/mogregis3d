@@ -30,3 +30,8 @@ C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\Sharp
 C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Sharp3D.Math.xml
 C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\Test1.xml
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\WindowsFormsApplication1.exe.manifest
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\bin\Debug\WindowsFormsApplication1.application
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\WindowsFormsApplication1.TrustInfo.xml
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\WindowsFormsApplication1.exe.manifest
+C:\Users\Pablo\Desktop\Proyecto\Repositorio\branches\Pablo-0.1\ mogregis3d\SharpMapTest\obj\x86\Debug\WindowsFormsApplication1.application

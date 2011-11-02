@@ -18,6 +18,7 @@ namespace osgGISProjects
             terrains = new TerrainList();
 
             graphs = new FilterGraphList();
+            resources = new ResourceList();
         }
 
         public void setSourceURI(string value)
@@ -35,6 +36,7 @@ namespace osgGISProjects
 #if TODO_DANI
             return osgDB.getFilePath(source_uri);
 #endif
+            return source_uri;
             return Path.GetFullPath(source_uri);
         }
 
