@@ -399,6 +399,12 @@ namespace MogreGis
 #endif
         #endregion
 
+        public ResourceLibrary()
+        {
+            srsList = new SRSResourceVec();
+            sincronizeFlag = new Object();
+        }
+
         #region ATRIBUTOS
         private SRSResourceVec srsList;
         private Object sincronizeFlag;

@@ -283,7 +283,8 @@ namespace MogreGis
                 //}
                 //TODO if (workingSrs != null && !(workingSrs.equivalentTo(env.getInputSRS())))
                 {
-                   GeometryTransform.TransformGeometry(input.getGeometry(), ((SharpMapSpatialReference)workingSrs).MathTransform);
+                   Geometry temp =  GeometryTransform.TransformGeometry(input.getGeometry(), ((SharpMapSpatialReference)workingSrs).MathTransform);
+                   input.setGeometry(temp);
                     // workingSrs.transformInPlace(input.getGeometry());
                 }
             }
@@ -303,23 +304,28 @@ namespace MogreGis
                     //failing that, see if we have an SRS in a resource:
                     if (Srs == null && SrsScript != null)
                     {
+                        //Console.WriteLine("Borrame" + SrsScript.getCode());
+                        Srs = env.getSession().Resources.getSRS(SrsScript.getCode());
+#if TODO_PH
                         ScriptResult r = env.getScriptEngine().run(SrsScript, env);
                         if (r.isValid())
                         {
-#if TODO_PH
+
                             Srs = (env.getSession().Resources.getSRS(r.asString()));
-#endif
+
                             throw new NotImplementedException();
-                        }
+
+                    }
                         else
                         {
                             env.getReport().error(r.asString());
                         }
+#endif
                     }
                     newOutSrs = Srs;
                 }
                 //set the "working" SRS that will be used for all features passing though this filter:
-                workingSrs = newOutSrs == null ? newOutSrs : env.getInputSRS();
+                workingSrs = newOutSrs != null ? newOutSrs : env.getInputSRS();
 
                 //LOCALIZE points arround a local origin (the working extent's centroid)
                 if (workingSrs != null && Localize)
