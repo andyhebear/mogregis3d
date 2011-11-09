@@ -61,7 +61,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>nggOrdnBQVwSCcm3r3OSll2WCfk=</dsig:DigestValue>
+        <dsig:DigestValue>T1lmEqTIjUP/YJFriXlL3+G7D/Q=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -78,26 +78,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MogreGis.dll" size="68096">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MogreGis.dll" size="73216">
       <assemblyIdentity name="MogreGis" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>bS7Fhkfb579bLkETTyuYnVB3P58=</dsig:DigestValue>
+        <dsig:DigestValue>pwShJn7uJFnx3JV9UREyJQ4CYQM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MogreGisProjects.dll" size="20480">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MogreGisProjects.dll" size="20992">
       <assemblyIdentity name="MogreGisProjects" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>JQcSUg/Pea38MNX5VASAisH4gBw=</dsig:DigestValue>
+        <dsig:DigestValue>uYKN9rssHYyu8yCA9+yUu394luk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -145,17 +145,17 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>ppEJLCRWjp5lYHjgqKC37F0SpBM=</dsig:DigestValue>
+        <dsig:DigestValue>Wximez3Y6ih4WPjSTLUIvRxY5O8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Test1.xml" size="1447" writeableType="applicationData">
+  <file name="Test1.xml" size="2776" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>ZKf375uGztOqL6XbnJic+lMlWME=</dsig:DigestValue>
+      <dsig:DigestValue>HFFgcE+INiYR0ozRyu5vUOA3ogc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="WindowsFormsApplication1.exe.config" size="186">

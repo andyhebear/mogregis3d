@@ -47,6 +47,7 @@ namespace MogreGis
          */
         public GeoShapeList getShapes() { throw new NotImplementedException(); }
         public Geometry getGeometry() { return this.row.Geometry; }
+        public void setGeometry(Geometry geo) {  this.row.Geometry = geo; } //TODO : Quitar....!!!!
 
         /**
          * Checks whether the feature has at least one point in its shape set.

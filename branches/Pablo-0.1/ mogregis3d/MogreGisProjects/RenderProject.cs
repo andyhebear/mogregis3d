@@ -58,9 +58,15 @@ namespace osgGISProjects //cambiar namespace a MogreGisProjects ???
                     foreach (FeatureFilter filter in graph.getFilters())
                     {
                         //aplicar filtro segun el tipo
-                        //FilterEnv env = new FilterEnv();
+                        Mogre.DefaultSceneManagerFactory dsmf = new DefaultSceneManagerFactory();
+                        Mogre.SceneManager sm = dsmf.CreateInstance("scenemanager");
+                        FilterEnv env = new FilterEnv(sm, "env");
+                        foreach (MogreGis.Resource resource in project.getResources())
+                        {
+                            env.getSession().Resources.addResource(resource);
+                        }
                         FeatureList list = Feature.DataTableToList(features);
-                        filter.process(list, null);
+                        filter.process(list, env);
                         //falta devolver la lista y procesarla ***************************************
                     }
                 }

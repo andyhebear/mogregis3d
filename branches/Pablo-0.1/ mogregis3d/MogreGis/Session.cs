@@ -170,7 +170,6 @@ namespace MogreGis
     public class Session
     {
 #if TODO_PH
-        #region ATRIBUTOS
         public ScriptList Scripts
         {
             /**
@@ -182,7 +181,9 @@ namespace MogreGis
                 throw new NotImplementedException();
             }
         }
+#endif
 
+        private ResourceLibrary resources;
         public ResourceLibrary Resources
         {
             /**
@@ -191,10 +192,15 @@ namespace MogreGis
              */
             get
             {
-                throw new NotImplementedException();
+                return resources;
             }
         }
 
+        public Session()
+        {
+            resources = new ResourceLibrary();
+        }
+#if TODO_PH
         private Properties properties;
 
         private ResourceList ResourcesUsed;
@@ -206,7 +212,6 @@ namespace MogreGis
         public void setProperty(Property prop);
 
         public Object sincronizedFlag{get; set;}
-        #endregion
 
         /**
          * Constructs a new session
