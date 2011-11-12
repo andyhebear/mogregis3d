@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BruTile.dll" size="62976">
-      <assemblyIdentity name="BruTile" version="0.4.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BruTile.dll" size="66048">
+      <assemblyIdentity name="BruTile" version="0.5.1.0" publicKeyToken="00E75FD79E391F40" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>g7kpQKAw91w6PiVaamqU0P47iSU=</dsig:DigestValue>
+        <dsig:DigestValue>5Xnu5oB93DVXqFPflFpqT8/qrJY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -85,7 +85,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>pwShJn7uJFnx3JV9UREyJQ4CYQM=</dsig:DigestValue>
+        <dsig:DigestValue>0GEH0xrRGt+WOYk8U6Vg1V3DApw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -97,12 +97,12 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>uYKN9rssHYyu8yCA9+yUu394luk=</dsig:DigestValue>
+        <dsig:DigestValue>C9K2NLg5g/tM3Axlypf2L80fHYs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProjNET.dll" size="81920">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProjNet.dll" size="81920">
       <assemblyIdentity name="ProjNet" version="1.2.3882.19088" publicKeyToken="A1F5BDCD9C6F5740" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
@@ -126,14 +126,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SharpMap.dll" size="296960">
-      <assemblyIdentity name="SharpMap" version="0.9.3946.23110" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SharpMap.dll" size="429568">
+      <assemblyIdentity name="SharpMap" version="0.9.4331.19202" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>I8CVQWA5TWtyc+QINvv3v/L8a6Y=</dsig:DigestValue>
+        <dsig:DigestValue>cg0/4rVk9KPf4tKSnf0ICMdRlyU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -145,7 +145,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Wximez3Y6ih4WPjSTLUIvRxY5O8=</dsig:DigestValue>
+        <dsig:DigestValue>pzMarhgxXLYs+gwil1pHx2JHO7o=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

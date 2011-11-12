@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreExampleApp", "MogreExa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpMapTest", "SharpMapTest\SharpMapTest.csproj", "{417B5C08-7C63-4479-B140-0740AAFE4B24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpMapExample", "SharpMapExample\SharpMapExample.csproj", "{1214641D-583B-421C-9515-DD19299D3756}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,26 @@ Global
 		{417B5C08-7C63-4479-B140-0740AAFE4B24}.ReleaseDSProjection|Mixed Platforms.Build.0 = Release|x86
 		{417B5C08-7C63-4479-B140-0740AAFE4B24}.ReleaseDSProjection|x86.ActiveCfg = Release|x86
 		{417B5C08-7C63-4479-B140-0740AAFE4B24}.ReleaseDSProjection|x86.Build.0 = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Debug|x86.ActiveCfg = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Debug|x86.Build.0 = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.DebugDSProjection|Any CPU.ActiveCfg = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.DebugDSProjection|Mixed Platforms.ActiveCfg = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.DebugDSProjection|Mixed Platforms.Build.0 = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.DebugDSProjection|x86.ActiveCfg = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.DebugDSProjection|x86.Build.0 = Debug|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Release|Any CPU.ActiveCfg = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Release|Mixed Platforms.Build.0 = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Release|x86.ActiveCfg = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.Release|x86.Build.0 = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.ReleaseDSProjection|Any CPU.ActiveCfg = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.ReleaseDSProjection|Mixed Platforms.ActiveCfg = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.ReleaseDSProjection|Mixed Platforms.Build.0 = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.ReleaseDSProjection|x86.ActiveCfg = Release|x86
+		{1214641D-583B-421C-9515-DD19299D3756}.ReleaseDSProjection|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
