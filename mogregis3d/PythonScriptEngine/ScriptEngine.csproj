@@ -39,19 +39,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IronPython">
-      <HintPath>..\..\Libs\IronPython.dll</HintPath>
+      <HintPath>..\Libs\IronPython\IronPython.dll</HintPath>
     </Reference>
     <Reference Include="IronPython.Modules">
-      <HintPath>..\..\Libs\IronPython.Modules.dll</HintPath>
+      <HintPath>..\Libs\IronPython\IronPython.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\..\Libs\Microsoft.Dynamic.dll</HintPath>
+      <HintPath>..\Libs\IronPython\Microsoft.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting">
-      <HintPath>..\..\Libs\Microsoft.Scripting.dll</HintPath>
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting.Metadata">
-      <HintPath>..\..\Libs\Microsoft.Scripting.Metadata.dll</HintPath>
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
