@@ -18,7 +18,7 @@ namespace MogreGis
          */
         public GeoPoint()
         {
-            spatialReference = null;
+            SpatialReference = null;
             dim = 0;
         }
 
@@ -28,8 +28,17 @@ namespace MogreGis
         [System.Obsolete]
         public GeoPoint(GeoPoint p)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();    
         }
+
+        //public static explicit operator GeoPoint(SharpMap.Geometries.Point p)
+        //{
+        //    if (p is GeoPoint)
+        //        return (GeoPoint)p;
+        //    else if (p is SharpMap.Geometries.Point3D)
+        //        return new GeoPoint(p.X, p.Y, (p as SharpMap.Geometries.Point3D).Z, (SpatialReference)p.SpatialReference);
+        //    return new GeoPoint(p.X, p.Y, (SpatialReference)p.SpatialReference);
+        //}
 
         /**
          * Creates a new 2D georeferenced point.
@@ -41,7 +50,7 @@ namespace MogreGis
         public GeoPoint(Vector2D input, SpatialReference srs)
             : base(input.X, input.Y, 0)
         {
-            spatialReference = srs;
+            this.SpatialReference = srs;
             dim = 2;
         }
 
@@ -55,7 +64,7 @@ namespace MogreGis
         public GeoPoint(Vector3D input, SpatialReference srs)
             : base(input.X, input.Y, input.Z)
         {
-            spatialReference = srs;
+            this.SpatialReference = srs;
             dim = 3;
         }
 
@@ -69,7 +78,7 @@ namespace MogreGis
         public GeoPoint(double x, double y, SpatialReference srs)
             : base(x, y, 0)
         {
-            spatialReference = srs;
+            this.SpatialReference = srs;
             dim = 2;
         }
 
@@ -83,7 +92,7 @@ namespace MogreGis
         public GeoPoint(double x, double y, double z, SpatialReference srs)
             : base(x, y, z)
         {
-            spatialReference = srs;
+            this.SpatialReference = srs;
             dim = 3;
         }
         #endregion
@@ -94,7 +103,7 @@ namespace MogreGis
          */
         public bool isValid()
         {
-            return dim > 0 && spatialReference != null;
+            return dim > 0 && this.SpatialReference != null;
         }
 
         /**
@@ -119,7 +128,7 @@ namespace MogreGis
          */
         public SpatialReference getSRS()
         {
-            return spatialReference;
+            return (SpatialReference)this.SpatialReference;
         }
 
         /**
@@ -181,7 +190,7 @@ namespace MogreGis
 
         public void setSpatialReference(SpatialReference sr)
         {
-            spatialReference = sr;
+            this.SpatialReference = sr;
         }
 
         public void set(float x, float y, float z)
@@ -196,7 +205,7 @@ namespace MogreGis
 
         #region ATRIBUTOS
         private int dim;
-        private SpatialReference spatialReference;
+        //private SpatialReference spatialReference;
         #endregion
     }
     #endregion

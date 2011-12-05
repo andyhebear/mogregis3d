@@ -17,7 +17,7 @@ namespace MogreGis
     public class Script
     {
 
-
+#if ANTIGUO
         /**
          * Constructs a new, empty script.
          */
@@ -253,5 +253,47 @@ namespace MogreGis
         private ReturnType type;
         private bool valid;
         private Property prop;
+#endif
+        public Script(string name, string language, string code)
+        {
+            this.name = name;
+            this.language = language;
+            this.code = code;
+        }
+
+        public Script(string code)
+        {
+            this.code = code;
+        }
+
+        private string name;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private string language;
+
+        public string Language
+        {
+            get { return language; }
+            set { language = value; }
+        }
+        private string code;
+
+        public string Code
+        {
+            get { return code; }
+            set { code = value; }
+        }
+
+        [System.Obsolete]
+        public string getCode()
+        {
+            return Code;
+        }
     }
+
+    public class ScriptList : List<Script> {}
 }

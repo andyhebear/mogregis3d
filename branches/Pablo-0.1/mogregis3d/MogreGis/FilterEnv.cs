@@ -267,7 +267,7 @@ namespace MogreGis
          *
          * @param engine A scripting engine
          */
-        public void setScriptEngine(ScriptEngine engine)
+        public void setScriptEngine(IScriptEngine engine)
         {
             script_engine = engine;
         }
@@ -277,7 +277,7 @@ namespace MogreGis
          *
          * @return A scripting engine
          */
-        public ScriptEngine getScriptEngine()
+        public IScriptEngine getScriptEngine()
         {
 #if TODO_PH
             if (script_engine == null && session != null)
@@ -344,7 +344,7 @@ namespace MogreGis
 #if TODO
         private SmartReadCallback terrain_read_cb;
 #endif
-        private ScriptEngine script_engine;
+        private IScriptEngine script_engine;
         private Session session;
         private Report report;
         private ResourceCache resource_cache;
