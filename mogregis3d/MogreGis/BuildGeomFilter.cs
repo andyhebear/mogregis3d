@@ -21,7 +21,7 @@ namespace MogreGis
         public override string getFilterType() { return getStaticFilterType(); }
         public override Filter clone() { return new BuildGeomFilter(this); }
         public new static string getStaticFilterType() { return "BuildGeomFilter"; }
-        public new static FilterFactory getFilterFactory() { return new FilterFactoryImpl<BuildGeomFilter>(); }     
+        public new static FilterFactory getFilterFactory() { return new FilterFactoryImpl<BuildGeomFilter>(); }
 
 
         /**
@@ -31,6 +31,10 @@ namespace MogreGis
         {
             overall_color = new Vector4D(1, 1, 1, 1);
             setRasterOverlayMaxSize(DEFAULT_RASTER_OVERLAY_MAX_SIZE);
+
+            //DefineResources();
+            //InitializeResources();
+
         }
 
         /**
@@ -200,7 +204,7 @@ namespace MogreGis
             return nameMaterial;
         }
 
-        public string Scale
+        public Script Scale
         {
             set
             {
@@ -213,28 +217,47 @@ namespace MogreGis
             }
         }
 
+        public Script coordScale;
+        public Script CoordScale
+        {
+            set
+            {
+                this.coordScale = value;
+            }
+
+            get
+            {
+                return coordScale;
+            }
+        }
+
+
         // Filter overrides    
         public override void setProperty(Property prop)
         {
-            /*if (prop.getName() == "color")
+            if (prop.getName() == "color")
                 setColorScript(new Script(prop.getValue()));
             else if (prop.getName() == "raster_overlay")
                 setRasterOverlayScript(new Script(prop.getValue()));
             else if (prop.getName() == "raster_overlay_max_size")
                 setRasterOverlayMaxSize(prop.getIntValue(DEFAULT_RASTER_OVERLAY_MAX_SIZE));
             else if (prop.getName() == "feature_name")
-                setFeatureNameScript(new Script(prop.getValue()));*/
-
-            if (prop.getName() == "nameEntityINI")
+                setFeatureNameScript(new Script(prop.getValue()));
+            else if (prop.getName() == "pointNameEntityINI")
                 setNameEntityINI(prop.getValue());
-            else if (prop.getName() == "nameEntities")
+            else if (prop.getName() == "pointNameEntities")
                 setNameEntities(prop.getValue());
             else if (prop.getName() == "nameMaterial")
                 setNameMaterial(prop.getValue());
-            else if (prop.getName() == "scale")
+            else if (prop.getName() == "pointEntityScale")
             {
-                string s = prop.getValue().Substring(1, (prop.getValue().Length)-2);
-                Scale = s;
+                //string s = prop.getValue().Substring(1, (prop.getValue().Length) - 2);
+                //Scale = s;
+                Scale = new Script(prop.getValue());
+            }
+            else if (prop.getName() == "distancesScale")
+            {
+                CoordScale = new Script(prop.getValue());
             }
 
             base.setProperty(prop);
@@ -265,28 +288,22 @@ namespace MogreGis
             int i = 0;
 
             SceneNode nodeIni = point3d(env.getName(), i, 0, 0, 0, null, env.getSceneMgr());
-
+#if ESCALA_NODO_INICIAL
+            if (Scale != null)
+            {
+                nodeIni.SetScale(Registry.instance().GetEngine("Python").run(Scale).asVec3());
+            }
+            if (coordScale != null)
+            {
+                Vector3 vec3 = Registry.instance().GetEngine("Python").run(Scale).asVec3();
+                nodeIni.SetPosition(nodeIni.Position.x * vec3.x, nodeIni.Position.y * vec3.y, nodeIni.Position.z * vec3.z);
+#if TRACE_BUILDGEOMFILTER
+                        System.Console.WriteLine("(" + n.Position.x + "," + n.Position.y + ")");
+#endif
+            }
+#endif
             Fragment fIni = new Fragment(nodeIni);
             output.Add(fIni);
-
-            //PRUEBA ESCALA
-            Int64 min = 999999;
-            Int64 max = 0;
-
-            int pos = 0;
-            /*
-            foreach (Feature feature in input)
-            {
-                if (min > (Int64)feature.row.ItemArray[1])
-                {
-                    min = (Int64)feature.row.ItemArray[1];
-                }
-                if (max < (Int64)feature.row.ItemArray[1])
-                {
-                    max = (Int64)feature.row.ItemArray[1];
-                }
-            }*/
-            //PRUEBA ESCALA
 
             foreach (Feature feature in input)
             {
@@ -298,24 +315,18 @@ namespace MogreGis
                     i++;
                     SceneNode n = point3d(env.getName(), i, (float)p.X, (float)p.Y, 0, nodeIni, env.getSceneMgr());
 
-                    if (feature.row.Table.Columns.Contains(Scale) == true)
+                    if (Scale != null)
                     {
-                        pos = feature.row.Table.Columns.IndexOf(Scale);
-
-                        max = (Int64)feature.row.ItemArray[pos] / 208040;
-
-                        if (max > 3)
-                        {
-                            max = max / 3;
-                        }
-
-                        n.Scale(0.5f, max, 0.5f);
+                        n.SetScale(Registry.instance().GetEngine("Python").run(Scale).asVec3());
                     }
-
-                    //max = (Int64)feature.row.ItemArray[1] / min;
-                    
-                    //n.SetScale(1, 1, 1);
-                    //n.SetPosition(n.Position.x, 0, n.Position.z);
+                    if (coordScale != null)
+                    {
+                        Vector3 vec3 = Registry.instance().GetEngine("Python").run(Scale).asVec3();
+                        n.SetPosition(n.Position.x * vec3.x, n.Position.y * vec3.y, n.Position.z * vec3.z);
+#if TRACE_BUILDGEOMFILTER
+                        System.Console.WriteLine("(" + n.Position.x + "," + n.Position.y + ")");
+#endif
+                    }
 
                     Fragment f = new Fragment(n);
                     output.Add(f);
@@ -332,7 +343,7 @@ namespace MogreGis
                     {
                         polygonNode = env.getSceneMgr().CreateManualObject(env.getName() + "Node_" + i);
                         MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon",
-                                 ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                                     ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
                         material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                        (int)TrackVertexColourEnum.TVC_AMBIENT;
 
@@ -347,7 +358,7 @@ namespace MogreGis
                         Glu.gluTessBeginPolygon(null);
                         Glu.gluTessBeginContour();
 
-                        int numVertices = polygon.ExteriorRing.NumPoints;
+                        int numVertices = polygon.ExteriorRing.NumPoints/10+1;
                         int numValores = 3;
                         double[][] data = new double[numVertices][];
 
@@ -360,24 +371,28 @@ namespace MogreGis
                         //1 polygon = N vertices
                         foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
                         {
-
-                            data[k][0] = point.X;
-                            data[k][1] = point.Y;
-                            data[k][2] = 0;
-
+                            if (k % 10 == 0)
+                            {
+                                data[k/10][0] = point.X;
+                                data[k/10][1] = point.Y;
+                                data[k/10][2] = 0;
+                            }
                             k++;
 
-                            //SceneNode n = point3d(env.getName(), i, (float)point.X, (float)point.Y, 0, nodeIni, env.getSceneMgr());
+                            //SceneNode n = point3d(env.getName(), k + 10, (float)point.X * 10.0f, (float)point.Y * 10.0f, 0, nodeIni, env.getSceneMgr());
 
-                        }
+                        } 
                         for (int j = 0; j < data.GetLength(0); j++)
                         {
-                            Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * 51.0f, ((float)data[j][2]) * 51.0f, ((float)data[j][0]) * 51.0f));
+                            Glu.gluTessVertex(data[j], 0, new Vector3((float)(data[j][1] * 1.0), (float)(data[j][2] * 1.0), (float)(data[j][0] * 1.0)));
                         }
 
                         Glu.gluTessEndContour();
                         Glu.gluTessNormal(0, 0, 1);
                         Glu.gluTessEndPolygon();
+
+                        //polygonNode.SetMaterialName((uint)0, nameMaterial);
+                       // polygonNode.Begin(nameMaterial);
 
                         nodeIni.AttachObject(polygonNode);
 
@@ -440,14 +455,18 @@ namespace MogreGis
                             }
                             for (int j = 0; j < data.GetLength(0); j++)
                             {
-                                Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * 51.0f, ((float)data[j][2]) * 51.0f, ((float)data[j][0]) * 51.0f));
+                                Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * 1.0f, ((float)data[j][2]) * 1.0f, ((float)data[j][0]) * 1.0f));
                             }
 
                             Glu.gluTessEndContour();
                             Glu.gluTessNormal(0, 0, 1);
                             Glu.gluTessEndPolygon();
 
+                            polygonNode.SetMaterialName((uint)0, nameMaterial);
+                            polygonNode.Begin(nameMaterial);
+
                             nodeIni.AttachObject(polygonNode);
+                            
 
                         }
                         i++;
@@ -459,7 +478,7 @@ namespace MogreGis
                     Fragment f = new Fragment(nodeIni);
                     output.Add(f);
                 }
-                
+
             }
 
             i = 0;//breakpoint
@@ -484,7 +503,7 @@ namespace MogreGis
             }
 
             return base.process(input, env);
-#endif 
+#endif
             //throw new NotImplementedException();
 
             if (successor != null)
@@ -510,23 +529,21 @@ namespace MogreGis
             Entity ent;
             if (node == null)//point of reference 0,0,0
             {
-                ent = sceneMgr.CreateEntity(name + "INI", getNameEntityINI());
-                node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + "NodeINI", new Vector3(y, z, x));
+                ent = sceneMgr.CreateEntity(name + id, getNameEntityINI());
+                node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + id + "Node", new Vector3(y, z, x));
                 node.AttachObject(ent);
                 return node;
             }
             else//create new point
             {
-                float xAux = 0.0F;
-                float yAux = 0.0F;
+                float xAux = x;
+                float yAux = y;
+
                 SceneNode nodeAux;
-
-                xAux = x * 51.0f; //longitud eje X
-                yAux = y * 51.0f; //latitud eje Y
-
+                
                 ent = sceneMgr.CreateEntity(name + id, getNameEntities());
-                ent.SetMaterialName(getNameMaterial());
                 nodeAux = node.CreateChildSceneNode(name + "Node_" + id, new Vector3(yAux, z, xAux));
+
                 nodeAux.AttachObject(ent);
                 return nodeAux;
             }
@@ -567,12 +584,16 @@ namespace MogreGis
                         typeName = "Unknown";
                         break;
                 }
+#if TESSELLATION_TRACE
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + "Primitive type = " + typeName);
+#endif
             }
 
             public void beginData(int type, object polygonData)
             {
+#if TESSELLATION_TRACE
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+#endif
             }
 
             public void edgeFlag(bool boundaryEdge)
@@ -587,7 +608,9 @@ namespace MogreGis
 
             public void vertex(object vertexData)
             {
+#if TESSELLATION_TRACE
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
+#endif
                 manualObj.Position((Vector3)vertexData);
             }
 
@@ -598,7 +621,9 @@ namespace MogreGis
 
             public void end()
             {
+#if TESSELLATION_TRACE
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+#endif
                 manualObj.End();
             }
 
@@ -856,7 +881,7 @@ namespace MogreGis
             }
         }
 #endif
-
+        
         protected Script color_script;
         protected Script feature_name_script;
         protected Vector4D overall_color;
@@ -875,6 +900,6 @@ namespace MogreGis
         protected string nameEntityINI;
         protected string nameEntities;
         protected string nameMaterial;
-        protected string scale;
+        protected Script scale;
     }
 }

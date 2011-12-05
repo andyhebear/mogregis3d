@@ -23,7 +23,7 @@ namespace MogreGis
      *
      * Geocentric: Cartesian (XYZ) coordinates relative to the center of the Earth.
      */
-    public abstract class SpatialReference
+    public abstract class SpatialReference : ICoordinateSystem
     {
 
         /**
@@ -218,6 +218,71 @@ namespace MogreGis
         protected void applyTo(GeoShape shape)
         {
             shape.setSpatialReference(this);
+        }
+
+        public double[] DefaultEnvelope
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int Dimension
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public AxisInfo GetAxis(int dimension)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IUnit GetUnits(int dimension)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Abbreviation
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string Alias
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string Authority
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public long AuthorityCode
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool EqualParams(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Name
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string Remarks
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string WKT
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string XML
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

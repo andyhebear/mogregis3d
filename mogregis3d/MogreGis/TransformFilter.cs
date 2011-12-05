@@ -258,7 +258,7 @@ namespace MogreGis
                 ScriptResult r = env.getScriptEngine().run(TranslateScript, input, env);
                 if (r.isValid())
                 {
-                    workingMatrix.MakeTrans(new Mogre.Vector3((float)r.asVec3().X, (float)r.asVec3().Y, (float)r.asVec3().Z));
+                    workingMatrix.MakeTrans(new Mogre.Vector3((float)r.asVec3().x, (float)r.asVec3().y, (float)r.asVec3().z));
                 }
                 else
                 {

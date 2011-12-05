@@ -51,9 +51,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mogre, Version=1.7.1.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="IronPython">
+      <HintPath>..\Libs\IronPython\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules">
+      <HintPath>..\Libs\IronPython\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic">
+      <HintPath>..\Libs\IronPython\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata">
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="Mogre, Version=1.4.6.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
+      <HintPath>..\Libs\Mogre\Mogre.dll</HintPath>
     </Reference>
     <Reference Include="ProjNet, Version=1.2.3882.19088, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,6 +96,7 @@
     <Compile Include="AttributedNode.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AttributeFilter.cs" />
     <Compile Include="BuildGeomFilter.cs" />
     <Compile Include="CollectionFilter.cs">
       <SubType>Code</SubType>
@@ -139,6 +156,7 @@
     <Compile Include="NodeFilterState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScriptEngine.cs" />
     <Compile Include="SharpMapSpatialReference.cs" />
     <Compile Include="SharpMapSpatialReferenceFactory.cs" />
     <Compile Include="OptimizerHints.cs">
@@ -164,7 +182,7 @@
     <Compile Include="Script.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ScriptEngine.cs">
+    <Compile Include="ScriptEngineant.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Session.cs">

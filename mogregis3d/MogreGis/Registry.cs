@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace MogreGis
 {
@@ -30,7 +31,13 @@ namespace MogreGis
             Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());
             Registry.instance().addFilterType(AreaFilter.getStaticFilterType(), AreaFilter.getFilterFactory());
 #endif
+            Registry.instance().LoadAndRegistryEngine("MogreGis.IronPythonScriptEngine", "../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll");
+
             Registry.instance().addFilterType(TransformFilter.getStaticFilterType(), TransformFilter.getFilterFactory() );
+            Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());
+            Registry.instance().addFilterType(AreaFilter.getStaticFilterType(), AreaFilter.getFilterFactory());
+            Registry.instance().addFilterType(AttributeFilter.getStaticFilterType(), AttributeFilter.getFilterFactory());
+
         }
 
         /**
@@ -185,9 +192,9 @@ namespace MogreGis
          * @return A scripting engine. Caller is responsible for deleting
          *         the return object.
          */
-        public ScriptEngine createScriptEngine()
+        public IScriptEngine createScriptEngine()
         {
-            return null; //TODO  new Lua_ScriptEngine();
+            return Registry.instance().GetEngine("Python");
         }
 
 
@@ -334,11 +341,50 @@ namespace MogreGis
             setRasterStoreFactory(new DefaultRasterStoreFactory());
 #endif
         }
+
+
+         public void LoadAndRegistryEngine(string className, string AssemblyPath)
+        {
+            if (String.IsNullOrEmpty(className) || String.IsNullOrEmpty(AssemblyPath))
+                throw new ArgumentException();
+            Assembly assembly = Assembly.LoadFrom(AssemblyPath);
+            try
+            {
+                IScriptEngine engine = assembly.CreateInstance(className) as IScriptEngine;
+                if (engine == null)
+                    throw new ArgumentException(string.Format("Engine class {0} not found. Check namespace and name", className));
+                RegistryScriptEngine(engine);
+            }
+            catch (InvalidCastException ex)
+            {
+                throw new ArgumentException(string.Format("Engine class {0} is not an IScriptEngine.", className));
+            }
+        }
+
+         public void RegistryScriptEngine(IScriptEngine engine)
+         {
+             if (engine == null)
+                 throw new ArgumentException();
+
+             engines[engine.Language] = engine;
+         }
+
+         public IScriptEngine GetEngine(string lang)
+         {
+             if (!engines.ContainsKey(lang))
+                 throw new ArgumentException("Language not supported");
+
+             return engines[lang];
+         }
+
+
 #if TODO_PH
         private FeatureStoreFactory feature_store_factory;
         private RasterStoreFactory raster_store_factory;
 #endif
-        private SpatialReferenceFactory spatial_ref_factory;
+         private SpatialReferenceFactory spatial_ref_factory;
+
+        private Dictionary<string, IScriptEngine> engines = new Dictionary<string, IScriptEngine>();
 
         private FilterFactoryMap filter_factories = new FilterFactoryMap();
         private ResourceFactoryMap resource_factories = new ResourceFactoryMap();
