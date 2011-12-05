@@ -182,9 +182,6 @@
     <Compile Include="Script.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ScriptEngineant.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Session.cs">
       <SubType>Code</SubType>
     </Compile>
