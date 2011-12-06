@@ -71,35 +71,14 @@ namespace MogreGis
         {
             //Implementar el MatrixTransform
             //rellenar el MatrixTransform usando el reference_frame
-            SpatialReference result = null;
             //SetUp coordinate transformation
             ProjNet.CoordinateSystems.CoordinateSystemFactory csf = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
             ProjNet.CoordinateSystems.ICoordinateSystem csSource = csf.CreateFromWkt(wkt);
 
-#if TODO
-	            Object handle = OSRNewSpatialReference( null );
-                char buf[4096];
-                char* buf_ptr = &buf[0];
-                strcpy( buf, wkt.c_str() );
-                if ( OSRImportFromWkt( handle, &buf_ptr ) == OGRERR_NONE )
-                {
-                    result = new OGR_SpatialReference( handle, true, reference_frame );
-                    result = validateSRS( result.get() );
-                }
-                else 
-                {
-	                osgGIS::notify(osg::WARN) << "Unable to create spatial reference from WKT: " << wkt << std::endl;
-	                OSRDestroySpatialReference( handle );
-                }
-
-                return result.release();
-#endif
             SharpMapSpatialReference sr = new SharpMapSpatialReference();
             sr.CoordinateSystem = csSource;
             sr.MathTransform = new MatrixTransform(csSource.Dimension, reference_frame);
             return sr;
-            throw new NotImplementedException();
-
         }
 
         public SpatialReference createSRSfromWKT(string wkt, ICoordinateSystem source)

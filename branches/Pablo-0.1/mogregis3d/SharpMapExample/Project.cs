@@ -11,6 +11,9 @@ namespace SharpMapExample
     {
         List <ShapeFile> shapeFiles;
         List<MogreGis.Resource> resources;
+        String sourceUri;
+        String name;
+        String workingDirectory;
 
         public Project()
         {
@@ -28,6 +31,26 @@ namespace SharpMapExample
         public List<MogreGis.Resource> getResources()
         {
             return resources;
+        }
+
+        public string getBaseURI()
+        {
+            return System.IO.Path.GetFullPath(".");
+        }
+
+        public void setSourceURI(string source_uri)
+        {
+            sourceUri = source_uri;
+        }
+
+        public void setName(string p)
+        {
+            name = p;
+        }
+
+        public void setWorkingDirectory(string p)
+        {
+            workingDirectory = p;
         }
     }
 }

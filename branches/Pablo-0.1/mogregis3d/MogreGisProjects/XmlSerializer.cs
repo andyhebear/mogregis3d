@@ -238,7 +238,8 @@ namespace osgGISProjects
                     // try again with "Filter" suffix
                     if (f == null && !type.EndsWith("Filter", false, System.Globalization.CultureInfo.InvariantCulture))
                         f = MogreGis.Registry.instance().createFilterByType(type + "Filter");
-
+                    //(f as BuildGeomFilter).setNameEntityINI ( f_e.GetAttribute("nameentityini"));
+                    //(f as BuildGeomFilter).setNameEntities (f_e.GetAttribute("nameentities"));
                     if (f != null)
                     {
                         XmlNodeList prop_els = f_e.GetElementsByTagName("property");
@@ -302,7 +303,7 @@ namespace osgGISProjects
 #endif
             throw new NotImplementedException();
         }
-#if TODO
+
         static Script decodeScript(XmlElement e, Project proj)
         {
             Script script = null;
@@ -312,7 +313,7 @@ namespace osgGISProjects
             }
             return script;
         }
-
+#if TODO
         static XmlElement encodeScript(XmlDocument doc, Script script)
         {
             XmlElement e = null;
@@ -820,7 +821,7 @@ namespace osgGISProjects
                 }
 #endif
 
-#if TODO_DANI //scripts
+#if !TODO_DANI //scripts
                 // scripts
                 XmlNodeList scripts = e.GetElementsByTagName("script");
                 foreach (XmlNode j in scripts)

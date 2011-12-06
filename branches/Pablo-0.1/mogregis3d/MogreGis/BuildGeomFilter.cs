@@ -286,6 +286,27 @@ namespace MogreGis
             //cuidado con las entidades dentro del for
 
             int i = 0;
+            Vector3 scale;
+            Vector3 distanceScale;
+
+            if (Scale != null)
+            {
+                scale = Registry.instance().GetEngine("Python").run(Scale).asVec3();
+            }
+            else
+            {
+                scale = new Vector3(1, 1, 1);
+            }
+
+            if (CoordScale != null)
+            {
+                distanceScale = Registry.instance().GetEngine("Python").run(CoordScale).asVec3();
+            }
+            else
+            {
+                distanceScale = new Vector3(1, 1, 1);
+            }
+            
 
             SceneNode nodeIni = point3d(env.getName(), i, 0, 0, 0, null, env.getSceneMgr());
 #if ESCALA_NODO_INICIAL
@@ -315,18 +336,8 @@ namespace MogreGis
                     i++;
                     SceneNode n = point3d(env.getName(), i, (float)p.X, (float)p.Y, 0, nodeIni, env.getSceneMgr());
 
-                    if (Scale != null)
-                    {
-                        n.SetScale(Registry.instance().GetEngine("Python").run(Scale).asVec3());
-                    }
-                    if (coordScale != null)
-                    {
-                        Vector3 vec3 = Registry.instance().GetEngine("Python").run(Scale).asVec3();
-                        n.SetPosition(n.Position.x * vec3.x, n.Position.y * vec3.y, n.Position.z * vec3.z);
-#if TRACE_BUILDGEOMFILTER
-                        System.Console.WriteLine("(" + n.Position.x + "," + n.Position.y + ")");
-#endif
-                    }
+                    n.SetScale(scale);
+                    n.SetPosition(n.Position.x * distanceScale.x, n.Position.y * distanceScale.y, n.Position.z * distanceScale.z);
 
                     Fragment f = new Fragment(n);
                     output.Add(f);
@@ -358,7 +369,7 @@ namespace MogreGis
                         Glu.gluTessBeginPolygon(null);
                         Glu.gluTessBeginContour();
 
-                        int numVertices = polygon.ExteriorRing.NumPoints/10+1;
+                        int numVertices = polygon.ExteriorRing.NumPoints/*/10+1*/;
                         int numValores = 3;
                         double[][] data = new double[numVertices][];
 
@@ -371,11 +382,11 @@ namespace MogreGis
                         //1 polygon = N vertices
                         foreach (SharpMap.Geometries.Point point in polygon.ExteriorRing.Vertices)
                         {
-                            if (k % 10 == 0)
+                            //if (k % 10 == 0)
                             {
-                                data[k/10][0] = point.X;
-                                data[k/10][1] = point.Y;
-                                data[k/10][2] = 0;
+                                data[k/*/10*/][0] = point.X;
+                                data[k/*/10*/][1] = point.Y;
+                                data[k/*/10*/][2] = 0;
                             }
                             k++;
 
@@ -384,7 +395,7 @@ namespace MogreGis
                         } 
                         for (int j = 0; j < data.GetLength(0); j++)
                         {
-                            Glu.gluTessVertex(data[j], 0, new Vector3((float)(data[j][1] * 1.0), (float)(data[j][2] * 1.0), (float)(data[j][0] * 1.0)));
+                            Glu.gluTessVertex(data[j], 0, new Vector3((float)(data[j][1] * distanceScale.y), (float)(data[j][2] * distanceScale.z), (float)(data[j][0] * distanceScale.x)));
                         }
 
                         Glu.gluTessEndContour();
@@ -393,7 +404,7 @@ namespace MogreGis
 
                         //polygonNode.SetMaterialName((uint)0, nameMaterial);
                        // polygonNode.Begin(nameMaterial);
-
+                   
                         nodeIni.AttachObject(polygonNode);
 
                     }
@@ -455,7 +466,7 @@ namespace MogreGis
                             }
                             for (int j = 0; j < data.GetLength(0); j++)
                             {
-                                Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * 1.0f, ((float)data[j][2]) * 1.0f, ((float)data[j][0]) * 1.0f));
+                                Glu.gluTessVertex(data[j], 0, new Vector3(((float)data[j][1]) * distanceScale.y, ((float)data[j][2]) * distanceScale.z, ((float)data[j][0]) * distanceScale.x));
                             }
 
                             Glu.gluTessEndContour();
@@ -606,12 +617,15 @@ namespace MogreGis
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             }
 
+            Random rand = new Random();
             public void vertex(object vertexData)
             {
 #if TESSELLATION_TRACE
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
 #endif
                 manualObj.Position((Vector3)vertexData);
+
+                manualObj.Colour((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
             }
 
             public void vertexData(object vertexData, object polygonData)

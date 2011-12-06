@@ -4,7 +4,7 @@ using System.Collections.Generic;
 //#if TODO
 namespace osgGISProjects
 {
-    public class BuildLayer
+    public class BuildLayer 
     {
 
         public enum LayerType

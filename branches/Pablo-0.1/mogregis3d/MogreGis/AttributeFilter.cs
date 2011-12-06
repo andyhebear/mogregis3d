@@ -43,6 +43,7 @@ namespace MogreGis
             FeatureList output = new FeatureList();
             foreach (Feature feature in input) 
             {
+                //engine.run(script, feature, null);
                 if (feature.row[attributeName].ToString().ToLowerInvariant() == attributeValue)
                 {
                     output.Add(feature);

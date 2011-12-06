@@ -36,9 +36,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mogre, Version=1.7.1.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Mogre, Version=1.4.6.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
+      <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
+    </Reference>
+    <Reference Include="Mogre.TutorialFramework">
+      <HintPath>..\Libs\Mogre\Mogre.TutorialFramework.dll</HintPath>
     </Reference>
     <Reference Include="ProjNet, Version=1.2.3882.19088, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,6 +74,7 @@
     <Compile Include="MapLayer.cs" />
     <Compile Include="MapLayerCompiler.cs" />
     <Compile Include="MapLayerLevelOfDetail.cs" />
+    <Compile Include="MogreApp.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuadKey.cs" />

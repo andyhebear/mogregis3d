@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -30,6 +31,8 @@ using SharpMap.Layers;
 using GeoPoint = SharpMap.Geometries.Point;
 using ProjNet.CoordinateSystems.Transformations;
 using ProjNet.CoordinateSystems;
+using Mogre;
+using MogreGis;
 
 namespace SharpMapExample
 {
@@ -41,8 +44,7 @@ namespace SharpMapExample
             new Dictionary<string, ILayerFactory>();
 
         private readonly Dictionary<string, Bitmap> _symbolTable = new Dictionary<string, Bitmap>();
-
-        private Project prj;
+        private osgGISProjects.MogreApp app;
 
         public MainForm()
         {
@@ -55,6 +57,11 @@ namespace SharpMapExample
             registerLayerFactories();
 
             MainMapImage.MapQueried += MainMapImage_MapQueried;
+        }
+
+        private void SetupMogre()
+        {
+            app = new osgGISProjects.MogreApp();
         }
 
         private void registerSymbols()
@@ -86,7 +93,7 @@ namespace SharpMapExample
         private void addLayer(ILayer layer)
         {
             MainMapImage.Map.Layers.Add(layer);
-            //prj.getLayers().Add(layer);
+
             LayersDataGridView.Rows.Insert(0, true, getLayerTypeIcon(layer.GetType()), layer.LayerName);
         }
 
@@ -428,15 +435,15 @@ namespace SharpMapExample
         private void LayersDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             BeginInvoke((MethodInvoker)delegate
-                                            {
-                                                changeUIOnLayerSelectionChange();
+            {
+                changeUIOnLayerSelectionChange();
 
-                                                if (LayersDataGridView.SelectedRows.Count > 0)
-                                                {
-                                                    MainMapImage.QueryLayerIndex =
-                                                        LayersDataGridView.SelectedRows[0].Index;
-                                                }
-                                            });
+                if (LayersDataGridView.SelectedRows.Count > 0)
+                {
+                    MainMapImage.QueryLayerIndex =
+                        LayersDataGridView.SelectedRows[0].Index;
+                }
+            });
         }
 
         private void MainMapImage_MouseMove(GeoPoint WorldPos, MouseEventArgs ImagePos)
@@ -452,19 +459,19 @@ namespace SharpMapExample
         private void toolStripComboBox1_Changed(object sender, EventArgs e)
         {
             BeginInvoke((MethodInvoker)delegate
-                                           {
-                                               string selected = toolStripComboBox1.SelectedItem as string;
-                                               foreach (ILayer layer in MainMapImage.Map.Layers)
-                                               {
-                                                   if (layer is VectorLayer)
-                                                   {
-                                                       VectorLayer vectorLayer = (VectorLayer)layer;
-                                                       ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
-                                                       vectorLayer.CoordinateTransformation = GetTransform(selected, datacoordsys);
-                                                   }
-                                               }
-                                               zoomToExtents();
-                                           });
+            {
+                string selected = toolStripComboBox1.SelectedItem as string;
+                foreach (ILayer layer in MainMapImage.Map.Layers)
+                {
+                    if (layer is VectorLayer)
+                    {
+                        VectorLayer vectorLayer = (VectorLayer)layer;
+                        ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
+                        vectorLayer.CoordinateTransformation = GetTransform(selected, datacoordsys);
+                    }
+                }
+                zoomToExtents();
+            });
         }
 
         public ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation GetTransform(string name, ICoordinateSystem datacoordsys)
@@ -477,6 +484,8 @@ namespace SharpMapExample
                     return Transform2Albers(datacoordsys);
                 case "Lambert":
                     return Transform2Lambert(datacoordsys);
+                case "Lambert Nuestro":
+                    return Transform2Lambert2(datacoordsys);
                 default:
                     return null;
             }
@@ -566,71 +575,252 @@ namespace SharpMapExample
             return new CoordinateTransformationFactory().CreateFromCoordinateSystems(source, coordsys);
         }
 
-        private void OpenToolStripButton_Click(object sender, EventArgs e)
+        public static ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation Transform2Lambert2(ICoordinateSystem source)
         {
-            Console.WriteLine("Entra");
-            prj = XmlSerializer.loadProject("Test1.xml");
+            if (source == null)
+                throw new ArgumentException("Source coordinate system is null");
+            if (!(source is IGeographicCoordinateSystem))
+                throw new ArgumentException("Source coordinate system must be geographic");
+
+            CoordinateSystemFactory cFac = new CoordinateSystemFactory();
+
+
+            string mercator =
+  @"PROJCS[""Mercator Spheric"", GEOGCS[""WGS84basedSpheric_GCS"", DATUM[""WGS84basedSpheric_Datum"", SPHEROID[""WGS84based_Sphere"", 6378137, 0], TOWGS84[0, 0, 0, 0, 0, 0, 0]], PRIMEM[""Greenwich"", 0, AUTHORITY[""EPSG"", ""8901""]], UNIT[""degree"", 0.0174532925199433, AUTHORITY[""EPSG"", ""9102""]], AXIS[""E"", EAST], AXIS[""N"", NORTH]], PROJECTION[""Mercator""], PARAMETER[""False_Easting"", 0], PARAMETER[""False_Northing"", 0], PARAMETER[""Central_Meridian"", 0], PARAMETER[""Latitude_of_origin"", 0], UNIT[""metre"", 1, AUTHORITY[""EPSG"", ""9001""]], AXIS[""East"", EAST], AXIS[""North"", NORTH]]";
+            //ICoordinateSystem cstarget = cFac.CreateFromWkt(mercator2);
+
+            string lambert2 =
+ @"   GEOGCS[""NTF (Paris)"",
+    DATUM[""Nouvelle Triangulation Francaise (Paris)"",
+    SPHEROID[""Clarke 1880 (IGN)"", 6378249.2, 293.4660212936269,
+    AUTHORITY[""EPSG"",""7011""]],
+    AUTHORITY[""EPSG"",""6807""]],
+    PRIMEM[""Paris"", 2.5969213, AUTHORITY[""EPSG"",""8903""]],
+    UNIT[""grade"", 0.015707963267948967],
+    AXIS[""Geodetic latitude"", NORTH],
+    AXIS[""Geodetic longitude"", EAST],
+    AUTHORITY[""EPSG"",""4807""]],
+    PROJECTION[""Lambert Conic Conformal (1SP)"", AUTHORITY[""EPSG"",""9801""]],
+    PARAMETER[""central_meridian"", 0.0],
+    PARAMETER[""latitude_of_origin"", 52.0],
+    PARAMETER[""scale_factor"", 0.99987742],
+    PARAMETER[""false_easting"", 600000.0],
+    PARAMETER[""false_northing"", 2200000.0],
+    UNIT[""m"", 1.0],
+    AXIS[""Easting"", EAST],
+    AXIS[""Northing"", NORTH],
+    AUTHORITY[""EPSG"",""27572""]]";
+            ICoordinateSystem cstarget = cFac.CreateFromWkt(mercator);
+
+            return new CoordinateTransformationFactory().CreateFromCoordinateSystems(source, cstarget);
         }
+
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            SetupMogre();
+            Mogre.SceneManager sm = app.SceneManager;
 
-
-            ICoordinateSystem datacoord = (prj.getShapeFiles()[0]).CoordinateSystem;
-            List <ICoordinateTransformation> coordTransf = new List<ICoordinateTransformation>();
-
-            ICoordinateTransformationFactory ctf = new CoordinateTransformationFactory();
-            foreach (MogreGis.Resource resource in prj.getResources())
+            foreach (osgGISProjects.Source source in prj.getSources())
             {
-                ICoordinateSystemFactory csf = new CoordinateSystemFactory();
-                ICoordinateSystem cs = csf.CreateFromWkt(resource.Uri);
-                coordTransf.Add(ctf.CreateFromCoordinateSystems(datacoord, cs));        
+                
+
+                if (Path.GetExtension(source.getURI()) != ".shp")
+                {
+                    throw new NotImplementedException();
+                }
+
+                MogreGis.FilterEnv env = null;
+                MogreGis.FeatureList featureList = null;
+
+                FeatureDataSet ds = new FeatureDataSet();
+                source.DataSource.Open();
+                source.DataSource.ExecuteIntersectionQuery(source.DataSource.GetExtents(), ds);
+                source.DataSource.Close();
+                FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
+                featureList = MogreGis.Feature.DataTableToList(features);
+
+                foreach (Script script in prj.getScripts())
+                {
+                    Registry.instance().GetEngine("Python").run(script);
+                }
+
+                foreach (Feature feature in featureList)
+                {
+                    SharpMapSpatialReferenceFactory smsrf = new SharpMapSpatialReferenceFactory();
+                    ShapeFile shp = new ShapeFile(source.getURI());
+                    shp.Open();
+                    SharpMapSpatialReference sr;
+                    sr = (SharpMapSpatialReference)smsrf.createSRSfromWKT(shp.CoordinateSystem.WKT);
+                    feature.getGeometry().SpatialReference = sr;
+                }
+                env = new MogreGis.FilterEnv(sm, "env");
+                env.setScriptEngine(Registry.instance().GetEngine("Python"));
+
+                foreach (MogreGis.FilterGraph graph in prj.getFilterGraphs())
+                {
+                    foreach (MogreGis.Filter filter in graph.getFilters())
+                    {
+                        if (filter is MogreGis.FragmentFilter)
+                        {
+                            (filter as MogreGis.FragmentFilter).process(featureList, env);
+                        }
+                        if (filter is MogreGis.FeatureFilter)
+                        {
+                            featureList = (filter as MogreGis.FeatureFilter).process(featureList, env);
+                        }
+                    }
+                }
+                app.getRoot().StartRendering();
             }
-            Collection<Geometry> geoms;
-            ShapeFile dataSource = prj.getShapeFiles()[0];
-            geoms = dataSource.GetGeometriesInView(new BoundingBox(-20000, -20000, 20000, 20000));
-            if (!dataSource.IsOpen) { dataSource.Open(); }
 
-            for (int i = 0; i < geoms.Count; i++)
-                geoms[i] = GeometryTransform.TransformGeometry(geoms[i], coordTransf[0].MathTransform);
+#if versionAñadirLayersMano
+            foreach (ILayer layer in MainMapImage.Map.Layers)
+            {
+                if (layer is VectorLayer)
+                {
+                    VectorLayer vectorLayer = (VectorLayer)layer;
 
-            //foreach (ILayer layer in MainMapImage.Map.Layers)
-            //{
-            //    if (layer is VectorLayer)
-            //    {
-            //        VectorLayer vectorLayer = (VectorLayer)layer;
+                    ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
 
-            //        // PABLO AQUI TENGO EL SISTEMA DE COORDENADAS ORIGINAL
-            //        ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
+                    ICoordinateTransformation transform = vectorLayer.CoordinateTransformation;
 
-            //        // PABLO AQUI TENGO LA TRANSFORMADA QUE APLICA
-            //        ICoordinateTransformation transform = vectorLayer.CoordinateTransformation;
+                    Collection<Geometry> geoms;
 
-            //        // AQUI TENGO LOS DATOS ORIGINALES
-            //        Collection<Geometry> geoms;
+                    // Read data
+                    ShapeFile dataSource = (vectorLayer.DataSource as ShapeFile);
 
-            //        // Read data
-            //        ShapeFile dataSource = (vectorLayer.DataSource as ShapeFile);
+                    // If not open yet, open it
+                    if (!dataSource.IsOpen) { dataSource.Open(); }
 
-            //        // If not open yet, open it
-            //        if (!dataSource.IsOpen) { dataSource.Open(); }
+                    geoms = dataSource.GetGeometriesInView(new BoundingBox(-20000, -20000, 20000, 20000));
 
-            //        geoms = dataSource.GetGeometriesInView(new BoundingBox(-20000,-20000,20000,20000));
+                    foreach (Geometry g in geoms)
+                    {
+                        if (g.GeometryType == GeometryType2.Point)
+                        {
+                            //----------------------------------------------
+                            //todo esto es para sacar el punto del Geometry.
+                            //string p = g.ToString();
+                            //string[] aux = p.Split(' ');
+                            //string cx = aux[1].Substring(2);
+                            //string cy = aux[2].Remove(aux[2].Length - 1);
+                            //cx = cx.Replace('.', ',');
+                            //cy = cy.Replace('.', ',');
+                            //double x = double.Parse(cx);
+                            //double y = double.Parse(cy);
+                            //-----------------------------------------------
 
-            //        //foreach (Geometry g in geoms)
-            //        Console.WriteLine("Geometria original:" + geoms[0]);
-            //        if (transform != null)
-            //        {
-            //            // PABLO AQUI TENGO EL SISTEMA DE COORDENADAS DESEADO
-            //            ICoordinateSystem target = transform.TargetCS;
-            //            for (int i = 0; i < geoms.Count; i++)
-            //                geoms[i] = GeometryTransform.TransformGeometry(geoms[i], transform.MathTransform);
+                            SharpMap.Geometries.Point point = (SharpMap.Geometries.Point)g;
+                            Console.WriteLine("Geometria original:" + point.X + "," + point.Y);
+                        }
+                    }
+
+
+                    Collection<Geometry> transfgeoms;
+
+                    if (transform != null)
+                    {
+                        transfgeoms = new Collection<Geometry>();
+                        ICoordinateSystem target = transform.TargetCS;
+                        foreach (Geometry g in geoms)
+                        {
+                            transfgeoms.Add(GeometryTransform.TransformGeometry(g, transform.MathTransform));
+                        }
+                        foreach (Geometry g in transfgeoms)
+                        {
+                            if (g.GeometryType == GeometryType2.Point)
+                            {
+                                //----------------------------------------------
+                                //todo esto es para sacar el punto del Geometry.
+                                string p = g.ToString();
+                                //string[] aux = p.Split(' ');
+                                //string cx = aux[1].Substring(2);
+                                //string cy = aux[2].Remove(aux[2].Length - 1);
+                                //cx = cx.Replace('.', ',');
+                                //cy = cy.Replace('.', ',');
+                                //double x = (g as SharpMap.Geometries.Point).X; //double.Parse(cx);
+                                //double y = (g as SharpMap.Geometries.Point).Y; // double.Parse(cy);
+                                //-----------------------------------------------
+
+                                SharpMap.Geometries.Point point = (SharpMap.Geometries.Point)g;
+                                Console.WriteLine("Geometria alterada:" + point.X.ToString(CultureInfo.InvariantCulture) + "," + point.Y.ToString(CultureInfo.InvariantCulture));
+                            }
+                        }
+                    }
+                }
+            }
+
+#endif
+
+#if Ejemplo
+            foreach (ILayer layer in MainMapImage.Map.Layers)
+            {
+                if (layer is VectorLayer)
+                {
+                    VectorLayer vectorLayer = (VectorLayer)layer;
+
+                    // PABLO AQUI TENGO EL SISTEMA DE COORDENADAS ORIGINAL
+                    ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
+
+                    // PABLO AQUI TENGO LA TRANSFORMADA QUE APLICA
+                    ICoordinateTransformation transform = vectorLayer.CoordinateTransformation;
+
+                    // AQUI TENGO LOS DATOS ORIGINALES
+                    Collection<Geometry> geoms;
+
+                    // Read data
+                    ShapeFile dataSource = (vectorLayer.DataSource as ShapeFile);
+
+                    // If not open yet, open it
+                    if (!dataSource.IsOpen) { dataSource.Open(); }
+
+                    geoms = dataSource.GetGeometriesInView(new BoundingBox(-20000,-20000,20000,20000));
+
+                    //foreach (Geometry g in geoms)
+                    Console.WriteLine("Geometria original:" + geoms[0]);
+                    if (transform != null)
+                    {
+                        // PABLO AQUI TENGO EL SISTEMA DE COORDENADAS DESEADO
+                        ICoordinateSystem target = transform.TargetCS;
+                        for (int i = 0; i < geoms.Count; i++)
+                            geoms[i] = GeometryTransform.TransformGeometry(geoms[i], transform.MathTransform);
                        
-            //            //foreach (Geometry g in geoms)
-            //            Console.WriteLine("Geometria alterada:" + geoms[0]);
-            //        }
-            //    }
-            //}
+                        //foreach (Geometry g in geoms)
+                        Console.WriteLine("Geometria alterada:" + geoms[0]);
+                    }
+                }
+            }
+#endif
         }
+
+        private void OpenToolStripButton_Click(object sender, EventArgs e)
+        {
+            prj = osgGISProjects.XmlSerializer.loadProject("test1.xml");
+        }
+
+        private osgGISProjects.Project prj;
+        
     }
+
+    //public class MogreApp : Mogre.TutorialFramework.BaseApplication
+    //{
+    //    public MogreApp()
+    //    {
+    //        this.Setup();
+    //    }
+
+    //    protected override void CreateScene()
+    //    { }
+
+    //    public SceneManager SceneManager
+    //    {
+    //        get { return mSceneMgr; }
+    //    }
+
+    //    public Root getRoot()
+    //    {
+    //        return this.mRoot;
+    //    }
+    //}
 }

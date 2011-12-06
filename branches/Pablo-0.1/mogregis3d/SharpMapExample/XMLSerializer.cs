@@ -58,9 +58,9 @@ namespace SharpMapExample
             if (e != null)
             {
                 project = new Project();
-                //project.setSourceURI(source_uri);
-                //project.setName(e.GetAttribute("name"));
-                //project.setWorkingDirectory(e.GetAttribute("workdir"));
+                project.setSourceURI(source_uri);
+                project.setName(e.GetAttribute("name"));
+                project.setWorkingDirectory(e.GetAttribute("workdir"));
 
 
                 // resources
@@ -130,7 +130,7 @@ namespace SharpMapExample
 
         static MogreGis.Resource decodeResource(XmlElement e, Project proj)
         {
-            proj = new Project();
+            //proj = new Project();
             MogreGis.SRSResource a = new SRSResource();
             MogreGis.Resource resource = null;
             if (e != null)
@@ -144,7 +144,8 @@ namespace SharpMapExample
 
                 if (resource != null)
                 {
-                    //////////////////////////////////////////////resource.BaseUri = proj.getBaseURI();
+                    resource.BaseUri = proj.getBaseURI();
+                    resource.Uri = e.InnerText;
 
                     resource.Name = e.GetAttribute("name");
 
@@ -219,7 +220,7 @@ namespace SharpMapExample
                     //source.setName(e.GetAttribute("name"));
                     //source.setType(e.GetAttribute("type") == "raster" ? Source.SourceType.TYPE_RASTER : Source.SourceType.TYPE_FEATURE);
                     //source.setURI(e.GetElementsByTagName("uri")[0].InnerText);
-                    if (e.GetAttribute("type") == "ShapeFile")
+                    if (e.GetAttribute("provider") == "ShapeFile")
                     {
                         shapeFile = new ShapeFile(e.GetElementsByTagName("uri")[0].InnerText);
                     }
