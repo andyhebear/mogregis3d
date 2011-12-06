@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
 using ProjNet.CoordinateSystems.Transformations;
+using ProjNet.CoordinateSystems;
 
 namespace MogreGis
 {
@@ -186,11 +187,6 @@ namespace MogreGis
                 return localize;
             }
         }
-        #endregion
-
-        #region METODOS
-
-        public static FilterFactory getFilterFactory() { return new FilterFactoryImpl<TransformFilter>(); }
 
         //Script functions
         private Script srsScript;
@@ -244,7 +240,16 @@ namespace MogreGis
                 return translateScript;
             }
         }
+        
+        #endregion
 
+
+        #region METODOS
+
+        public static FilterFactory getFilterFactory() { return new FilterFactoryImpl<TransformFilter>(); }
+
+
+#if TODO_PH
         override public FeatureList process(Feature input, FilterEnv env)
         {
             FeatureList output = new FeatureList();
@@ -281,11 +286,11 @@ namespace MogreGis
                 //        workingSrs.transformInPlace(shape);
                 //    }
                 //}
-                //TODO if (workingSrs != null && !(workingSrs.equivalentTo(env.getInputSRS())))
+                if (workingSrs != null && !(workingSrs.equivalentTo(env.getInputSRS())))
                 {
                    Geometry temp =  GeometryTransform.TransformGeometry(input.getGeometry(), ((SharpMapSpatialReference)workingSrs).MathTransform);
                    input.setGeometry(temp);
-                    // workingSrs.transformInPlace(input.getGeometry());
+                   //workingSrs.transformInPlace(input.getGeometry());
                 }
             }
             output.Add(input);
@@ -368,6 +373,35 @@ namespace MogreGis
                 env.setOutputSRS(workingSrs);
             }
             return base.process(input, env);
+        }
+
+#endif
+
+        override public FeatureList process(FeatureList input, FilterEnv env)
+        {
+            foreach (Feature feature in input)
+            {
+                CoordinateSystemFactory csf = new CoordinateSystemFactory();
+                ICoordinateSystem cssource = csf.CreateFromWkt(((SharpMapSpatialReference)feature.getGeometry().SpatialReference).CoordinateSystem.WKT);
+                ICoordinateSystem cstarget;
+                if (translateScript != null)
+                {
+                    Console.WriteLine(Registry.instance().GetEngine("Python").run(TranslateScript).asString());
+                    cstarget = csf.CreateFromWkt(Registry.instance().GetEngine("Python").run(TranslateScript).asString());
+                }
+                else
+                {
+                    cstarget = csf.CreateFromWkt(env.getInputSRS().WKT);
+                }
+                CoordinateTransformationFactory ctf = new CoordinateTransformationFactory(); 
+                ICoordinateTransformation ct = ctf.CreateFromCoordinateSystems(cssource, cstarget);
+                if (feature.getGeometry().GeometryType == GeometryType2.Point)
+                {
+                    Point p = (Point)feature.getGeometry();
+                    GeometryTransform.TransformPoint(p, ct.MathTransform);
+                }
+            }
+            return input;
         }
 
         public override void setProperty(Property p)

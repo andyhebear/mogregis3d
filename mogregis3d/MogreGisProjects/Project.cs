@@ -19,6 +19,7 @@ namespace osgGISProjects
 
             graphs = new FilterGraphList();
             resources = new ResourceList();
+            scripts = new ScriptList();
         }
 
         public void setSourceURI(string value)
@@ -33,11 +34,8 @@ namespace osgGISProjects
 
         public string getBaseURI()
         {
-#if TODO_DANI
-            return osgDB.getFilePath(source_uri);
-#endif
-            return source_uri;
-            return Path.GetFullPath(source_uri);
+             Uri URI = new Uri(source_uri);
+            return URI.AbsolutePath;
         }
 
         public string getName()
@@ -217,13 +215,12 @@ namespace osgGISProjects
         {
             return resources;
         }
+#endif
 
         public ScriptList getScripts()
         {
             return scripts;
         }
-
-#endif
 
         public BuildLayerList getLayers()
         {
@@ -269,10 +266,10 @@ namespace osgGISProjects
 
         protected ResourceList resources;//CAMBIAR
 
+        protected ScriptList scripts;
 #if TODO
       
         protected RuntimeMapList maps;
-        protected ScriptList scripts;
-#endif    
+#endif
     }
 }

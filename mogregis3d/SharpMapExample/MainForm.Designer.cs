@@ -265,12 +265,12 @@ namespace SharpMapExample
             this.AddLayerToolStripMenuItem,
             this.RemoveLayerToolStripMenuItem});
             this.LayerContextMenu.Name = "LayerContextMenu";
-            this.LayerContextMenu.Size = new System.Drawing.Size(155, 98);
+            this.LayerContextMenu.Size = new System.Drawing.Size(149, 98);
             // 
             // MoveUpToolStripMenuItem
             // 
             this.MoveUpToolStripMenuItem.Name = "MoveUpToolStripMenuItem";
-            this.MoveUpToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.MoveUpToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.MoveUpToolStripMenuItem.Text = "Move &Up";
             this.MoveUpToolStripMenuItem.Visible = false;
             this.MoveUpToolStripMenuItem.Click += new System.EventHandler(this.MoveUpToolStripMenuItem_Click);
@@ -278,7 +278,7 @@ namespace SharpMapExample
             // MoveDownToolStripMenuItem
             // 
             this.MoveDownToolStripMenuItem.Name = "MoveDownToolStripMenuItem";
-            this.MoveDownToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.MoveDownToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.MoveDownToolStripMenuItem.Text = "Move &Down";
             this.MoveDownToolStripMenuItem.Visible = false;
             this.MoveDownToolStripMenuItem.Click += new System.EventHandler(this.MoveDownToolStripMenuItem_Click);
@@ -286,20 +286,20 @@ namespace SharpMapExample
             // LayerContextMenuSeparator
             // 
             this.LayerContextMenuSeparator.Name = "LayerContextMenuSeparator";
-            this.LayerContextMenuSeparator.Size = new System.Drawing.Size(151, 6);
+            this.LayerContextMenuSeparator.Size = new System.Drawing.Size(145, 6);
             this.LayerContextMenuSeparator.Visible = false;
             // 
             // AddLayerToolStripMenuItem
             // 
             this.AddLayerToolStripMenuItem.Name = "AddLayerToolStripMenuItem";
-            this.AddLayerToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.AddLayerToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.AddLayerToolStripMenuItem.Text = "&Add Layer";
             this.AddLayerToolStripMenuItem.Click += new System.EventHandler(this.AddLayerToolStripMenuItem_Click);
             // 
             // RemoveLayerToolStripMenuItem
             // 
             this.RemoveLayerToolStripMenuItem.Name = "RemoveLayerToolStripMenuItem";
-            this.RemoveLayerToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.RemoveLayerToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.RemoveLayerToolStripMenuItem.Text = "&Remove Layer";
             this.RemoveLayerToolStripMenuItem.Click += new System.EventHandler(this.RemoveLayerToolStripMenuItem_Click);
             // 
@@ -580,7 +580,8 @@ namespace SharpMapExample
             "default / no projection",
             "Mercator",
             "Albers",
-            "Lambert Conformal Conic 2SP"});
+            "Lambert Conformal Conic 2SP",
+            "Lambert Nuestro"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_Changed);

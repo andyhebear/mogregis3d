@@ -92,6 +92,7 @@ namespace MogreGis
 
         public override bool equivalentTo(SpatialReference rhs)
         {
+            //return this.WKT == rhs.WKT;
             throw new NotImplementedException();
         }
 
@@ -122,6 +123,23 @@ namespace MogreGis
         }
         public override bool transformInPlace(GeoPoint input)
         {
+            //SharpMapSpatialReference input_sr = (SharpMapSpatialReference)input.getSRS();
+            //if (input_sr != null)
+            //{
+            //    if (input_sr.isGeocentric())
+            //    {
+            //        input.set(input * input_sr.getInverseReferenceFrame());
+            //        Sharp3D.Math.Core.Vector3D temp = input_sr.getEllipsoid().geocentricToLatLong(new Sharp3D.Math.Core.Vector3D(input.X, input.Y, input.Z));
+            //        input = new GeoPoint(temp, input_sr.getGeographicSRS());
+            //        input_sr = (SharpMapSpatialReference)input.getSRS();
+            //    }
+            //    Sharp3D.Math.Core.Vector3D input_vec = input;
+            //    bool crs_equiv = false;
+            //    bool mat_equiv = false;
+            //    testEquivalence(input_sr, crs_equiv, mat_equiv);
+
+            //}
+
             throw new NotImplementedException();
         }
         public override bool transformInPlace(Geometry input)

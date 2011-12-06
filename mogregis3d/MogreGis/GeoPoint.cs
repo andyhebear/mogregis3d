@@ -22,6 +22,15 @@ namespace MogreGis
             dim = 0;
         }
 
+        public GeoPoint(SharpMap.Geometries.Point p)
+        {
+            this.X = p.X;
+            this.Y = p.Y;
+            this.Z = 0;
+            SpatialReference = null;
+            dim = 0;
+        }
+
         /**
          * Copyc constructor
          */
