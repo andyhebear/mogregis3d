@@ -386,7 +386,7 @@ namespace MogreGis
                 ICoordinateSystem cstarget;
                 if (translateScript != null)
                 {
-                    Console.WriteLine(Registry.instance().GetEngine("Python").run(TranslateScript).asString());
+                    //Console.WriteLine(Registry.instance().GetEngine("Python").run(TranslateScript).asString());
                     cstarget = csf.CreateFromWkt(Registry.instance().GetEngine("Python").run(TranslateScript).asString());
                 }
                 else
@@ -395,11 +395,14 @@ namespace MogreGis
                 }
                 CoordinateTransformationFactory ctf = new CoordinateTransformationFactory(); 
                 ICoordinateTransformation ct = ctf.CreateFromCoordinateSystems(cssource, cstarget);
-                if (feature.getGeometry().GeometryType == GeometryType2.Point)
-                {
-                    Point p = (Point)feature.getGeometry();
-                    GeometryTransform.TransformPoint(p, ct.MathTransform);
-                }
+                //if (feature.getGeometry().GeometryType == GeometryType2.Point)
+                //{
+                //    Point p = (Point)feature.getGeometry();
+                    //GeometryTransform.TransformPoint(feature, ct.MathTransform);
+                Geometry geom = feature.getGeometry();
+                Geometry geomRst = GeometryTransform.TransformGeometry(geom, ct.MathTransform);
+                feature.setGeometry(geomRst);
+                //}
             }
             return input;
         }
