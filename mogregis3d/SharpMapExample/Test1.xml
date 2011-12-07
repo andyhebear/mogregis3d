@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <project name="sample1">
-  <scriptEngine language="Python" Assembly="PythonScriptEngine.dll"/>
+  <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="PythonScriptEngine.dll"/>
+  <mogreRender>
+    <Camera>
+      <property name="Position" value="-300, 500, 0"/>
+      <property name="LookUp" value="0, 0, 0"/>
+    </Camera>
+  </mogreRender>
  
 <!-- Define an SRS based on an OSG WKT description: -->
   <!--<resource type="srs" name="wgs84">
@@ -39,7 +45,11 @@
 def Lambert ():
     return 'GEOGCS["NTF (Paris)",DATUM["Nouvelle Triangulation Francaise (Paris)",SPHEROID["Clarke 1880 (IGN)", 6378249.2, 293.4660212936269,AUTHORITY["EPSG","7011"]],AUTHORITY["EPSG","6807"]],PRIMEM["Paris", 2.5969213, AUTHORITY["EPSG","8903"]],UNIT["grade", 0.015707963267948967],AXIS["Geodetic latitude", NORTH],AXIS["Geodetic longitude", EAST],AUTHORITY["EPSG","4807"]],PROJECTION["Lambert Conic Conformal (1SP)", AUTHORITY["EPSG","9801"]],PARAMETER["central_meridian", 0.0],PARAMETER["latitude_of_origin", 52.0],PARAMETER["scale_factor", 0.99987742],PARAMETER["false_easting", 600000.0],PARAMETER["false_northing", 2200000.0],UNIT["m", 1.0],AXIS["Easting", EAST],AXIS["Northing", NORTH],AUTHORITY["EPSG","27572"]'
   </script>
-  
+
+  <script language="python" name="Mercator">
+def Mercator ():
+    return 'PROJCS["Mercator Spheric", GEOGCS["WGS84basedSpheric_GCS", DATUM["WGS84basedSpheric_Datum", SPHEROID["WGS84based_Sphere", 6378137, 0], TOWGS84[0, 0, 0, 0, 0, 0, 0]], PRIMEM["Greenwich", 0, AUTHORITY["EPSG", "8901"]], UNIT["degree", 0.0174532925199433, AUTHORITY["EPSG", "9102"]], AXIS["E", EAST], AXIS["N", NORTH]], PROJECTION["Mercator"], PARAMETER["False_Easting", 0], PARAMETER["False_Northing", 0], PARAMETER["Central_Meridian", 0], PARAMETER["Latitude_of_origin", 0], UNIT["metre", 1, AUTHORITY["EPSG", "9001"]], AXIS["East", EAST], AXIS["North", NORTH]]'
+  </script>
   <script language="python" name="script1">
 vec4(1,2,3,4)
   </script>
@@ -60,10 +70,10 @@ def SelectSpain():
 
   <!-- A source references a vector GIS source layer:  -->
   <source name="cities" provider="ShapeFile">
+    <!--<uri>../../../data/latlong.shp</uri>
+    <project>../../../data/latlong.prj</project>-->
     <uri>../../../data/countries.shp</uri>
-    <project>../../../data/Countries.prj</project>
-    <!--<uri>C:\Users\Pablo\Desktop\DemoWinForm\Data\ejemplos2/cities.shp</uri>
-    <project>C:\Users\Pablo\Desktop\DemoWinForm\Data\ejemplos2/Data/cities.prj</project>-->
+    <project>../../../data/countries.prj</project>
   </source>
 
 
@@ -89,15 +99,15 @@ def SelectSpain():
     <!--<filter type="ScriptFilter">
       <property name="Condition" value="feature.row.get("NAME") == "spain"/>
     </filter>-->
-    <filter type="TransformFilter">
-      <property name="translate" value="Lambert()"/>
-    </filter>
+    <!--<filter type="TransformFilter">
+      <property name="translate" value="Mercator()"/>
+    </filter>-->
     <filter type="BuildGeomFilter" >
       <property name="color" value="vec3(0.1,0.1,0.1)"/>
       <property name="pointNameEntityINI" value="ogrehead.mesh"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
-      <property name="distancesScale" value="vec3(1,1,1)"/>
+      <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
       <property name="nameMaterial" value="ocean.material"/>
     </filter>
   </graph>
