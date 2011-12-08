@@ -63,6 +63,10 @@ namespace MogreGis
 
         public Mogre.Vector3 asVec3()
         {
+            if (result is Mogre.Vector3)
+            {
+                return (Mogre.Vector3)result;
+            }
             String[] aux = (result as string).Split();
             float x;
             float y;

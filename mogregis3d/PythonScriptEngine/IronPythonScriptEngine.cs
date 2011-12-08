@@ -5,6 +5,7 @@ using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Text;
+using System.Reflection;
 
 namespace MogreGis
 {
@@ -19,7 +20,10 @@ namespace MogreGis
 
         // built-in scripts
         const string builtin =
-@"def color(a,b,c,d):
+@"
+import Mogre
+
+def color(a,b,c,d):
     return ""{0} {1} {2} {3}"".format(a,b,c,d)
 
 def vec4(a,b,c,d):
@@ -27,6 +31,9 @@ def vec4(a,b,c,d):
 
 def vec3(a,b,c):
     return ""{0} {1} {2}"".format(a,b,c)
+
+def vector3(a,b,c):
+    return Mogre.Vector3(a,b,c);
 
 def vec2(a,b):
     return ""{0} {1}"".format(a,b)
@@ -51,6 +58,7 @@ def return_code(code):
         public IronPythonScriptEngine()
         {
             runtime = engine.Runtime;
+            runtime.LoadAssembly(Assembly.GetAssembly(typeof(Mogre.Vector3)));
             scope = runtime.CreateScope();
 
             // install built-in scripts

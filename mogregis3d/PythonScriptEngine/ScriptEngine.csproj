@@ -53,6 +53,10 @@
     <Reference Include="Microsoft.Scripting.Metadata">
       <HintPath>..\Libs\IronPython\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
+    <Reference Include="Mogre, Version=1.7.3.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

@@ -358,7 +358,8 @@ namespace MogreGis
                         material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                        (int)TrackVertexColourEnum.TVC_AMBIENT;
 
-                        MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode);
+                        Vector3 v = Registry.instance().GetEngine("Python").run(Color,feature,null).asVec3();
+                        MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, v);
 
                         GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                         Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -430,7 +431,8 @@ namespace MogreGis
                             material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                            (int)TrackVertexColourEnum.TVC_AMBIENT;
 
-                            MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode);
+                            Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
+                            MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, v);
 
                             GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                             Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -473,8 +475,8 @@ namespace MogreGis
                             Glu.gluTessNormal(0, 0, 1);
                             Glu.gluTessEndPolygon();
 
-                            polygonNode.SetMaterialName((uint)0, nameMaterial);
-                            polygonNode.Begin(nameMaterial);
+                            //polygonNode.SetMaterialName((uint)0, nameMaterial);
+                            //polygonNode.Begin(nameMaterial);
 
                             nodeIni.AttachObject(polygonNode);
                             
@@ -563,10 +565,13 @@ namespace MogreGis
         public class MogreTessellationCallbacks : GLUtessellatorCallback
         {
             ManualObject manualObj;
+            Vector3 vec3;
 
-            public MogreTessellationCallbacks(ManualObject mo)
+            public MogreTessellationCallbacks(ManualObject mo, Vector3 color)
             {
                 manualObj = mo;
+
+                vec3 = color;
             }
 
             #region GLUtessellatorCallback Members
@@ -617,15 +622,14 @@ namespace MogreGis
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             }
 
-            Random rand = new Random();
             public void vertex(object vertexData)
             {
 #if TESSELLATION_TRACE
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
 #endif
                 manualObj.Position((Vector3)vertexData);
-
-                manualObj.Colour((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                
+                manualObj.Colour(vec3.x, vec3.y, vec3.z);
             }
 
             public void vertexData(object vertexData, object polygonData)
@@ -895,7 +899,8 @@ namespace MogreGis
             }
         }
 #endif
-        
+        public Script Color { get { return color_script; } }
+
         protected Script color_script;
         protected Script feature_name_script;
         protected Vector4D overall_color;
