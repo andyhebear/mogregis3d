@@ -53,6 +53,11 @@ def Mercator ():
   <script language="python" name="script1">
 vec4(1,2,3,4)
   </script>
+
+  <script language="python" name="scriptColor">
+def Color ():
+    return vector3((feature.row['POPDENS']/1000.0),1-(feature.row['POPDENS']/300.0),0)
+  </script>
   
   <!--<script language="python" name="script2">
 def SelectSpain():
@@ -103,7 +108,7 @@ def SelectSpain():
       <property name="translate" value="Mercator()"/>
     </filter>-->
     <filter type="BuildGeomFilter" >
-      <property name="color" value="vec3(0.1,0.1,0.1)"/>
+      <property name="color" value="Color()"/>
       <property name="pointNameEntityINI" value="ogrehead.mesh"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>

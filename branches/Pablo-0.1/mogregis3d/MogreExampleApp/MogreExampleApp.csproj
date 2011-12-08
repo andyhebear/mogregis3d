@@ -33,11 +33,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mogre">
-      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
+    <Reference Include="Mogre, Version=1.7.3.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
     </Reference>
-    <Reference Include="MOIS">
-      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\MOIS.dll</HintPath>
+    <Reference Include="MOIS, Version=1.1.0.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\MogreRelease\MOIS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

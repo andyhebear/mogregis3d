@@ -67,9 +67,9 @@
     <Reference Include="Microsoft.Scripting.Metadata">
       <HintPath>..\Libs\IronPython\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="Mogre, Version=1.4.6.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Mogre, Version=1.7.3.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Mogre\Mogre.dll</HintPath>
+      <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
     </Reference>
     <Reference Include="ProjNet, Version=1.2.3882.19088, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
