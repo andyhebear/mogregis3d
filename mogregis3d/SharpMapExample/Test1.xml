@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <project name="sample1">
-  <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="PythonScriptEngine.dll"/>
+  <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
   <mogreRender>
     <backgroundColor>vec4(0.1f, 0.3f, 0.6f, 0.0f)</backgroundColor>
     <resources>
