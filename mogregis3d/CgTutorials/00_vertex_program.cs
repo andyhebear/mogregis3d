@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Mogre.Helpers;
+//using Mogre.Helpers;
 
 namespace Mogre.Demo.CgTutorials
 {
