@@ -31,7 +31,7 @@ namespace MogreGis
             Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());
             Registry.instance().addFilterType(AreaFilter.getStaticFilterType(), AreaFilter.getFilterFactory());
 #endif
-            Registry.instance().LoadAndRegistryEngine("MogreGis.IronPythonScriptEngine", "../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll");
+            //Registry.instance().LoadAndRegistryEngine("MogreGis.IronPythonScriptEngine", "../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll");
 
             Registry.instance().addFilterType(TransformFilter.getStaticFilterType(), TransformFilter.getFilterFactory() );
             Registry.instance().addFilterType(BuildGeomFilter.getStaticFilterType(), BuildGeomFilter.getFilterFactory());

@@ -196,8 +196,6 @@ namespace osgGISProjects
 
         static FilterGraph decodeFilterGraph(XmlElement e, Project proj)
         {
-#if TODO_DANI
-#endif
             FilterGraph graph = null;
             if (e != null)
             {
@@ -238,8 +236,6 @@ namespace osgGISProjects
                     // try again with "Filter" suffix
                     if (f == null && !type.EndsWith("Filter", false, System.Globalization.CultureInfo.InvariantCulture))
                         f = MogreGis.Registry.instance().createFilterByType(type + "Filter");
-                    //(f as BuildGeomFilter).setNameEntityINI ( f_e.GetAttribute("nameentityini"));
-                    //(f as BuildGeomFilter).setNameEntities (f_e.GetAttribute("nameentities"));
                     if (f != null)
                     {
                         XmlNodeList prop_els = f_e.GetElementsByTagName("property");
@@ -820,8 +816,6 @@ namespace osgGISProjects
                     decodeInclude((XmlElement)j, project);
                 }
 #endif
-
-#if !TODO_DANI //scripts
                 // scripts
                 XmlNodeList scripts = e.GetElementsByTagName("script");
                 foreach (XmlNode j in scripts)
@@ -830,7 +824,15 @@ namespace osgGISProjects
                     if (script != null)
                         project.getScripts().Add(script);
                 }
-#endif
+
+                //some project variables.
+                XmlNodeList engines = e.GetElementsByTagName("scriptEngine");
+                foreach (XmlElement engine in engines)
+                {
+                    Registry.instance().LoadAndRegistryEngine(engine.GetAttribute("Class"), engine.GetAttribute("Assembly"));
+                }
+ 
+
 
 #if !TODO_DANI //resources
 
