@@ -34,13 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mogre, Version=1.7.1.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
+    <Reference Include="Mogre">
+      <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
     </Reference>
-    <Reference Include="MOIS, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\MOIS.dll</HintPath>
+    <Reference Include="Mogre.Demo.ExampleApplication">
+      <HintPath>..\Libs\MogreExtForMogreGis3DTest\Mogre.Demo.ExampleApplication.dll</HintPath>
+    </Reference>
+    <Reference Include="MogreFramework">
+      <HintPath>..\Libs\MogreExtForMogreGis3DTest\MogreFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MOIS">
+      <HintPath>..\Libs\MogreRelease\MOIS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,25 +59,47 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="00_vertex_program.cs" />
-    <Compile Include="C2E1.cs" />
-    <Compile Include="C2E2.cs" />
-    <Compile Include="C3E1.cs" />
-    <Compile Include="C3E2.cs" />
-    <Compile Include="C3E3.cs" />
-    <Compile Include="C3E4.cs" />
-    <Compile Include="C3E5.cs" />
-    <Compile Include="C3E5v2.cs" />
-    <Compile Include="C4E1.cs" />
-    <Compile Include="C5E1.cs" />
-    <Compile Include="C5E2.cs" />
+    <Compile Include="C2E1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C2E2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C3E1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C3E2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C3E3.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C3E4.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C3E5.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C3E5v2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C4E1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C5E1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="C5E2.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CgTutorials.cs" />
     <Compile Include="Lines3dExample1.cs" />
     <Compile Include="Lines3dExample2.cs" />
-    <Compile Include="MogreRendererCallback.cs" />
     <Compile Include="PolygonExample1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RenderToTexture.cs" />
-    <Compile Include="ScenicTest.cs" />
+    <Compile Include="RenderToTexture.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TerrainBlock.cs" />
     <Compile Include="TerrainBlock2.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -195,15 +221,12 @@
       <Project>{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}</Project>
       <Name>MogreExampleApp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MogreScenic\MogreScenic.csproj">
-      <Project>{1DE70490-E064-4522-9CB7-3806ABEE9546}</Project>
-      <Name>MogreScenic</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "C:\MogreSDK\bin\Release\*.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>copy "..\..\..\Libs\MogreRelease\*.dll" "$(TargetDir)"
+copy "..\..\..\Data\Config\*.cfg" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

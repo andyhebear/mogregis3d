@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mogre">
-      <HintPath>..\..\..\Dev\ mogregis3d\Libs\MogreSDK_1.7.1_beta_r72\bin\Release\Mogre.dll</HintPath>
+      <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

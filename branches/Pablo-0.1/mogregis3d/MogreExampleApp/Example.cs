@@ -4,7 +4,7 @@ using Mogre;
 
 namespace Mogre.Demo.ExampleApplication
 {
-    public abstract class Example
+    public abstract class Example_Deleteme
     {
         public static void ShowOgreException()
         {
