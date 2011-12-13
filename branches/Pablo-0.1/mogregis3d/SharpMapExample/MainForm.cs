@@ -62,6 +62,7 @@ namespace SharpMapExample
         private void SetupMogre()
         {
             app = new osgGISProjects.MogreApp();
+            //prj.loadMogreResourceLocation(app);
         }
 
         private void registerSymbols()

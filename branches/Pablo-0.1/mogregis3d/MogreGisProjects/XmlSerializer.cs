@@ -831,8 +831,12 @@ namespace osgGISProjects
                 {
                     Registry.instance().LoadAndRegistryEngine(engine.GetAttribute("Class"), engine.GetAttribute("Assembly"));
                 }
- 
 
+                XmlNodeList nl = e.GetElementsByTagName("mogreRender");
+                foreach (XmlElement n in nl)
+                {
+                    decodeMogreRender(n, project);
+                }
 
 #if !TODO_DANI //resources
 
@@ -945,6 +949,35 @@ namespace osgGISProjects
 
             }
             return project;
+        }
+
+        private static void decodeMogreRender(XmlElement n, Project project)
+        {
+            XmlNodeList nl = n.GetElementsByTagName("backgroundColor"); 
+            foreach (XmlElement e in nl)
+            {
+                project.setBackGroundColor(Registry.instance().GetEngine("Python").run(new Script(e.InnerText)).asVec3());
+            }
+            nl = n.GetElementsByTagName("resources");
+            foreach (XmlElement resources in nl)
+            {
+                XmlNodeList resourcesLocations = resources.GetElementsByTagName("resourceLocation");
+                foreach (XmlElement resourceLocation in resourcesLocations)
+                {
+                    project.addMogreResourceLocation(resourceLocation.GetAttribute("name"), resourceLocation.GetAttribute("type"), resourceLocation.GetAttribute("group"));
+                }
+            }
+            nl = n.GetElementsByTagName("Camera");
+            foreach (XmlElement e in nl)
+            {
+                XmlNodeList properties = e.GetElementsByTagName("Property");
+                foreach (XmlElement prop in properties)
+                {
+                    Property property = new Property(prop.GetAttribute("name"), prop.GetAttribute("value"));
+                    project.setProperty(property);
+                }
+            }
+
         }
 
 #if TODO_DANI //encodeProject
