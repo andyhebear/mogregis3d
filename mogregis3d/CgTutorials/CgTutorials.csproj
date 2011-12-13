@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI">
+      <HintPath>..\Libs\NetTopology\GeoAPI.dll</HintPath>
+    </Reference>
     <Reference Include="Mogre">
       <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
     </Reference>
@@ -45,6 +48,18 @@
     </Reference>
     <Reference Include="MOIS">
       <HintPath>..\Libs\MogreRelease\MOIS.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite">
+      <HintPath>..\Libs\NetTopology\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Coordinates.Buffered">
+      <HintPath>..\Libs\NetTopology\NetTopologySuite.Coordinates.Buffered.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Coordinates.Simple">
+      <HintPath>..\Libs\NetTopology\NetTopologySuite.Coordinates.Simple.dll</HintPath>
+    </Reference>
+    <Reference Include="NPack">
+      <HintPath>..\Libs\NetTopology\NPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -93,6 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CgTutorials.cs" />
+    <Compile Include="Lines3dExample3.cs" />
     <Compile Include="Lines3dExample1.cs" />
     <Compile Include="Lines3dExample2.cs" />
     <Compile Include="PolygonExample1.cs" />
