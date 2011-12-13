@@ -1,14 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <project name="sample1">
+  
   <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
+  
   <mogreRender>
-    <backgroundColor>vec4(0.1f, 0.3f, 0.6f, 0.0f)</backgroundColor>
+    <backgroundColor>vec4(0.1, 0.3, 0.6, 0.0)</backgroundColor>
     <resources>
       <ressourceLocation name="./CgResources/Chapter3"  type="FileSystem" group= "General"/>
     </resources>
     <Camera>
-      <property name="Position" value="-300, 500, 0"/>
-      <property name="LookUp" value="0, 0, 0"/>
+      <property name="Position" value="vec3(-300, 500, 0)"/>
+      <property name="LookAt" value="vec3(0, 0, 0)"/>
     </Camera>
   </mogreRender>
 

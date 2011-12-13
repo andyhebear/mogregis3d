@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 using MogreGis;
 
 namespace osgGISProjects
 {
     public class Project
+    
     {
 
         public Project()
@@ -251,7 +253,44 @@ namespace osgGISProjects
         {
             return resources;
         }
+        
+        public void setBackGroundColor(Mogre.Vector3 color)
+        {
+            backGroundColor = color;
+        }
 
+        public Mogre.Vector3 getBackGroundColor()
+        {
+            return backGroundColor;
+        }
+
+        public void addMogreResourceLocation(string name, string type, string group)
+        {
+            mogreLocations.Add(new MogreLocation(name, type, group));
+        }
+
+        public void setProperty(Property property)
+        {
+            if (property.getName() == "Position")
+            {
+                cameraPosition = Registry.instance().GetEngine("Python").run(new Script(property.getValue())).asVec3();
+            }
+            if (property.getName() == "LookAt")
+            {
+                lookAt = Registry.instance().GetEngine("Python").run(new Script(property.getValue())).asVec3();
+            }
+        }
+
+
+        public void loadMogreResourceLocation(MogreApp app)
+        {
+            //Mogre.
+        }
+
+        private Mogre.Vector3 cameraPosition;
+        private Mogre.Vector3 lookAt;
+        private List<MogreLocation> mogreLocations;
+        private Mogre.Vector3 backGroundColor;
         protected string source_uri;
         protected string name;
         protected string work_dir;
@@ -271,5 +310,21 @@ namespace osgGISProjects
       
         protected RuntimeMapList maps;
 #endif
+
+        class MogreLocation
+        {
+            string name;
+            string type;
+            string group;
+
+            public MogreLocation(string name, string type, string group)
+            {
+                this.name = name;
+                this.type = type;
+                this.group = group;
+            }
+        }
+
+
     }
 }
