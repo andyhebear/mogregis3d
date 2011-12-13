@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-//using Mogre.Helpers;
-
 namespace Mogre.Demo.Primitives
 {
     public class Lines3Dv2
@@ -108,7 +106,7 @@ namespace Mogre.Demo.Primitives
             Lines3Dv2 lines3d_2 = new Lines3Dv2();
             lines3d_2.AddPoint(3, 3, 0);
             lines3d_2.AddPoint(8, 8, 0);
-            lines3d_2.AddPoint(3+5, 3, 0);
+            lines3d_2.AddPoint(3 + 5, 3, 0);
             lines3d_2.AddPoint(5, 3, 0);
 
             SceneNode node2 = base.sceneMgr.RootSceneNode.CreateChildSceneNode("Lines3DNode_2");

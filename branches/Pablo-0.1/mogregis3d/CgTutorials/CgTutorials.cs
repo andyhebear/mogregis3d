@@ -33,10 +33,11 @@ namespace Mogre.Demo.CgTutorials
             tutorials.Add("Polygon", new Mogre.Demo.PolygonExample.PolygonExample1());   // Polygon tesselation example
             tutorials.Add("Lines3Dv1", new Mogre.Demo.Primitives.Lines3DExample1()); // Simple lines3d plotting
             tutorials.Add("Lines3Dv2", new Mogre.Demo.Primitives.Lines3DExample2()); // lines3d plotting with a material
+            tutorials.Add("Lines3Dv3", new Mogre.Demo.Primitives.Lines3DExample3()); // An example using NTS's operation Buffer
 
             //tutorials.Add("Scenicv1", new Mogre.Demo.Primitives.ScenicTestExample1()); // Simple lines3d plotting
 
-            string tutorialToRun = "C3E5v2";
+            string tutorialToRun = "Lines3Dv3";
 
             try
             {
