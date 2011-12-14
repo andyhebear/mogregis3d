@@ -622,58 +622,63 @@ namespace SharpMapExample
             SetupMogre();
             Mogre.SceneManager sm = app.SceneManager;
 
-            foreach (osgGISProjects.Source source in prj.getSources())
+
+
+            foreach (MogreGis.FilterGraph graph in prj.getFilterGraphs())
             {
-                
 
-                if (Path.GetExtension(source.getURI()) != ".shp")
+                foreach (osgGISProjects.Source source in prj.getSources())
                 {
-                    throw new NotImplementedException();
-                }
-
-                MogreGis.FilterEnv env = null;
-                MogreGis.FeatureList featureList = null;
-
-                FeatureDataSet ds = new FeatureDataSet();
-                source.DataSource.Open();
-                source.DataSource.ExecuteIntersectionQuery(source.DataSource.GetExtents(), ds);
-                source.DataSource.Close();
-                FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
-                featureList = MogreGis.Feature.DataTableToList(features);
-
-                foreach (Script script in prj.getScripts())
-                {
-                    Registry.instance().GetEngine("Python").run(script);
-                }
-
-                foreach (Feature feature in featureList)
-                {
-                    SharpMapSpatialReferenceFactory smsrf = new SharpMapSpatialReferenceFactory();
-                    ShapeFile shp = new ShapeFile(source.getURI());
-                    shp.Open();
-                    SharpMapSpatialReference sr;
-                    sr = (SharpMapSpatialReference)smsrf.createSRSfromWKT(shp.CoordinateSystem.WKT);
-                    feature.getGeometry().SpatialReference = sr;
-                }
-                env = new MogreGis.FilterEnv(sm, "env");
-                env.setScriptEngine(Registry.instance().GetEngine("Python"));
-
-                foreach (MogreGis.FilterGraph graph in prj.getFilterGraphs())
-                {
-                    foreach (MogreGis.Filter filter in graph.getFilters())
+                    if (Path.GetExtension(source.getURI()) != ".shp")
                     {
-                        if (filter is MogreGis.FragmentFilter)
+                        throw new NotImplementedException();
+                    }
+
+                    if (source.getName() == graph.getName())
+                    {
+                        MogreGis.FilterEnv env = null;
+                        MogreGis.FeatureList featureList = null;
+
+                        FeatureDataSet ds = new FeatureDataSet();
+                        source.DataSource.Open();
+                        source.DataSource.ExecuteIntersectionQuery(source.DataSource.GetExtents(), ds);
+                        source.DataSource.Close();
+                        FeatureDataTable features = (FeatureDataTable)ds.Tables[0];
+                        featureList = MogreGis.Feature.DataTableToList(features);
+
+                        foreach (Script script in prj.getScripts())
                         {
-                            (filter as MogreGis.FragmentFilter).process(featureList, env);
+                            Registry.instance().GetEngine("Python").run(script);
                         }
-                        if (filter is MogreGis.FeatureFilter)
+
+                        foreach (Feature feature in featureList)
                         {
-                            featureList = (filter as MogreGis.FeatureFilter).process(featureList, env);
+                            SharpMapSpatialReferenceFactory smsrf = new SharpMapSpatialReferenceFactory();
+                            ShapeFile shp = new ShapeFile(source.getURI());
+                            shp.Open();
+                            SharpMapSpatialReference sr;
+                            sr = (SharpMapSpatialReference)smsrf.createSRSfromWKT(shp.CoordinateSystem.WKT);
+                            feature.getGeometry().SpatialReference = sr;
+                        }
+
+
+                        env = new MogreGis.FilterEnv(sm, "env" + graph.getName());
+                        env.setScriptEngine(Registry.instance().GetEngine("Python"));
+                        foreach (MogreGis.Filter filter in graph.getFilters())
+                        {
+                            if (filter is MogreGis.FragmentFilter)
+                            {
+                                (filter as MogreGis.FragmentFilter).process(featureList, env);
+                            }
+                            if (filter is MogreGis.FeatureFilter)
+                            {
+                                featureList = (filter as MogreGis.FeatureFilter).process(featureList, env);
+                            }
                         }
                     }
                 }
-                app.getRoot().StartRendering();
             }
+            app.getRoot().StartRendering();
 
 #if versionAñadirLayersMano
             foreach (ILayer layer in MainMapImage.Map.Layers)
@@ -801,7 +806,7 @@ namespace SharpMapExample
         }
 
         private osgGISProjects.Project prj;
-        
+
     }
 
     //public class MogreApp : Mogre.TutorialFramework.BaseApplication

@@ -63,6 +63,8 @@ def Mercator ():
   <script language="python" name="scriptColor">
 def Color ():
     return vector3((feature.row['POPDENS']/1000.0),1-(feature.row['POPDENS']/300.0),0)
+def ColorLine ():
+    return vector3(0,0,1)
   </script>
 
   <!--<script language="python" name="script2">
@@ -80,15 +82,21 @@ def SelectSpain():
   </layer>
 
   <!-- A source references a vector GIS source layer:  -->
-  <source name="cities" provider="ShapeFile">
+  <source name="countries" provider="ShapeFile">
     <!--<uri>../../../data/latlong.shp</uri>
     <project>../../../data/latlong.prj</project>-->
     <uri>../../../data/countries.shp</uri>
     <project>../../../data/countries.prj</project>
   </source>
 
+  <source name="rivers" provider="ShapeFile">
+    <!--<uri>../../../data/latlong.shp</uri>
+    <project>../../../data/latlong.prj</project>-->
+    <uri>../../../data/rivers.shp</uri>
+    <project>../../../data/rivers.prj</project>
+  </source>
 
-  <graph name="cities">
+  <graph name="countries">
     <!--<filter type="TransformFilter">
       <property name="translate" value=""/>
       <property name="" value=""/>
@@ -115,6 +123,18 @@ def SelectSpain():
     </filter>-->
     <filter type="BuildGeomFilter" >
       <property name="color" value="Color()"/>
+      <property name="pointNameEntityINI" value="ogrehead.mesh"/>
+      <property name="pointNameEntities" value="ogrehead.mesh"/>
+      <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
+      <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
+      <!--<property name="nameMaterial" value="ocean.material"/>-->
+      <property name="nameMaterial" value="CgTutorials/C3E5_Materialv2"/>
+    </filter>
+  </graph>
+  
+  <graph name="rivers">
+    <filter type="BuildGeomFilter" >
+      <property name="color" value="ColorLine()"/>
       <property name="pointNameEntityINI" value="ogrehead.mesh"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
