@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoAPI">
+      <HintPath>..\Libs\NetTopology\GeoAPI.dll</HintPath>
+    </Reference>
     <Reference Include="IronPython">
       <HintPath>..\Libs\IronPython\IronPython.dll</HintPath>
     </Reference>
@@ -70,6 +73,19 @@
     <Reference Include="Mogre, Version=1.7.3.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite">
+      <HintPath>..\Libs\NetTopology\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Coordinates.Buffered">
+      <HintPath>..\Libs\NetTopology\NetTopologySuite.Coordinates.Buffered.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Coordinates.Simple">
+      <HintPath>..\Libs\NetTopology\NetTopologySuite.Coordinates.Simple.dll</HintPath>
+    </Reference>
+    <Reference Include="NPack, Version=0.9.23543.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\NetTopology\NPack.dll</HintPath>
     </Reference>
     <Reference Include="ProjNet, Version=1.2.3882.19088, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

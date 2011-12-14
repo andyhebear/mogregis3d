@@ -6,6 +6,26 @@ using Mogre;
 
 using Mogre.Utils.GluTesselator;
 
+using NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
+using GeoAPI.Coordinates;
+using GeoAPI.IO.WellKnownText;
+#if !unbuffered
+using Coord = NetTopologySuite.Coordinates.Coordinate;
+using CoordFac = NetTopologySuite.Coordinates.CoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
+//using Mogre.Demo.PolygonExample;
+using GeoAPI.Operations.Buffer;
+using NetTopologySuite.Coordinates;
+
+#else
+using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using CoordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+using Mogre.Demo.PolygonExample;
+
+#endif
+
 namespace MogreGis
 {
     /**
@@ -486,6 +506,47 @@ namespace MogreGis
                     }
                 }
 
+                //if type of features is Line
+                else if (feature.row.Geometry is SharpMap.Geometries.LineString)
+                {
+                    ManualObject lineNode = env.getSceneMgr().CreateManualObject("line" + i);
+                    MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon",
+                             ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                    material.GetTechnique(0).GetPass(0).VertexColourTracking =
+                                   (int)TrackVertexColourEnum.TVC_AMBIENT;
+
+                    int nSeg = 5; // Number of segments on the cap or join pieces
+                    BufferParameters param = new BufferParameters(nSeg, BufferParameters.BufferEndCapStyle.CapRound, BufferParameters.BufferJoinStyle.JoinRound, 2);
+                    IGeometryFactory<Coord> geometryFactory = new GeometryFactory<Coord>(new CoordSeqFac(new CoordFac(PrecisionModelType.DoubleFloating)));
+                    IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
+                    ILineString line1 = (ILineString<Coord>)reader.Read(feature.row.Geometry.AsText());
+                    IGeometry coordBuffer = line1.Buffer(0.5, param);
+                    ICoordinateSequence coords = coordBuffer.Coordinates;
+                    Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
+                    MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, v);
+
+                    GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
+                    Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
+                    Glu.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
+                    Glu.gluTessCallback(GLU.GLU_TESS_END, callback);
+                    Glu.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
+                    Glu.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
+                    Glu.gluTessBeginPolygon(null);
+                    Glu.gluTessBeginContour();
+                    foreach (Coord coord in coords)
+                    {
+                        double[] data = new double[] { coord.X * distanceScale.x, coord.Y * distanceScale.y, (double.IsNaN(coord.Z) ? 0 : coord.Z)*distanceScale.z };
+
+                        Glu.gluTessVertex(data, 0, new Vector3((float)data[1], (float)data[2], (float)data[0]));
+                    }
+                    Glu.gluTessEndContour();
+                    Glu.gluTessNormal(0, 0, 1);
+                    Glu.gluTessEndPolygon();
+                    i++;
+                    nodeIni.AttachObject(lineNode);
+                    //SceneNode node1 = env.getSceneMgr().RootSceneNode.CreateChildSceneNode("Line3Node");
+                    //node1.AttachObject(line.CreateNode("Line3", base.sceneMgr, true));
+                }
                 if ((feature.row.Geometry is SharpMap.Geometries.Polygon) | (feature.row.Geometry is SharpMap.Geometries.MultiPolygon))
                 {
                     Fragment f = new Fragment(nodeIni);
