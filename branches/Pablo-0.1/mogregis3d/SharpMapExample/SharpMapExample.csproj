@@ -66,6 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\MogreRelease\Mogre.dll</HintPath>
     </Reference>
+    <Reference Include="Mogre.Demo.ExampleApplication">
+      <HintPath>..\Libs\MogreExtForMogreGis3DTest\Mogre.Demo.ExampleApplication.dll</HintPath>
+    </Reference>
     <Reference Include="Mogre.TutorialFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\MogreRelease\Mogre.TutorialFramework.dll</HintPath>

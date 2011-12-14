@@ -4,7 +4,7 @@
   <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
   
   <mogreRender>
-    <backgroundColor>vec4(0.1, 0.3, 0.6, 0.0)</backgroundColor>
+    <backgroundColor>vec4(1, 0, 0, 0)</backgroundColor>
     <resources>
       <ressourceLocation name="./CgResources/Chapter3"  type="FileSystem" group= "General"/>
     </resources>

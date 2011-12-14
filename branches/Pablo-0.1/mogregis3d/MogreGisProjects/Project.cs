@@ -22,6 +22,7 @@ namespace osgGISProjects
             graphs = new FilterGraphList();
             resources = new ResourceList();
             scripts = new ScriptList();
+            mogreLocations = new List<MogreLocation>();
         }
 
         public void setSourceURI(string value)
@@ -254,12 +255,12 @@ namespace osgGISProjects
             return resources;
         }
         
-        public void setBackGroundColor(Mogre.Vector3 color)
+        public void setBackGroundColor(Mogre.Vector4 color)
         {
             backGroundColor = color;
         }
 
-        public Mogre.Vector3 getBackGroundColor()
+        public Mogre.Vector4 getBackGroundColor()
         {
             return backGroundColor;
         }
@@ -284,13 +285,26 @@ namespace osgGISProjects
 
         public void loadMogreResourceLocation(MogreApp app)
         {
-            //Mogre.
+            foreach (MogreLocation l in mogreLocations)
+            {
+                Mogre.ResourceGroupManager.Singleton.AddResourceLocation(l.Name, l.Type, l.Group);
+            }
+        }
+
+        public Mogre.Vector3 CameraPosition
+        {
+            get { return cameraPosition; }
+        }
+
+        public Mogre.Vector3 LookAt
+        {
+            get { return lookAt; }
         }
 
         private Mogre.Vector3 cameraPosition;
         private Mogre.Vector3 lookAt;
         private List<MogreLocation> mogreLocations;
-        private Mogre.Vector3 backGroundColor;
+        private Mogre.Vector4 backGroundColor;
         protected string source_uri;
         protected string name;
         protected string work_dir;
@@ -316,6 +330,24 @@ namespace osgGISProjects
             string name;
             string type;
             string group;
+
+            public String Name
+            {
+                get {return name;}
+                set { name = value; }
+            }
+
+            public String Type
+            {
+                get { return type; }
+                set { type = value; }
+            }
+
+            public String Group
+            {
+                get { return group; }
+                set { group = value; }
+            }
 
             public MogreLocation(string name, string type, string group)
             {
