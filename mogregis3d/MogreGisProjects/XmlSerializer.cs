@@ -956,7 +956,7 @@ namespace osgGISProjects
             XmlNodeList nl = n.GetElementsByTagName("backgroundColor"); 
             foreach (XmlElement e in nl)
             {
-                project.setBackGroundColor(Registry.instance().GetEngine("Python").run(new Script(e.InnerText)).asVec3());
+                project.setBackGroundColor(Registry.instance().GetEngine("Python").run(new Script(e.InnerText)).asVec4());
             }
             nl = n.GetElementsByTagName("resources");
             foreach (XmlElement resources in nl)
