@@ -510,10 +510,12 @@ namespace MogreGis
                 else if (feature.row.Geometry is SharpMap.Geometries.LineString)
                 {
                     ManualObject lineNode = env.getSceneMgr().CreateManualObject("line" + i);
-                    MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon",
+                    MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon2",
                              ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
                     material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                    (int)TrackVertexColourEnum.TVC_AMBIENT;
+                    material.GetTechnique(0).GetPass(0).SetDepthBias(100);
+                    material.GetTechnique(0).GetPass(0).LightingEnabled = false;
 
                     int nSeg = 5; // Number of segments on the cap or join pieces
                     BufferParameters param = new BufferParameters(nSeg, BufferParameters.BufferEndCapStyle.CapRound, BufferParameters.BufferJoinStyle.JoinRound, 2);
@@ -524,6 +526,7 @@ namespace MogreGis
                     ICoordinateSequence coords = coordBuffer.Coordinates;
                     Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
                     MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, v);
+                    callback.Material = nameMaterial; // "Test/ColourPolygon2";
 
                     GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                     Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -627,6 +630,13 @@ namespace MogreGis
         {
             ManualObject manualObj;
             Vector3 vec3;
+            string material = "Test/ColourPolygon";
+
+            public string Material
+            {
+                get { return material; }
+                set { material = value; }
+            }
 
             public MogreTessellationCallbacks(ManualObject mo, Vector3 color)
             {
@@ -647,15 +657,15 @@ namespace MogreGis
                         break;
                     case GL.GL_TRIANGLE_FAN:
                         typeName = "GL_TRIANGLE_FAN";
-                        manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_FAN);
+                        manualObj.Begin(material, RenderOperation.OperationTypes.OT_TRIANGLE_FAN);
                         break;
                     case GL.GL_TRIANGLE_STRIP:
                         typeName = "GL_TRIANGLE_STRIP";
-                        manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_STRIP);
+                        manualObj.Begin(material, RenderOperation.OperationTypes.OT_TRIANGLE_STRIP);
                         break;
                     case GL.GL_TRIANGLES:
                         typeName = "GL_TRIANGLES";
-                        manualObj.Begin("Test/ColourPolygon", RenderOperation.OperationTypes.OT_TRIANGLE_LIST);
+                        manualObj.Begin(material, RenderOperation.OperationTypes.OT_TRIANGLE_LIST);
                         break;
                     default:
                         typeName = "Unknown";
@@ -689,7 +699,7 @@ namespace MogreGis
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
 #endif
                 manualObj.Position((Vector3)vertexData);
-                
+                manualObj.TextureCoord(0.1f,0.1f);
                 manualObj.Colour(vec3.x, vec3.y, vec3.z);
             }
 

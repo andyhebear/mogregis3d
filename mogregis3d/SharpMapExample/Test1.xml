@@ -139,8 +139,8 @@ def SelectSpain():
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
       <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
-      <!--<property name="nameMaterial" value="ocean.material"/>-->
-      <property name="nameMaterial" value="CgTutorials/C3E5_Materialv2"/>
+      <!--<property name="nameMaterial" value="ocean.material   CgTutorials/C3E5_Materialv2"/>-->
+      <property name="nameMaterial" value="Test/ColourPolygon2"/>
     </filter>
   </graph>
 
