@@ -15,6 +15,12 @@ namespace osgGISProjects
             this.Setup();
         }
 
+        public override void SetupResources()
+        {
+            base.SetupResources();
+            ResourceGroupManager.Singleton.AddResourceLocation("./MogreResources", "FileSystem", "General");
+        }
+
         public MogreApp(Vector3 position, Vector3 lookAt, Vector4 backgroundcolor)
         {
             this.Setup();

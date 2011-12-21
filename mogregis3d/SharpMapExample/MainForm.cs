@@ -661,7 +661,7 @@ namespace SharpMapExample
                             feature.getGeometry().SpatialReference = sr;
                         }
 
-
+                        //ResourceGroupManager.Singleton.AddResourceLocation("./MogreResources", "FileSystem", "General");
                         env = new MogreGis.FilterEnv(sm, "env" + graph.getName());
                         env.setScriptEngine(Registry.instance().GetEngine("Python"));
                         foreach (MogreGis.Filter filter in graph.getFilters())
