@@ -378,8 +378,9 @@ namespace MogreGis
                         material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                        (int)TrackVertexColourEnum.TVC_AMBIENT;
 
-                        Vector3 v = Registry.instance().GetEngine("Python").run(Color,feature,null).asVec3();
-                        MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, v);
+                        //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
+
+                        MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, Color, feature);
 
                         GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                         Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -451,8 +452,8 @@ namespace MogreGis
                             material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                            (int)TrackVertexColourEnum.TVC_AMBIENT;
 
-                            Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
-                            MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, v);
+                            //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
+                            MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, Color, feature);
 
                             GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                             Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -510,22 +511,24 @@ namespace MogreGis
                 else if (feature.row.Geometry is SharpMap.Geometries.LineString)
                 {
                     ManualObject lineNode = env.getSceneMgr().CreateManualObject("line" + i);
-                    MaterialPtr material = MaterialManager.Singleton.Create("Test/ColourPolygon2",
-                             ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
-                    material.GetTechnique(0).GetPass(0).VertexColourTracking =
-                                   (int)TrackVertexColourEnum.TVC_AMBIENT;
-                    material.GetTechnique(0).GetPass(0).SetDepthBias(100);
-                    material.GetTechnique(0).GetPass(0).LightingEnabled = false;
+
+                    //MaterialPtr material = MaterialManager.Singleton.Create(nameMaterial,
+                             //ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                    //material.GetTechnique(0).GetPass(0).VertexColourTracking =
+                    //               (int)TrackVertexColourEnum.TVC_AMBIENT;
+                    //material.GetTechnique(0).GetPass(0).SetDepthBias(100);
+                    //material.GetTechnique(0).GetPass(0).LightingEnabled = false;
 
                     int nSeg = 5; // Number of segments on the cap or join pieces
                     BufferParameters param = new BufferParameters(nSeg, BufferParameters.BufferEndCapStyle.CapRound, BufferParameters.BufferJoinStyle.JoinRound, 2);
                     IGeometryFactory<Coord> geometryFactory = new GeometryFactory<Coord>(new CoordSeqFac(new CoordFac(PrecisionModelType.DoubleFloating)));
                     IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
-                    ILineString line1 = (ILineString<Coord>)reader.Read(feature.row.Geometry.AsText());
-                    IGeometry coordBuffer = line1.Buffer(0.5, param);
+                    string txt = feature.row.Geometry.AsText();
+                    ILineString line1 = (ILineString<Coord>)reader.Read(txt);
+                    IGeometry coordBuffer = line1.Buffer(0.2, param);
                     ICoordinateSequence coords = coordBuffer.Coordinates;
-                    Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
-                    MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, v);
+                    //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
+                    MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, Color, feature);
                     callback.Material = nameMaterial; // "Test/ColourPolygon2";
 
                     GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
@@ -629,8 +632,9 @@ namespace MogreGis
         public class MogreTessellationCallbacks : GLUtessellatorCallback
         {
             ManualObject manualObj;
-            Vector3 vec3;
+            Script vec3;
             string material = "Test/ColourPolygon";
+            Feature feature;
 
             public string Material
             {
@@ -638,10 +642,10 @@ namespace MogreGis
                 set { material = value; }
             }
 
-            public MogreTessellationCallbacks(ManualObject mo, Vector3 color)
+            public MogreTessellationCallbacks(ManualObject mo, Script color,Feature feature)
             {
                 manualObj = mo;
-
+                this.feature = feature;
                 vec3 = color;
             }
 
@@ -699,8 +703,16 @@ namespace MogreGis
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
 #endif
                 manualObj.Position((Vector3)vertexData);
-                manualObj.TextureCoord(0.1f,0.1f);
-                manualObj.Colour(vec3.x, vec3.y, vec3.z);
+                //manualObj.TextureCoord(0.1f,0.1f);
+                //if (vec3 != null)
+                //{
+                //    Vector3 v = Registry.instance().GetEngine("Python").run(vec3, feature, null).asVec3();
+                //    manualObj.Colour(v.x, v.y, v.z);
+                //}
+                //if (Material != null)
+                //{
+                //    manualObj.TextureCoord(0);
+                //}
             }
 
             public void vertexData(object vertexData, object polygonData)
@@ -723,12 +735,12 @@ namespace MogreGis
 
             public void combine(double[] coords, object[] data, float[] weight, object[] outData)
             {
-                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+                //Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             }
 
             public void combineData(double[] coords, object[] data, float[] weight, object[] outData, object polygonData)
             {
-                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
+                //Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod());
             }
 
             public void error(int errnum)

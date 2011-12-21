@@ -35,7 +35,7 @@ namespace Mogre.Demo.CgTutorials
         public override void CreateScene()
         {
             SceneNode node1 = base.sceneMgr.RootSceneNode.CreateChildSceneNode("Tutorial01Node");
-            theObj = CreateNode("Tutorial01Object", base.sceneMgr, true);
+            theObj = CreateNode("Tutorial01Object", base.sceneMgr, false);
             node1.AttachObject(theObj);
         }
 

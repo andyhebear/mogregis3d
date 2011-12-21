@@ -37,7 +37,7 @@ namespace Mogre.Demo.CgTutorials
 
             //tutorials.Add("Scenicv1", new Mogre.Demo.Primitives.ScenicTestExample1()); // Simple lines3d plotting
 
-            string tutorialToRun = "Lines3Dv2";
+            string tutorialToRun = "C2E1";
 
             try
             {
