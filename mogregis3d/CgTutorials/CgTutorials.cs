@@ -36,8 +36,13 @@ namespace Mogre.Demo.CgTutorials
             tutorials.Add("Lines3Dv3", new Mogre.Demo.Primitives.Lines3DExample3()); // An example using NTS's operation Buffer
 
             //tutorials.Add("Scenicv1", new Mogre.Demo.Primitives.ScenicTestExample1()); // Simple lines3d plotting
+            tutorials.Add("TextExample", new TextExample());
 
+<<<<<<< .mine
+            string tutorialToRun = "TextExample";
+=======
             string tutorialToRun = "C2E1";
+>>>>>>> .r58
 
             try
             {
