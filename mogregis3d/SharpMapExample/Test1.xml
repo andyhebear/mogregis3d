@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <project name="sample1">
-  
+
   <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
-  
+
   <mogreRender>
     <backgroundColor>vec4(1, 0, 0, 0)</backgroundColor>
     <resources>
@@ -97,41 +97,57 @@ def SelectSpain():
   </source>
 
   <!--<graph name="countries">
-    --><!--<filter type="TransformFilter">
+    -->
+  <!--<filter type="TransformFilter">
       <property name="translate" value=""/>
       <property name="" value=""/>
       <property name="" value=""/>
-    </filter>--><!--
-    --><!--<filter type="AreaFilter">
+    </filter>-->
+  <!--
+    -->
+  <!--<filter type="AreaFilter">
       <property name="longitudeMin" value="-10"/>
       <property name="longitudeMax" value="4"/>
       <property name="latitudeMin" value="35"/>
       <property name="latitudeMax" value="44"/>
-    </filter>--><!--
-    --><!--<filter type="AttributeFilter">
+    </filter>-->
+  <!--
+    -->
+  <!--<filter type="AttributeFilter">
       <property name="attributeName" value="NAME"/>
       <property name="attributeValue" value="spain"/>
-    </filter>--><!--
-    --><!--<filter type="ScriptFilter">
+    </filter>-->
+  <!--
+    -->
+  <!--<filter type="ScriptFilter">
       <property name="Condition" value="SelectSpain()"/>
-    </filter>--><!--
-    --><!--<filter type="ScriptFilter">
+    </filter>-->
+  <!--
+    -->
+  <!--<filter type="ScriptFilter">
       <property name="Condition" value="feature.row.get("NAME") == "spain"/>
-    </filter>--><!--
-    --><!--<filter type="TransformFilter">
+    </filter>-->
+  <!--
+    -->
+  <!--<filter type="TransformFilter">
       <property name="translate" value="Mercator()"/>
-    </filter>--><!--
+    </filter>-->
+  <!--
     <filter type="BuildGeomFilter" >
       <property name="color" value="Color()"/>
       <property name="pointNameEntityINI" value="ogrehead.mesh"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
-      --><!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>--><!--
-      --><!--<property name="nameMaterial" value="ocean.material"/>--><!--
+      -->
+  <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
+  <!--
+      -->
+  <!--<property name="nameMaterial" value="ocean.material"/>-->
+  <!--
       <property name="nameMaterial" value="SharpMapExample/water_green_Material"/>
     </filter>
   </graph>-->
-  
+
   <graph name="rivers">
     <!--<filter type="TransformFilter">
       <property name="translate" value="Mercator()"/>
