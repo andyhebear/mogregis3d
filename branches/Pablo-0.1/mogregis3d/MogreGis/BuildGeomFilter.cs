@@ -379,7 +379,6 @@ namespace MogreGis
                                        (int)TrackVertexColourEnum.TVC_AMBIENT;
 
                         //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
-
                         MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, Color, feature);
 
                         GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
@@ -412,7 +411,7 @@ namespace MogreGis
                             }
                             k++;
 
-                            //SceneNode n = point3d(env.getName(), k + 10, (float)point.X * 10.0f, (float)point.Y * 10.0f, 0, nodeIni, env.getSceneMgr());
+                            //SceneNode n = point3d(env.getName()+i+k, k + 10, (float)point.X * 10.0f, (float)point.Y * 10.0f, 0, nodeIni, env.getSceneMgr());
 
                         } 
                         for (int j = 0; j < data.GetLength(0); j++)
@@ -423,9 +422,6 @@ namespace MogreGis
                         Glu.gluTessEndContour();
                         Glu.gluTessNormal(0, 0, 1);
                         Glu.gluTessEndPolygon();
-
-                        //polygonNode.SetMaterialName((uint)0, nameMaterial);
-                       // polygonNode.Begin(nameMaterial);
                    
                         nodeIni.AttachObject(polygonNode);
 
@@ -496,9 +492,6 @@ namespace MogreGis
                             Glu.gluTessNormal(0, 0, 1);
                             Glu.gluTessEndPolygon();
 
-                            //polygonNode.SetMaterialName((uint)0, nameMaterial);
-                            //polygonNode.Begin(nameMaterial);
-
                             nodeIni.AttachObject(polygonNode);
                             
 
@@ -529,7 +522,7 @@ namespace MogreGis
                     ICoordinateSequence coords = coordBuffer.Coordinates;
                     //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
                     MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, Color, feature);
-                    callback.Material = nameMaterial; // "Test/ColourPolygon2";
+                    //callback.Material = nameMaterial; // "Test/ColourPolygon2";
 
                     GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                     Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -550,8 +543,6 @@ namespace MogreGis
                     Glu.gluTessEndPolygon();
                     i++;
                     nodeIni.AttachObject(lineNode);
-                    //SceneNode node1 = env.getSceneMgr().RootSceneNode.CreateChildSceneNode("Line3Node");
-                    //node1.AttachObject(line.CreateNode("Line3", base.sceneMgr, true));
                 }
                 if ((feature.row.Geometry is SharpMap.Geometries.Polygon) | (feature.row.Geometry is SharpMap.Geometries.MultiPolygon))
                 {
@@ -609,6 +600,7 @@ namespace MogreGis
             Entity ent;
             if (node == null)//point of reference 0,0,0
             {
+                //ManualObject aux = sceneMgr.CreateManualObject();
                 ent = sceneMgr.CreateEntity(name + id, getNameEntityINI());
                 node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + id + "Node", new Vector3(y, z, x));
                 node.AttachObject(ent);
@@ -704,11 +696,11 @@ namespace MogreGis
 #endif
                 manualObj.Position((Vector3)vertexData);
                 //manualObj.TextureCoord(0.1f,0.1f);
-                //if (vec3 != null)
-                //{
-                //    Vector3 v = Registry.instance().GetEngine("Python").run(vec3, feature, null).asVec3();
-                //    manualObj.Colour(v.x, v.y, v.z);
-                //}
+                if (vec3 != null)
+                {
+                    Vector3 v = Registry.instance().GetEngine("Python").run(vec3, feature, null).asVec3();
+                    manualObj.Colour(v.x, v.y, v.z);
+                }
                 //if (Material != null)
                 //{
                 //    manualObj.TextureCoord(0);

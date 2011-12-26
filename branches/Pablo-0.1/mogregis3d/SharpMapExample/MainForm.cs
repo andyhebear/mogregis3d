@@ -94,7 +94,6 @@ namespace SharpMapExample
         private void addLayer(ILayer layer)
         {
             MainMapImage.Map.Layers.Add(layer);
-
             LayersDataGridView.Rows.Insert(0, true, getLayerTypeIcon(layer.GetType()), layer.LayerName);
         }
 
@@ -622,8 +621,6 @@ namespace SharpMapExample
             SetupMogre();
             Mogre.SceneManager sm = app.SceneManager;
 
-
-
             foreach (MogreGis.FilterGraph graph in prj.getFilterGraphs())
             {
 
@@ -661,7 +658,6 @@ namespace SharpMapExample
                             feature.getGeometry().SpatialReference = sr;
                         }
 
-                        //ResourceGroupManager.Singleton.AddResourceLocation("./MogreResources", "FileSystem", "General");
                         env = new MogreGis.FilterEnv(sm, "env" + graph.getName());
                         env.setScriptEngine(Registry.instance().GetEngine("Python"));
                         foreach (MogreGis.Filter filter in graph.getFilters())
@@ -803,6 +799,17 @@ namespace SharpMapExample
         private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
             prj = osgGISProjects.XmlSerializer.loadProject("test1.xml");
+
+            foreach (osgGISProjects.Source source in prj.getSources())
+            {
+                string filename = source.getURI();
+
+                ILayerFactory layerFactory = null;
+                if (!_layerFactoryCatalog.TryGetValue(Path.GetExtension(filename), out layerFactory))
+                    continue;
+                ILayer layer = layerFactory.Create(Path.GetFileNameWithoutExtension(filename), filename);
+                addLayer(layer);
+            }
         }
 
         private osgGISProjects.Project prj;
