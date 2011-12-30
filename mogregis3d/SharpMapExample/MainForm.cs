@@ -456,165 +456,7 @@ namespace SharpMapExample
             BeginInvoke((MethodInvoker)delegate { addNewRandomGeometryLayer(); });
         }
 
-        private void toolStripComboBox1_Changed(object sender, EventArgs e)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                string selected = toolStripComboBox1.SelectedItem as string;
-                foreach (ILayer layer in MainMapImage.Map.Layers)
-                {
-                    if (layer is VectorLayer)
-                    {
-                        VectorLayer vectorLayer = (VectorLayer)layer;
-                        ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
-                        vectorLayer.CoordinateTransformation = GetTransform(selected, datacoordsys);
-                    }
-                }
-                zoomToExtents();
-            });
-        }
-
-        public ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation GetTransform(string name, ICoordinateSystem datacoordsys)
-        {
-            switch (name)
-            {
-                case "Mercator":
-                    return Transform2Mercator(datacoordsys);
-                case "Albers":
-                    return Transform2Albers(datacoordsys);
-                case "Lambert":
-                    return Transform2Lambert(datacoordsys);
-                case "Lambert Nuestro":
-                    return Transform2Lambert2(datacoordsys);
-                default:
-                    return null;
-            }
-        }
-        public static ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation Transform2Albers(ProjNet.CoordinateSystems.ICoordinateSystem source)
-        {
-            if (source == null)
-                throw new ArgumentException("Source coordinate system is null");
-            if (!(source is IGeographicCoordinateSystem))
-                throw new ArgumentException("Source coordinate system must be geographic");
-
-            CoordinateSystemFactory cFac = new CoordinateSystemFactory();
-
-            List<ProjectionParameter> parameters = new List<ProjectionParameter>();
-            parameters.Add(new ProjectionParameter("central_meridian", -95));
-            parameters.Add(new ProjectionParameter("latitude_of_origin", 50));
-            parameters.Add(new ProjectionParameter("standard_parallel_1", 29.5));
-            parameters.Add(new ProjectionParameter("standard_parallel_2", 45.5));
-            parameters.Add(new ProjectionParameter("false_easting", 0));
-            parameters.Add(new ProjectionParameter("false_northing", 0));
-            IProjection projection = cFac.CreateProjection("Albers_Conic_Equal_Area", "albers", parameters);
-
-            IProjectedCoordinateSystem coordsys = cFac.CreateProjectedCoordinateSystem("Albers_Conic_Equal_Area",
-                                                                                       source as IGeographicCoordinateSystem,
-                                                                                       projection, ProjNet.CoordinateSystems.LinearUnit.Metre,
-                                                                                       new AxisInfo("East",
-                                                                                                    AxisOrientationEnum.East),
-                                                                                       new AxisInfo("North",
-                                                                                                    AxisOrientationEnum.
-                                                                                                        North));
-
-            return new CoordinateTransformationFactory().CreateFromCoordinateSystems(source, coordsys);
-        }
-
-        public static ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation Transform2Mercator(ICoordinateSystem source)
-        {
-            CoordinateSystemFactory cFac = new CoordinateSystemFactory();
-
-            List<ProjectionParameter> parameters = new List<ProjectionParameter>();
-            parameters.Add(new ProjectionParameter("latitude_of_origin", 0));
-            parameters.Add(new ProjectionParameter("central_meridian", 0));
-            parameters.Add(new ProjectionParameter("false_easting", 0));
-            parameters.Add(new ProjectionParameter("false_northing", 0));
-            IProjection projection = cFac.CreateProjection("Mercator", "Mercator_2SP", parameters);
-
-            IProjectedCoordinateSystem coordsys = cFac.CreateProjectedCoordinateSystem("Mercator",
-                                                                                       source as IGeographicCoordinateSystem,
-                                                                                       projection, ProjNet.CoordinateSystems.LinearUnit.Metre,
-                                                                                       new AxisInfo("East",
-                                                                                                    AxisOrientationEnum.East),
-                                                                                       new AxisInfo("North",
-                                                                                                    AxisOrientationEnum.
-                                                                                                        North));
-
-            return new CoordinateTransformationFactory().CreateFromCoordinateSystems(source, coordsys);
-        }
-
-
-        public static ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation Transform2Lambert(ICoordinateSystem source)
-        {
-            if (source == null)
-                throw new ArgumentException("Source coordinate system is null");
-            if (!(source is IGeographicCoordinateSystem))
-                throw new ArgumentException("Source coordinate system must be geographic");
-
-            CoordinateSystemFactory cFac = new CoordinateSystemFactory();
-
-            List<ProjectionParameter> parameters = new List<ProjectionParameter>();
-            parameters.Add(new ProjectionParameter("latitude_of_origin", 50));
-            parameters.Add(new ProjectionParameter("central_meridian", -95));
-            parameters.Add(new ProjectionParameter("standard_parallel_1", 33));
-            parameters.Add(new ProjectionParameter("standard_parallel_2", 45));
-            parameters.Add(new ProjectionParameter("false_easting", 0));
-            parameters.Add(new ProjectionParameter("false_northing", 0));
-            IProjection projection = cFac.CreateProjection("Lambert Conformal Conic 2SP", "lambert_conformal_conic_2sp",
-                                                           parameters);
-
-            IProjectedCoordinateSystem coordsys = cFac.CreateProjectedCoordinateSystem("Lambert Conformal Conic 2SP",
-                                                                                       source as IGeographicCoordinateSystem,
-                                                                                       projection, ProjNet.CoordinateSystems.LinearUnit.Metre,
-                                                                                       new AxisInfo("East",
-                                                                                                    AxisOrientationEnum.East),
-                                                                                       new AxisInfo("North",
-                                                                                                    AxisOrientationEnum.
-                                                                                                        North));
-
-            return new CoordinateTransformationFactory().CreateFromCoordinateSystems(source, coordsys);
-        }
-
-        public static ProjNet.CoordinateSystems.Transformations.ICoordinateTransformation Transform2Lambert2(ICoordinateSystem source)
-        {
-            if (source == null)
-                throw new ArgumentException("Source coordinate system is null");
-            if (!(source is IGeographicCoordinateSystem))
-                throw new ArgumentException("Source coordinate system must be geographic");
-
-            CoordinateSystemFactory cFac = new CoordinateSystemFactory();
-
-
-            string mercator =
-  @"PROJCS[""Mercator Spheric"", GEOGCS[""WGS84basedSpheric_GCS"", DATUM[""WGS84basedSpheric_Datum"", SPHEROID[""WGS84based_Sphere"", 6378137, 0], TOWGS84[0, 0, 0, 0, 0, 0, 0]], PRIMEM[""Greenwich"", 0, AUTHORITY[""EPSG"", ""8901""]], UNIT[""degree"", 0.0174532925199433, AUTHORITY[""EPSG"", ""9102""]], AXIS[""E"", EAST], AXIS[""N"", NORTH]], PROJECTION[""Mercator""], PARAMETER[""False_Easting"", 0], PARAMETER[""False_Northing"", 0], PARAMETER[""Central_Meridian"", 0], PARAMETER[""Latitude_of_origin"", 0], UNIT[""metre"", 1, AUTHORITY[""EPSG"", ""9001""]], AXIS[""East"", EAST], AXIS[""North"", NORTH]]";
-            //ICoordinateSystem cstarget = cFac.CreateFromWkt(mercator2);
-
-            string lambert2 =
- @"   GEOGCS[""NTF (Paris)"",
-    DATUM[""Nouvelle Triangulation Francaise (Paris)"",
-    SPHEROID[""Clarke 1880 (IGN)"", 6378249.2, 293.4660212936269,
-    AUTHORITY[""EPSG"",""7011""]],
-    AUTHORITY[""EPSG"",""6807""]],
-    PRIMEM[""Paris"", 2.5969213, AUTHORITY[""EPSG"",""8903""]],
-    UNIT[""grade"", 0.015707963267948967],
-    AXIS[""Geodetic latitude"", NORTH],
-    AXIS[""Geodetic longitude"", EAST],
-    AUTHORITY[""EPSG"",""4807""]],
-    PROJECTION[""Lambert Conic Conformal (1SP)"", AUTHORITY[""EPSG"",""9801""]],
-    PARAMETER[""central_meridian"", 0.0],
-    PARAMETER[""latitude_of_origin"", 52.0],
-    PARAMETER[""scale_factor"", 0.99987742],
-    PARAMETER[""false_easting"", 600000.0],
-    PARAMETER[""false_northing"", 2200000.0],
-    UNIT[""m"", 1.0],
-    AXIS[""Easting"", EAST],
-    AXIS[""Northing"", NORTH],
-    AUTHORITY[""EPSG"",""27572""]]";
-            ICoordinateSystem cstarget = cFac.CreateFromWkt(mercator);
-
-            return new CoordinateTransformationFactory().CreateFromCoordinateSystems(source, cstarget);
-        }
-
+ 
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -675,140 +517,26 @@ namespace SharpMapExample
                 }
             }
             app.getRoot().StartRendering();
-
-#if versionAñadirLayersMano
-            foreach (ILayer layer in MainMapImage.Map.Layers)
-            {
-                if (layer is VectorLayer)
-                {
-                    VectorLayer vectorLayer = (VectorLayer)layer;
-
-                    ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
-
-                    ICoordinateTransformation transform = vectorLayer.CoordinateTransformation;
-
-                    Collection<Geometry> geoms;
-
-                    // Read data
-                    ShapeFile dataSource = (vectorLayer.DataSource as ShapeFile);
-
-                    // If not open yet, open it
-                    if (!dataSource.IsOpen) { dataSource.Open(); }
-
-                    geoms = dataSource.GetGeometriesInView(new BoundingBox(-20000, -20000, 20000, 20000));
-
-                    foreach (Geometry g in geoms)
-                    {
-                        if (g.GeometryType == GeometryType2.Point)
-                        {
-                            //----------------------------------------------
-                            //todo esto es para sacar el punto del Geometry.
-                            //string p = g.ToString();
-                            //string[] aux = p.Split(' ');
-                            //string cx = aux[1].Substring(2);
-                            //string cy = aux[2].Remove(aux[2].Length - 1);
-                            //cx = cx.Replace('.', ',');
-                            //cy = cy.Replace('.', ',');
-                            //double x = double.Parse(cx);
-                            //double y = double.Parse(cy);
-                            //-----------------------------------------------
-
-                            SharpMap.Geometries.Point point = (SharpMap.Geometries.Point)g;
-                            Console.WriteLine("Geometria original:" + point.X + "," + point.Y);
-                        }
-                    }
-
-
-                    Collection<Geometry> transfgeoms;
-
-                    if (transform != null)
-                    {
-                        transfgeoms = new Collection<Geometry>();
-                        ICoordinateSystem target = transform.TargetCS;
-                        foreach (Geometry g in geoms)
-                        {
-                            transfgeoms.Add(GeometryTransform.TransformGeometry(g, transform.MathTransform));
-                        }
-                        foreach (Geometry g in transfgeoms)
-                        {
-                            if (g.GeometryType == GeometryType2.Point)
-                            {
-                                //----------------------------------------------
-                                //todo esto es para sacar el punto del Geometry.
-                                string p = g.ToString();
-                                //string[] aux = p.Split(' ');
-                                //string cx = aux[1].Substring(2);
-                                //string cy = aux[2].Remove(aux[2].Length - 1);
-                                //cx = cx.Replace('.', ',');
-                                //cy = cy.Replace('.', ',');
-                                //double x = (g as SharpMap.Geometries.Point).X; //double.Parse(cx);
-                                //double y = (g as SharpMap.Geometries.Point).Y; // double.Parse(cy);
-                                //-----------------------------------------------
-
-                                SharpMap.Geometries.Point point = (SharpMap.Geometries.Point)g;
-                                Console.WriteLine("Geometria alterada:" + point.X.ToString(CultureInfo.InvariantCulture) + "," + point.Y.ToString(CultureInfo.InvariantCulture));
-                            }
-                        }
-                    }
-                }
-            }
-
-#endif
-
-#if Ejemplo
-            foreach (ILayer layer in MainMapImage.Map.Layers)
-            {
-                if (layer is VectorLayer)
-                {
-                    VectorLayer vectorLayer = (VectorLayer)layer;
-
-                    // PABLO AQUI TENGO EL SISTEMA DE COORDENADAS ORIGINAL
-                    ICoordinateSystem datacoordsys = (vectorLayer.DataSource as ShapeFile).CoordinateSystem;
-
-                    // PABLO AQUI TENGO LA TRANSFORMADA QUE APLICA
-                    ICoordinateTransformation transform = vectorLayer.CoordinateTransformation;
-
-                    // AQUI TENGO LOS DATOS ORIGINALES
-                    Collection<Geometry> geoms;
-
-                    // Read data
-                    ShapeFile dataSource = (vectorLayer.DataSource as ShapeFile);
-
-                    // If not open yet, open it
-                    if (!dataSource.IsOpen) { dataSource.Open(); }
-
-                    geoms = dataSource.GetGeometriesInView(new BoundingBox(-20000,-20000,20000,20000));
-
-                    //foreach (Geometry g in geoms)
-                    Console.WriteLine("Geometria original:" + geoms[0]);
-                    if (transform != null)
-                    {
-                        // PABLO AQUI TENGO EL SISTEMA DE COORDENADAS DESEADO
-                        ICoordinateSystem target = transform.TargetCS;
-                        for (int i = 0; i < geoms.Count; i++)
-                            geoms[i] = GeometryTransform.TransformGeometry(geoms[i], transform.MathTransform);
-                       
-                        //foreach (Geometry g in geoms)
-                        Console.WriteLine("Geometria alterada:" + geoms[0]);
-                    }
-                }
-            }
-#endif
         }
 
         private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
-            prj = osgGISProjects.XmlSerializer.loadProject("test1.xml");
+            DialogResult result = OpenProjectFileDialog.ShowDialog(this);
 
-            foreach (osgGISProjects.Source source in prj.getSources())
+            if (result == DialogResult.OK)
             {
-                string filename = source.getURI();
+                prj = osgGISProjects.XmlSerializer.loadProject(OpenProjectFileDialog.FileName);
 
-                ILayerFactory layerFactory = null;
-                if (!_layerFactoryCatalog.TryGetValue(Path.GetExtension(filename), out layerFactory))
-                    continue;
-                ILayer layer = layerFactory.Create(Path.GetFileNameWithoutExtension(filename), filename);
-                addLayer(layer);
+                foreach (osgGISProjects.Source source in prj.getSources())
+                {
+                    string filename = source.getURI();
+
+                    ILayerFactory layerFactory = null;
+                    if (!_layerFactoryCatalog.TryGetValue(Path.GetExtension(filename), out layerFactory))
+                        continue;
+                    ILayer layer = layerFactory.Create(Path.GetFileNameWithoutExtension(filename), filename);
+                    addLayer(layer);
+                }
             }
         }
 
