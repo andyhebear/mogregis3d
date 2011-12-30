@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Mogre.Demo.ExampleApplication;
 namespace Mogre.Demo.CgTutorials
@@ -38,11 +36,7 @@ namespace Mogre.Demo.CgTutorials
             //tutorials.Add("Scenicv1", new Mogre.Demo.Primitives.ScenicTestExample1()); // Simple lines3d plotting
             tutorials.Add("TextExample", new TextExample());
 
-<<<<<<< .mine
             string tutorialToRun = "TextExample";
-=======
-            string tutorialToRun = "C2E1";
->>>>>>> .r58
 
             try
             {

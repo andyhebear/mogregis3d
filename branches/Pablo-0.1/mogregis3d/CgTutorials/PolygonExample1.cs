@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Mogre.Utils.GluTesselator;
-using Mogre.Helpers;
 
 namespace Mogre.Demo.PolygonExample
 {
