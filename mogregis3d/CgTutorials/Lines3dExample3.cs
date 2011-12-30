@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Mogre.Utils.GluTesselator;
-using Mogre.Helpers;
 
 using NetTopologySuite.Geometries;
 using GeoAPI.Geometries;
@@ -15,7 +12,7 @@ using CoordFac = NetTopologySuite.Coordinates.CoordinateFactory;
 using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 using Mogre.Demo.PolygonExample;
 using GeoAPI.Operations.Buffer;
-using NetTopologySuite.Coordinates;
+
 
 #else
 using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;

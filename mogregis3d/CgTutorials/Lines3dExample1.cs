@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-//using Mogre.Helpers;
 
 namespace Mogre.Demo.Primitives
 {

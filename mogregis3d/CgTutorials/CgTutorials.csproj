@@ -112,6 +112,7 @@
     <Compile Include="Lines3dExample3.cs" />
     <Compile Include="Lines3dExample1.cs" />
     <Compile Include="Lines3dExample2.cs" />
+    <Compile Include="MeshBuilderHelper.cs" />
     <Compile Include="TextExample.cs" />
     <Compile Include="PolygonExample1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -234,10 +235,6 @@
     <ProjectReference Include="..\GluTessellator\GluTessellator.csproj">
       <Project>{42EB3659-185E-42BE-9C73-002CC98CF343}</Project>
       <Name>GluTessellator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MogreExampleApp\MogreExampleApp.csproj">
-      <Project>{C5126619-E4FC-4266-B22F-4F7BAEDADAD9}</Project>
-      <Name>MogreExampleApp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
