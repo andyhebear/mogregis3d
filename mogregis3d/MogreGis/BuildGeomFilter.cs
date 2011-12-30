@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Sharp3D.Math.Core;
+using SharpMap.Converters.NTS;
 using Mogre;
-
 using Mogre.Utils.GluTesselator;
 
 using NetTopologySuite.Geometries;
 using GeoAPI.Geometries;
 using GeoAPI.Coordinates;
-using GeoAPI.IO.WellKnownText;
+
 #if !unbuffered
 using Coord = NetTopologySuite.Coordinates.Coordinate;
 using CoordFac = NetTopologySuite.Coordinates.CoordinateFactory;
 using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 //using Mogre.Demo.PolygonExample;
 using GeoAPI.Operations.Buffer;
-using NetTopologySuite.Coordinates;
+
 
 #else
 using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;
@@ -515,9 +514,9 @@ namespace MogreGis
                     int nSeg = 5; // Number of segments on the cap or join pieces
                     BufferParameters param = new BufferParameters(nSeg, BufferParameters.BufferEndCapStyle.CapRound, BufferParameters.BufferJoinStyle.JoinRound, 2);
                     IGeometryFactory<Coord> geometryFactory = new GeometryFactory<Coord>(new CoordSeqFac(new CoordFac(PrecisionModelType.DoubleFloating)));
-                    IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
-                    string txt = feature.row.Geometry.AsText();
-                    ILineString line1 = (ILineString<Coord>)reader.Read(txt);
+                    //IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
+                    //string txt = feature.row.Geometry.AsText();
+                    ILineString line1 = (ILineString) GeometryConverter.ToNTSGeometry(feature.row.Geometry, geometryFactory); // (ILineString<Coord>)reader.Read(txt);
                     IGeometry coordBuffer = line1.Buffer(0.2, param);
                     ICoordinateSequence coords = coordBuffer.Coordinates;
                     //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
