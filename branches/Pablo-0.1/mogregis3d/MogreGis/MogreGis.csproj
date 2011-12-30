@@ -51,7 +51,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI">
+    <Reference Include="GeoAPI, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\NetTopology\GeoAPI.dll</HintPath>
     </Reference>
     <Reference Include="IronPython">
@@ -172,6 +173,7 @@
     <Compile Include="NodeFilterState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NtsGeometryConverter.cs" />
     <Compile Include="ScriptEngine.cs" />
     <Compile Include="SharpMapSpatialReference.cs" />
     <Compile Include="SharpMapSpatialReferenceFactory.cs" />
