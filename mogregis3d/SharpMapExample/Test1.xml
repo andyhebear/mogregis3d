@@ -154,12 +154,12 @@ def SelectSpain():
     </filter>-->
     <filter type="BuildGeomFilter" >
       <!--<property name="color" value="ColorLine()"/>-->
-      <property name="pointNameEntityINI" value="tudorhouse.mesh"/>
+      <property name="pointNameEntityINI" value="ap..mesh"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
       <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
       <!--<property name="nameMaterial" value="ocean.material   CgTutorials/C3E5_Materialv2"/>-->
-      <property name="nameMaterial" value="CgTutorials/C2E1v_green_Material_2"/>
+      <property name="nameMaterial" value="CgTutorials/C2E1v_green_2"/>
     </filter>
   </graph>
 

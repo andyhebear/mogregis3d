@@ -191,12 +191,6 @@ namespace MogreGis
             return feature_name_script;
         }
 
-        //Set properties
-        public void setNameEntityINI(string name)
-        {
-            nameEntityINI = name;
-        }
-
         public void setNameEntities(string name)
         {
             nameEntities = name;
@@ -207,11 +201,6 @@ namespace MogreGis
             nameMaterial = name;
         }
 
-        //Get properties
-        public string getNameEntityINI()
-        {
-            return nameEntityINI;
-        }
 
         public string getNameEntities()
         {
@@ -262,8 +251,6 @@ namespace MogreGis
                 setRasterOverlayMaxSize(prop.getIntValue(DEFAULT_RASTER_OVERLAY_MAX_SIZE));
             else if (prop.getName() == "feature_name")
                 setFeatureNameScript(new Script(prop.getValue()));
-            else if (prop.getName() == "pointNameEntityINI")
-                setNameEntityINI(prop.getValue());
             else if (prop.getName() == "pointNameEntities")
                 setNameEntities(prop.getValue());
             else if (prop.getName() == "nameMaterial")
@@ -325,7 +312,7 @@ namespace MogreGis
             {
                 distanceScale = new Vector3(1, 1, 1);
             }
-            
+
 
             SceneNode nodeIni = point3d(env.getName(), i, 0, 0, 0, null, env.getSceneMgr());
 #if ESCALA_NODO_INICIAL
@@ -412,7 +399,7 @@ namespace MogreGis
 
                             //SceneNode n = point3d(env.getName()+i+k, k + 10, (float)point.X * 10.0f, (float)point.Y * 10.0f, 0, nodeIni, env.getSceneMgr());
 
-                        } 
+                        }
                         for (int j = 0; j < data.GetLength(0); j++)
                         {
                             Glu.gluTessVertex(data[j], 0, new Vector3((float)(data[j][1] * distanceScale.y), (float)(data[j][2] * distanceScale.z), (float)(data[j][0] * distanceScale.x)));
@@ -421,7 +408,7 @@ namespace MogreGis
                         Glu.gluTessEndContour();
                         Glu.gluTessNormal(0, 0, 1);
                         Glu.gluTessEndPolygon();
-                   
+
                         nodeIni.AttachObject(polygonNode);
 
                     }
@@ -492,7 +479,7 @@ namespace MogreGis
                             Glu.gluTessEndPolygon();
 
                             nodeIni.AttachObject(polygonNode);
-                            
+
 
                         }
                         i++;
@@ -500,57 +487,74 @@ namespace MogreGis
                 }
 
                 //if type of features is Line
-                else if (feature.row.Geometry is SharpMap.Geometries.LineString)
+                else if (feature.row.Geometry is SharpMap.Geometries.ILineal/*SharpMap.Geometries.LineString*/)
                 {
-                    ManualObject lineNode = env.getSceneMgr().CreateManualObject("line" + i);
-
-                    //MaterialPtr material = MaterialManager.Singleton.Create(nameMaterial,
-                             //ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
-                    //material.GetTechnique(0).GetPass(0).VertexColourTracking =
-                    //               (int)TrackVertexColourEnum.TVC_AMBIENT;
-                    //material.GetTechnique(0).GetPass(0).SetDepthBias(100);
-                    //material.GetTechnique(0).GetPass(0).LightingEnabled = false;
-
-                    int nSeg = 5; // Number of segments on the cap or join pieces
-                    BufferParameters param = new BufferParameters(nSeg, BufferParameters.BufferEndCapStyle.CapRound, BufferParameters.BufferJoinStyle.JoinRound, 2);
-                    IGeometryFactory<Coord> geometryFactory = new GeometryFactory<Coord>(new CoordSeqFac(new CoordFac(PrecisionModelType.DoubleFloating)));
-                    //IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
-                    //string txt = feature.row.Geometry.AsText();
-                    ILineString line1 = (ILineString) GeometryConverter.ToNTSGeometry(feature.row.Geometry, geometryFactory); // (ILineString<Coord>)reader.Read(txt);
-                    IGeometry coordBuffer = line1.Buffer(0.2, param);
-                    ICoordinateSequence coords = coordBuffer.Coordinates;
-                    //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
-                    MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, Color, feature);
-                    //callback.Material = nameMaterial; // "Test/ColourPolygon2";
-
-                    GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
-                    Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
-                    Glu.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
-                    Glu.gluTessCallback(GLU.GLU_TESS_END, callback);
-                    Glu.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
-                    Glu.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
-                    Glu.gluTessBeginPolygon(null);
-                    Glu.gluTessBeginContour();
-                    foreach (Coord coord in coords)
+                    System.Collections.Generic.List<SharpMap.Geometries.ILineal> lineas = new System.Collections.Generic.List<SharpMap.Geometries.ILineal>();
+                    if (feature.row.Geometry is SharpMap.Geometries.MultiLineString)
                     {
-                        double[] data = new double[] { coord.X * distanceScale.x, coord.Y * distanceScale.y, (double.IsNaN(coord.Z) ? 0 : coord.Z)*distanceScale.z };
-
-                        Glu.gluTessVertex(data, 0, new Vector3((float)data[1], (float)data[2], (float)data[0]));
+                        foreach (SharpMap.Geometries.LineString l in ((SharpMap.Geometries.MultiLineString)(feature.row.Geometry)).LineStrings)
+                        {
+                            lineas.Add(l);
+                        }
                     }
-                    Glu.gluTessEndContour();
-                    Glu.gluTessNormal(0, 0, 1);
-                    Glu.gluTessEndPolygon();
-                    i++;
-                    nodeIni.AttachObject(lineNode);
-                }
-                if ((feature.row.Geometry is SharpMap.Geometries.Polygon) | (feature.row.Geometry is SharpMap.Geometries.MultiPolygon))
-                {
-                    Fragment f = new Fragment(nodeIni);
-                    output.Add(f);
-                }
+                    else
+                    {
+                        lineas.Add((SharpMap.Geometries.ILineal)(feature.row.Geometry));
+                    }
+                    foreach (SharpMap.Geometries.ILineal line in lineas)
+                    {
+                        ManualObject lineNode = env.getSceneMgr().CreateManualObject("line" + i);
 
+                        //MaterialPtr material = MaterialManager.Singleton.Create(nameMaterial,
+                        //ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                        //material.GetTechnique(0).GetPass(0).VertexColourTracking =
+                        //               (int)TrackVertexColourEnum.TVC_AMBIENT;
+                        //material.GetTechnique(0).GetPass(0).SetDepthBias(100);
+                        //material.GetTechnique(0).GetPass(0).LightingEnabled = false;
+
+                        int nSeg = 5; // Number of segments on the cap or join pieces
+                        BufferParameters param = new BufferParameters(nSeg, BufferParameters.BufferEndCapStyle.CapRound, BufferParameters.BufferJoinStyle.JoinRound, 2);
+                        IGeometryFactory<Coord> geometryFactory = new GeometryFactory<Coord>(new CoordSeqFac(new CoordFac(PrecisionModelType.DoubleFloating)));
+                        //IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
+                        //string txt = feature.row.Geometry.AsText();
+                        ILineString line1 = (ILineString)GeometryConverter.ToNTSGeometry((SharpMap.Geometries.LineString)line, geometryFactory); // (ILineString<Coord>)reader.Read(txt);
+                        IGeometry coordBuffer = line1.Buffer(0.2, param);
+                        ICoordinateSequence coords = coordBuffer.Coordinates;
+                        //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
+                        MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, Color, feature);
+                        if (nameMaterial != null)
+                        {
+                            callback.Material = nameMaterial; // "Test/ColourPolygon2";
+                        }
+
+                        GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
+                        Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_END, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
+                        Glu.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
+                        Glu.gluTessBeginPolygon(null);
+                        Glu.gluTessBeginContour();
+                        foreach (Coord coord in coords)
+                        {
+                            double[] data = new double[] { coord.X * distanceScale.x, coord.Y * distanceScale.y, (double.IsNaN(coord.Z) ? 0 : coord.Z) * distanceScale.z };
+
+                            Glu.gluTessVertex(data, 0, new Vector3((float)data[1], (float)data[2], (float)data[0]));
+                        }
+                        Glu.gluTessEndContour();
+                        Glu.gluTessNormal(0, 0, 1);
+                        Glu.gluTessEndPolygon();
+                        i++;
+                        nodeIni.AttachObject(lineNode);
+                    }
+                    if ((feature.row.Geometry is SharpMap.Geometries.Polygon) | (feature.row.Geometry is SharpMap.Geometries.MultiPolygon))
+                    {
+                        Fragment f = new Fragment(nodeIni);
+                        output.Add(f);
+                    }
+
+                }
             }
-
             i = 0;//breakpoint
 
             /*foreach (Fragment fragment in output)
@@ -599,10 +603,10 @@ namespace MogreGis
             Entity ent;
             if (node == null)//point of reference 0,0,0
             {
-                //ManualObject aux = sceneMgr.CreateManualObject();
-                ent = sceneMgr.CreateEntity(name + id, getNameEntityINI());
+                ManualObject aux = sceneMgr.CreateManualObject();
+                //ent = sceneMgr.CreateEntity(name + id, getNameEntityINI());
                 node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + id + "Node", new Vector3(y, z, x));
-                node.AttachObject(ent);
+                node.AttachObject(aux);
                 return node;
             }
             else//create new point
@@ -611,7 +615,7 @@ namespace MogreGis
                 float yAux = y;
 
                 SceneNode nodeAux;
-                
+
                 ent = sceneMgr.CreateEntity(name + id, getNameEntities());
                 nodeAux = node.CreateChildSceneNode(name + "Node_" + id, new Vector3(yAux, z, xAux));
 
@@ -633,7 +637,7 @@ namespace MogreGis
                 set { material = value; }
             }
 
-            public MogreTessellationCallbacks(ManualObject mo, Script color,Feature feature)
+            public MogreTessellationCallbacks(ManualObject mo, Script color, Feature feature)
             {
                 manualObj = mo;
                 this.feature = feature;
@@ -694,7 +698,7 @@ namespace MogreGis
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
 #endif
                 manualObj.Position((Vector3)vertexData);
-                //manualObj.TextureCoord(0.1f,0.1f);
+                //manualObj.TextureCoord(0.1f, 0.1f);
                 if (vec3 != null)
                 {
                     Vector3 v = Registry.instance().GetEngine("Python").run(vec3, feature, null).asVec3();
@@ -990,7 +994,6 @@ namespace MogreGis
 
         private const int DEFAULT_RASTER_OVERLAY_MAX_SIZE = 0;
 
-        protected string nameEntityINI;
         protected string nameEntities;
         protected string nameMaterial;
         protected Script scale;
