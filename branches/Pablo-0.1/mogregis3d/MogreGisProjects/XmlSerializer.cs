@@ -970,14 +970,18 @@ namespace osgGISProjects
             nl = n.GetElementsByTagName("Camera");
             foreach (XmlElement e in nl)
             {
-                XmlNodeList properties = e.GetElementsByTagName("Property");
+                XmlNodeList properties = e.GetElementsByTagName("property");
                 foreach (XmlElement prop in properties)
                 {
                     Property property = new Property(prop.GetAttribute("name"), prop.GetAttribute("value"));
                     project.setProperty(property);
                 }
             }
-
+            nl = n.GetElementsByTagName("backGroundMaterial");
+            foreach (XmlElement e in nl)
+            {
+                project.setBackGroundMaterial(Registry.instance().GetEngine("Python").run(new Script(e.InnerText)).asString());
+            }
         }
 
 #if TODO_DANI //encodeProject

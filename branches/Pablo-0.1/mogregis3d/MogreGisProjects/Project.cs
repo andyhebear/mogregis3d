@@ -260,6 +260,16 @@ namespace osgGISProjects
             backGroundColor = color;
         }
 
+        public void setBackGroundMaterial(String nameMaterial)
+        {
+            backGroundMaterial = nameMaterial;
+        }
+
+        public String getBackGroundMaterial()
+        {
+            return backGroundMaterial;
+        }
+
         public Mogre.Vector4 getBackGroundColor()
         {
             return backGroundColor;
@@ -268,6 +278,11 @@ namespace osgGISProjects
         public void addMogreResourceLocation(string name, string type, string group)
         {
             mogreLocations.Add(new MogreLocation(name, type, group));
+        }
+
+        public List<MogreLocation> getMogreLocations()
+        {
+            return mogreLocations;
         }
 
         public void setProperty(Property property)
@@ -279,6 +294,10 @@ namespace osgGISProjects
             if (property.getName() == "LookAt")
             {
                 lookAt = Registry.instance().GetEngine("Python").run(new Script(property.getValue())).asVec3();
+            }
+            if (property.getName() == "ViewDistance")
+            {
+                viewDistance = Registry.instance().GetEngine("Python").run(new Script(property.getValue())).asInt();
             }
         }
 
@@ -301,10 +320,18 @@ namespace osgGISProjects
             get { return lookAt; }
         }
 
+        public int ViewDistance
+        {
+            get { return viewDistance; }
+        }
+
         private Mogre.Vector3 cameraPosition;
         private Mogre.Vector3 lookAt;
+        private int viewDistance = 100000;
+
         private List<MogreLocation> mogreLocations;
         private Mogre.Vector4 backGroundColor;
+        private string backGroundMaterial;
         protected string source_uri;
         protected string name;
         protected string work_dir;
@@ -325,7 +352,7 @@ namespace osgGISProjects
         protected RuntimeMapList maps;
 #endif
 
-        class MogreLocation
+        public class MogreLocation
         {
             string name;
             string type;

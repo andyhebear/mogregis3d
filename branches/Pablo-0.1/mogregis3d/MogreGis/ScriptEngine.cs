@@ -46,12 +46,22 @@ namespace MogreGis
             return (float)result;
         }
 
+        public float asFloat()
+        {
+            return (float)result;
+        }
+
         public double asDouble(double def)
         {
             return (double)result;
         }
 
         public int asInt(int def)
+        {
+            return (int)result;
+        }
+
+        public int asInt()
         {
             return (int)result;
         }

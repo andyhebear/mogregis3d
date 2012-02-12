@@ -225,7 +225,7 @@ namespace MogreGis
             }
         }
 
-        public Script coordScale;
+        private Script coordScale;
         public Script CoordScale
         {
             set
@@ -236,6 +236,32 @@ namespace MogreGis
             get
             {
                 return coordScale;
+            }
+        }
+
+        private Script lineWidth;
+        public Script LineWidth
+        {
+            set
+            {
+                this.lineWidth = value;
+            }
+            get
+            {
+                return lineWidth;
+            }
+        }
+
+        public Script materialScale;
+        public Script MaterialScale
+        {
+            get
+            {
+                return materialScale;
+            }
+            set
+            { 
+                materialScale = value; 
             }
         }
 
@@ -256,16 +282,13 @@ namespace MogreGis
             else if (prop.getName() == "nameMaterial")
                 setNameMaterial(prop.getValue());
             else if (prop.getName() == "pointEntityScale")
-            {
-                //string s = prop.getValue().Substring(1, (prop.getValue().Length) - 2);
-                //Scale = s;
                 Scale = new Script(prop.getValue());
-            }
             else if (prop.getName() == "distancesScale")
-            {
                 CoordScale = new Script(prop.getValue());
-            }
-
+            else if (prop.getName() == "lineWidth")
+                LineWidth = new Script(prop.getValue());
+            else if (prop.getName() == "materialScale")
+                MaterialScale = new Script(prop.getValue());
             base.setProperty(prop);
         }
 
@@ -294,7 +317,9 @@ namespace MogreGis
             int i = 0;
             Vector3 scale;
             Vector3 distanceScale;
-
+            Vector3 mScale = new Vector3 (1,1,1);
+            float lWidth = 1;
+            
             if (Scale != null)
             {
                 scale = Registry.instance().GetEngine("Python").run(Scale).asVec3();
@@ -312,7 +337,14 @@ namespace MogreGis
             {
                 distanceScale = new Vector3(1, 1, 1);
             }
-
+            if (LineWidth != null)
+            {
+                lWidth = Registry.instance().GetEngine("Python").run(LineWidth).asFloat();
+            }
+            if (MaterialScale != null)
+            {
+                mScale = Registry.instance().GetEngine("Python").run(MaterialScale).asVec3();
+            }
 
             SceneNode nodeIni = point3d(env.getName(), i, 0, 0, 0, null, env.getSceneMgr());
 #if ESCALA_NODO_INICIAL
@@ -363,9 +395,15 @@ namespace MogreGis
                                      ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
                         material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                        (int)TrackVertexColourEnum.TVC_AMBIENT;
-
+                        
                         //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
                         MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, Color, feature);
+
+                        if (nameMaterial != null)
+                        {
+                            callback.Material = nameMaterial; // "Test/ColourPolygon2";
+                            callback.MaterialScale = mScale;
+                        }
 
                         GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                         Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -434,8 +472,15 @@ namespace MogreGis
                             material.GetTechnique(0).GetPass(0).VertexColourTracking =
                                            (int)TrackVertexColourEnum.TVC_AMBIENT;
 
+                            
                             //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
                             MogreTessellationCallbacks callback = new MogreTessellationCallbacks(polygonNode, Color, feature);
+
+                            if (nameMaterial != null)
+                            {
+                                callback.Material = nameMaterial; // "Test/ColourPolygon2";
+                                callback.MaterialScale = mScale;
+                            }
 
                             GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
                             Glu.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
@@ -518,13 +563,14 @@ namespace MogreGis
                         //IWktGeometryReader<Coord> reader = geometryFactory.WktReader;
                         //string txt = feature.row.Geometry.AsText();
                         ILineString line1 = (ILineString)GeometryConverter.ToNTSGeometry((SharpMap.Geometries.LineString)line, geometryFactory); // (ILineString<Coord>)reader.Read(txt);
-                        IGeometry coordBuffer = line1.Buffer(0.2, param);
+                        IGeometry coordBuffer = line1.Buffer(lWidth, param);
                         ICoordinateSequence coords = coordBuffer.Coordinates;
                         //Vector3 v = Registry.instance().GetEngine("Python").run(Color, feature, null).asVec3();
                         MogreTessellationCallbacks callback = new MogreTessellationCallbacks(lineNode, Color, feature);
                         if (nameMaterial != null)
                         {
                             callback.Material = nameMaterial; // "Test/ColourPolygon2";
+                            callback.MaterialScale = mScale;
                         }
 
                         GLUtessellatorImpl Glu = (GLUtessellatorImpl)GLUtessellatorImpl.gluNewTess();
@@ -604,7 +650,7 @@ namespace MogreGis
             if (node == null)//point of reference 0,0,0
             {
                 ManualObject aux = sceneMgr.CreateManualObject();
-                //ent = sceneMgr.CreateEntity(name + id, getNameEntityINI());
+                //ent = sceneMgr.CreateEntity(name + id, this.getNameEntities());
                 node = sceneMgr.RootSceneNode.CreateChildSceneNode(name + id + "Node", new Vector3(y, z, x));
                 node.AttachObject(aux);
                 return node;
@@ -630,6 +676,13 @@ namespace MogreGis
             Script vec3;
             string material = "Test/ColourPolygon";
             Feature feature;
+            Vector3 materialScale;
+
+            public Vector3 MaterialScale
+            {
+                get { return materialScale; }
+                set { materialScale = value; }
+            }
 
             public string Material
             {
@@ -698,7 +751,7 @@ namespace MogreGis
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod() + " vertex=" + vertexData);
 #endif
                 manualObj.Position((Vector3)vertexData);
-                //manualObj.TextureCoord(0.1f, 0.1f);
+                manualObj.TextureCoord(((Vector3)vertexData).x * materialScale.x, ((Vector3)vertexData).z * materialScale.y);
                 if (vec3 != null)
                 {
                     Vector3 v = Registry.instance().GetEngine("Python").run(vec3, feature, null).asVec3();
