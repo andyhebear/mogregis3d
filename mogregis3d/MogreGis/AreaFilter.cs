@@ -34,6 +34,7 @@ namespace MogreGis
             FeatureList output = new FeatureList();
 
             //Boolean encontrado = false;
+            SharpMap.Geometries.BoundingBox boundingBox = new SharpMap.Geometries.BoundingBox(longitudeMin,latitudeMin,longitudeMax,latitudeMax);
 
             foreach (Feature feature in input)
             {
@@ -41,8 +42,7 @@ namespace MogreGis
                 if (feature.row.Geometry is SharpMap.Geometries.Point)
                 {
                     SharpMap.Geometries.Point p = (SharpMap.Geometries.Point)feature.row.Geometry;
-
-                    if ((p.Y > LatitudeMin) & (p.Y < LatitudeMax) & (p.X > LongitudeMin) & (p.X < LongitudeMax))
+                    if (boundingBox.Contains(p.GetBoundingBox()))
                     {
                         output.Add(feature);
                     }
@@ -51,8 +51,7 @@ namespace MogreGis
                 else if (feature.row.Geometry is SharpMap.Geometries.Polygon)
                 {
                     SharpMap.Geometries.Polygon polygon = (SharpMap.Geometries.Polygon)feature.row.Geometry;
-
-                    if ((polygon.Centroid.Y > LatitudeMin) & (polygon.Centroid.Y < LatitudeMax) & (polygon.Centroid.X > LongitudeMin) & (polygon.Centroid.X < LongitudeMax))
+                    if (boundingBox.Contains(polygon.GetBoundingBox()))
                     {
                         output.Add(feature);
                     }
@@ -61,39 +60,10 @@ namespace MogreGis
                 else if (feature.row.Geometry is SharpMap.Geometries.MultiPolygon)
                 {
                     SharpMap.Geometries.MultiPolygon mp = (SharpMap.Geometries.MultiPolygon)feature.row.Geometry;
-
-                    foreach (SharpMap.Geometries.Polygon polygon in mp.Polygons)
+                    SharpMap.Geometries.BoundingBox bb = mp.GetBoundingBox();
+                    if (boundingBox.Contains(bb))
                     {
-                        /*foreach (SharpMap.Geometries.Point p in polygon.ExteriorRing.Vertices)
-                        {
-                            if ((p.Y > LatitudeMin) & (p.Y < LatitudeMax) & (p.X > LongitudeMin) & (p.X < LongitudeMax))
-                            {
-                                output.Add(feature);
-                                encontrado = true;
-                            }
-                            if (encontrado)
-                            {
-                                break;
-                            }
-                        }
-                        if (encontrado)
-                        {
-                            encontrado = false;
-                            break;
-                        }*/
-
-                        /*String pais = "Thailand";
-                        String pais2 = (String)feature.row.ItemArray[0];
-                        if (pais.CompareTo(pais2) == 0)
-                        {
-                            pais = "Thailand";
-                        }*/
-
-                        if ((polygon.Centroid.Y > LatitudeMin) & (polygon.Centroid.Y < LatitudeMax) & (polygon.Centroid.X > LongitudeMin) & (polygon.Centroid.X < LongitudeMax))
-                        {
-                            output.Add(feature);
-                            break;
-                        }
+                        output.Add(feature);
                     }
                 }
                 
@@ -119,18 +89,18 @@ namespace MogreGis
         public override void setProperty(Property prop)
         {
             if (prop.getName() == "longitudeMin")
-                LongitudeMin = int.Parse(prop.getValue());
+                LongitudeMin = float.Parse(prop.getValue());
             else if (prop.getName() == "longitudeMax")
-                LongitudeMax = int.Parse(prop.getValue());
+                LongitudeMax = float.Parse(prop.getValue());
             else if (prop.getName() == "latitudeMin")
-                LatitudeMin = int.Parse(prop.getValue());
+                LatitudeMin = float.Parse(prop.getValue());
             else if (prop.getName() == "latitudeMax")
-                LatitudeMax = int.Parse(prop.getValue());
+                LatitudeMax = float.Parse(prop.getValue());
 
             base.setProperty(prop);
         }
 
-        public int LongitudeMin
+        public float LongitudeMin
         {
             set
             {
@@ -143,7 +113,7 @@ namespace MogreGis
             }
         }
 
-        public int LongitudeMax
+        public float LongitudeMax
         {
             set
             {
@@ -156,7 +126,7 @@ namespace MogreGis
             }
         }
 
-        public int LatitudeMin
+        public float LatitudeMin
         {
             set
             {
@@ -169,7 +139,7 @@ namespace MogreGis
             }
         }
 
-        public int LatitudeMax
+        public float LatitudeMax
         {
             set
             {
@@ -182,10 +152,10 @@ namespace MogreGis
             }
         }
 
-        protected int longitudeMin;
-        protected int longitudeMax;
-        protected int latitudeMin;
-        protected int latitudeMax;
+        protected float longitudeMin;
+        protected float longitudeMax;
+        protected float latitudeMin;
+        protected float latitudeMax;
 
     }
 }

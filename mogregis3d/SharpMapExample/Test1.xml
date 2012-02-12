@@ -9,7 +9,7 @@
       <ressourceLocation name="./CgResources/Chapter3"  type="FileSystem" group= "General"/>
     </resources>
     <Camera>
-      <property name="Position" value="vec3(-300, 500, 0)"/>
+      <property name="Position" value="vec3(-300, 100, 0)"/>
       <property name="LookAt" value="vec3(0, 0, 0)"/>
     </Camera>
   </mogreRender>
@@ -96,8 +96,8 @@ def SelectSpain():
     <project>../../../data/rivers.prj</project>
   </source>
 
-  <!--<graph name="countries">
-    -->
+  <!--<graph name="countries">-->
+    
   <!--<filter type="TransformFilter">
       <property name="translate" value=""/>
       <property name="" value=""/>
@@ -132,34 +132,32 @@ def SelectSpain():
   <!--<filter type="TransformFilter">
       <property name="translate" value="Mercator()"/>
     </filter>-->
-  <!--
-    <filter type="BuildGeomFilter" >
+  
+    <!--<filter type="BuildGeomFilter" >
       <property name="color" value="Color()"/>
-      <property name="pointNameEntityINI" value="ogrehead.mesh"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
-      <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
-      -->
+      <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>-->
+      
   <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
   <!--
       -->
   <!--<property name="nameMaterial" value="ocean.material"/>-->
   <!--
-      <property name="nameMaterial" value="SharpMapExample/water_green_Material"/>
-    </filter>
+      <property name="nameMaterial" value="SharpMapExample/water_green_Material"/>-->
+    <!--</filter>
   </graph>-->
 
   <graph name="rivers">
-    <!--<filter type="TransformFilter">
+    <filter type="TransformFilter">
       <property name="translate" value="Mercator()"/>
-    </filter>-->
+    </filter>
     <filter type="BuildGeomFilter" >
-      <!--<property name="color" value="ColorLine()"/>-->
-      <property name="pointNameEntityINI" value="ap..mesh"/>
+      <property name="color" value="ColorLine()"/>
       <property name="pointNameEntities" value="ogrehead.mesh"/>
       <property name="pointEntityScale" value="vec3(0.1,0.1,0.1)"/>
       <!--<property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>-->
-      <!--<property name="nameMaterial" value="ocean.material   CgTutorials/C3E5_Materialv2"/>-->
-      <property name="nameMaterial" value="CgTutorials/C2E1v_green_2"/>
+      <!--<property name="nameMaterial" value="ocean.material   CgTutorials/C3E5_Materialv2"/>
+      <property name="nameMaterial" value="mogregis/agua_material"/>-->
     </filter>
   </graph>
 

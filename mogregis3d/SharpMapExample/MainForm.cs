@@ -33,6 +33,7 @@ using ProjNet.CoordinateSystems.Transformations;
 using ProjNet.CoordinateSystems;
 using Mogre;
 using MogreGis;
+using osgGISProjects;
 
 namespace SharpMapExample
 {
@@ -61,8 +62,39 @@ namespace SharpMapExample
 
         private void SetupMogre()
         {
-            app = new osgGISProjects.MogreApp(prj.CameraPosition, prj.LookAt, prj.getBackGroundColor());
-            prj.loadMogreResourceLocation(app);
+            Vector3 position;
+            Vector3 lookAt;
+            Vector4 backGroundColor;
+            int viewDistance;
+
+            if (prj.CameraPosition == null)
+            {
+                position = new Vector3(0, 0, 0);
+            }
+            else
+            {
+                position = prj.CameraPosition;
+            }
+            if (prj.LookAt == null)
+            {
+                lookAt = new Vector3(0, 0, 0);
+            }
+            else
+            {
+                lookAt = prj.LookAt;
+            }
+            if (prj.getBackGroundColor() == null)
+            {
+                backGroundColor = new Vector4(0, 0, 0, 0);
+            }
+            else
+            {
+                backGroundColor = prj.getBackGroundColor();
+            }
+           
+            viewDistance = prj.ViewDistance;
+            app = new osgGISProjects.MogreApp(position, lookAt, backGroundColor, viewDistance, prj.getBackGroundMaterial());
+            //prj.loadMogreResourceLocation(app);
         }
 
         private void registerSymbols()
@@ -460,6 +492,7 @@ namespace SharpMapExample
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            MogreApp.setLocations(prj.getMogreLocations());
             SetupMogre();
             Mogre.SceneManager sm = app.SceneManager;
 

@@ -125,6 +125,15 @@
     <None Include="MogreResources\C2E1v_green.cg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="MogreResources\C3E2v_varying.cg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MogreResources\C3E3.material">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MogreResources\C3E3f_texture.cg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="MogreResources\water.material">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -146,7 +155,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ejemplos\Ejemplo1.xml" />
+    <Content Include="Ejemplos\Ejemplo1.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Ejemplos\Ejemplo2.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Ejemplos\Ejemplo3.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Ejemplos\Ejemplo4-1.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Ejemplos\Ejemplo4-2.xml" />
     <Content Include="Test1.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
