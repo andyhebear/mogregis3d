@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="Ejemplo1">
+
+  <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
+
+  <mogreRender>
+    <backgroundColor>vec4(0, 0, 1, 0)</backgroundColor>
+    <Camera>
+      <property name="Position" value="vec3(2050000, 10000000, 4000000)"/>
+      <property name="LookAt" value="vec3(1900000, 0, 3100000)"/>
+      <property name="ViewDistance" value="100000000"/>
+    </Camera>
+  </mogreRender>
+
+
+  <source name="natural" provider="ShapeFile">
+    <uri>../../../data/shapefiles/spain/ES_50K.shp</uri>
+    <project>../../../data/shapefiles/spain/ES_50K.prj</project>
+  </source>
+
+  <graph name="natural">
+    <filter type="BuildGeomFilter">
+      <property name="color" value="vector3(0,1,0)"/>
+    </filter>
+  </graph>
+</project>

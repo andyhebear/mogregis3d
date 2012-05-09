@@ -1,0 +1,43 @@
+vertex_program CgTutorials/C2E1v_green cg
+{
+	source C2E1v_green.cg
+	entry_point C2E1v_green
+	profiles vs_1_1 arbvp1
+}
+
+vertex_program CgTutorials/C2E1v_green_2 cg
+{
+	source C2E1v_green.cg
+	entry_point C2E1v_green_2
+	profiles vs_1_1 arbvp1
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+material CgTutorials/C2E1v_green_Material
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C2E1v_green
+			{
+			}
+		}
+	}
+}
+
+material CgTutorials/C2E1v_green_Material_2
+{
+	technique
+	{
+		pass
+		{
+		    vertex_program_ref CgTutorials/C2E1v_green_2
+			{
+			}
+		}
+	}
+}
