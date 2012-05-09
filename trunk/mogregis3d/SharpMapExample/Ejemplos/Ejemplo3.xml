@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="sample1">
+
+  <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
+
+  <mogreRender>
+    <backGroundMaterial>"Examples/Water2"</backGroundMaterial>
+    <Camera>
+      <property name="Position" value="vec3(-300, 100, 0)"/>
+      <property name="LookAt" value="vec3(0, 0, 0)"/>
+    </Camera>
+  </mogreRender>
+
+  <script language="python" name="Mercator">
+def Mercator ():
+    return 'PROJCS["Mercator Spheric", GEOGCS["WGS84basedSpheric_GCS", DATUM["WGS84basedSpheric_Datum", SPHEROID["WGS84based_Sphere", 6378137, 0], TOWGS84[0, 0, 0, 0, 0, 0, 0]], PRIMEM["Greenwich", 0, AUTHORITY["EPSG", "8901"]], UNIT["degree", 0.0174532925199433, AUTHORITY["EPSG", "9102"]], AXIS["E", EAST], AXIS["N", NORTH]], PROJECTION["Mercator"], PARAMETER["False_Easting", 0], PARAMETER["False_Northing", 0], PARAMETER["Central_Meridian", 0], PARAMETER["Latitude_of_origin", 0], UNIT["metre", 1, AUTHORITY["EPSG", "9001"]], AXIS["East", EAST], AXIS["North", NORTH]]'
+  </script>
+  
+  <script language="python" name="scriptColor">
+def Color ():
+    return vector3((feature.row['POPDENS']/1000.0),1-(feature.row['POPDENS']/300.0),0)
+def ColorLine ():
+    return vector3(0,0,1)
+  </script>
+
+  <!-- A source references a vector GIS source layer:  -->
+  <source name="countries" provider="ShapeFile">
+    <uri>../../../data/shapefiles/countries.shp</uri>
+    <project>../../../data/shapefiles/countries.prj</project>
+  </source>
+
+  <source name="rivers" provider="ShapeFile">
+    <uri>../../../data/shapefiles/rivers.shp</uri>
+    <project>../../../data/shapefiles/rivers.prj</project>
+  </source>
+
+  <source name="cities" provider="ShapeFile">
+    <uri>../../../data/shapefiles/cities.shp</uri>
+    <project>../../../data/shapefiles/cities.prj</project>
+  </source>
+
+
+  <graph name="cities">
+    <filter type="TransformFilter">
+      <property name="translate" value="Mercator()"/>
+    </filter>
+    <filter type ="BuildGeomFilter">
+      <property name="pointNameEntities" value="edif.mesh"/>
+      <property name="pointEntityScale" value="vector3(0.09,0.09,0.09)"/>
+      <property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>
+    </filter>
+  </graph>
+  
+  <graph name="rivers">
+    <filter type="TransformFilter">
+        <property name="translate" value="Mercator()"/>
+    </filter>
+    <filter type="BuildGeomFilter" >
+       <property name="color" value="ColorLine()"/>
+      <property name="lineWidth" value="20000"/>
+       <property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>
+    </filter>
+  </graph>
+  
+  <graph name="countries">
+    <filter type="TransformFilter">
+      <property name="translate" value="Mercator()"/>
+    </filter>
+    <filter type="BuildGeomFilter" >
+      <property name="color" value="Color()"/>
+      <property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>
+    </filter>
+  </graph>
+</project>

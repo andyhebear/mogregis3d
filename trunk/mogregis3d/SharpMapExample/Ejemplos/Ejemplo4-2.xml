@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="sample1">
+
+  <scriptEngine language="Python" Class="MogreGis.IronPythonScriptEngine" Assembly="../../../PythonScriptEngine/bin/Debug/PythonScriptEngine.dll"/>
+
+  <mogreRender>
+    <backgroundColor>vec4(0, 0, 1, 0)</backgroundColor>
+    <resources>
+      <resourceLocation name="../../../CgTutorials/CgResources/Chapter3"  type="FileSystem" group= "General"/>
+      <!--<ressourceLocation name="./MogreResources"  type="FileSystem" group= "General"/>-->
+    </resources>
+    <Camera>
+      <property name="Position" value="vec3(0, 70, 0)"/>
+      <property name="LookAt" value="vec3(53, 0, -10)"/>
+    </Camera>
+  </mogreRender>
+
+  <script language="python" name="Mercator">
+def Mercator ():
+    return 'PROJCS["Mercator Spheric", GEOGCS["WGS84basedSpheric_GCS", DATUM["WGS84basedSpheric_Datum", SPHEROID["WGS84based_Sphere", 6378137, 0], TOWGS84[0, 0, 0, 0, 0, 0, 0]], PRIMEM["Greenwich", 0, AUTHORITY["EPSG", "8901"]], UNIT["degree", 0.0174532925199433, AUTHORITY["EPSG", "9102"]], AXIS["E", EAST], AXIS["N", NORTH]], PROJECTION["Mercator"], PARAMETER["False_Easting", 0], PARAMETER["False_Northing", 0], PARAMETER["Central_Meridian", 0], PARAMETER["Latitude_of_origin", 0], UNIT["metre", 1, AUTHORITY["EPSG", "9001"]], AXIS["East", EAST], AXIS["North", NORTH]]'
+  </script>
+
+  <source name="countries" provider="ShapeFile">
+    <uri>../../../data/shapefiles/countries.shp</uri>
+    <project>../../../data/shapefiles/countries.prj</project>
+  </source>
+
+  <graph name="countries">
+
+    <filter type="TransformFilter">
+      <property name="translate" value="Mercator()"/>
+    </filter>
+    <filter type="AreaFilter">
+      <property name="longitudeMin" value="-8.00"/>
+      <property name="longitudeMax" value="4"/>
+      <property name="latitudeMin" value="34"/>
+      <property name="latitudeMax" value="45"/>
+    </filter>
+    <filter type="BuildGeomFilter" >
+      <property name="nameMaterial" value="CgTutorials/C3E5_Materialv2"/>
+      <property name="materialScale" value="vector3(0.05,0.05,0)"/>
+      <property name="distancesScale" value="vec3(0.00001,0.00001,0.00001)"/>
+    </filter>
+  </graph>
+</project>
